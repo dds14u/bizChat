@@ -99,7 +99,7 @@ export default function Chat() {
       });
 
       if (res.status === 404) {
-        throw new Error('The chat server only runs on the published Netlify site, not in this preview.');
+        throw new Error('The chat server only runs on the published site, not in this preview.');
       }
       if (!res.ok || !res.body) {
         let msg = `Request failed (${res.status}).`;

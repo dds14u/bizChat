@@ -117,13 +117,16 @@
   outline-offset: 1px;
 }
 
-.send-btn {
-  flex: none;
+.chat .composer .send-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  min-width: 76px;
   height: 46px;
   padding: 0 18px;
   border: 0;
   border-radius: 12px;
-  background: var(--jade);
+  background-color: #1d63ed;
   color: #ffffff;
   font: inherit;
   font-size: 1rem;
@@ -131,11 +134,15 @@
   cursor: pointer;
 }
 
-.send-btn:disabled {
-  opacity: 0.5;
-  cursor: default;
+.chat .composer .send-btn:hover:not(:disabled) {
+  background-color: #1650c4;
 }
 
+.chat .composer .send-btn:disabled {
+  background-color: #1d63ed;
+  opacity: 0.6;
+  cursor: default;
+}
 .send-btn:focus-visible,
 .new-chat:focus-visible {
   outline: 2px solid var(--navy);
