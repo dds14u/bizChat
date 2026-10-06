@@ -38,6 +38,15 @@
   text-overflow: ellipsis;
 }
 
+/* Small, light "by Donald" next to the title */
+.brand-by {
+  margin-left: 8px;
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
 /* Fills the space under the header */
 .chat-area {
   flex: 1;
