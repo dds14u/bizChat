@@ -5,8 +5,7 @@ function App() {
   return (
     <div className="app">
       <header className="site-header">
-        <span className="brand-name">🙋🏻‍♀️ Real Business </span>
-        <span className="sub-name">-by Donald</span>
+        <span className="brand-name">TD Business English</span>
       </header>
 
       <main className="chat-area">

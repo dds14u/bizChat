@@ -89,41 +89,50 @@
 }
 
 .composer {
+  flex: none;
+  position: sticky;
+  bottom: 0;
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  padding: 10px 12px 12px;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid #dce3ea;
-  background: var(--paper);
+  background: var(--paper, #f6f8fa);
 }
 
 /* 16px+ font stops iPhones from zooming in when the box is tapped */
 .composer textarea {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   min-height: 46px;
   max-height: 140px;
   padding: 10px 12px;
   border: 1px solid #c9d3de;
   border-radius: 12px;
   background: #ffffff;
-  color: var(--ink);
+  color: var(--ink, #1b2533);
   font: inherit;
   font-size: 1.02rem;
   resize: none;
 }
 
 .composer textarea:focus-visible {
-  outline: 2px solid var(--jade);
+  outline: 2px solid var(--jade, #2e8b74);
   outline-offset: 1px;
 }
 
+/* Send button: blue, fixed colors so no global style can hide it */
 .chat .composer .send-btn {
   appearance: none;
   -webkit-appearance: none;
   flex: 0 0 auto;
   min-width: 76px;
   height: 46px;
+  margin: 0;
   padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: 12px;
   background-color: #1d63ed;
@@ -143,9 +152,10 @@
   opacity: 0.6;
   cursor: default;
 }
-.send-btn:focus-visible,
+
+.composer .send-btn:focus-visible,
 .new-chat:focus-visible {
-  outline: 2px solid var(--navy);
+  outline: 2px solid var(--navy, #16324f);
   outline-offset: 2px;
 }
 
@@ -159,4 +169,53 @@
   .bubble {
     max-width: 75%;
   }
+}
+
+/* ---------- Free trial ---------- */
+.empty-state .trial-note {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: #1650c4;
+  font-weight: 600;
+}
+
+.trial-remaining {
+  align-self: center;
+  margin: 0 14px 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #e8f0fe;
+  color: #1650c4;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.trial-card {
+  margin: 0 14px 10px;
+  padding: 14px 16px;
+  border: 1px solid #c6d6f7;
+  border-radius: 14px;
+  background: #f3f7ff;
+  color: var(--ink, #1b2533);
+}
+
+.trial-card p {
+  margin: 0;
+}
+
+.trial-card-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin-bottom: 6px !important;
+}
+
+.trial-card-body {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.trial-card-hint {
+  margin-top: 8px !important;
+  font-size: 0.9rem;
+  color: #5d6a7c;
 }
