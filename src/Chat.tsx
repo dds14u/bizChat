@@ -226,6 +226,9 @@ export default function Chat() {
         </div>
       )}
 
+      {/* Debug aid: only shown when the server confirms an admin code */}
+      {tier === 'admin' && <div className="tier-badge">admin</div>}
+
       <div className="composer">
         <textarea
           ref={inputRef}
