@@ -1,27 +1,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent } from 'react';
 import './Chat.css';
-import { getInviteCode } from './invite';
+import { getBrowserId, getInviteCode } from './invite';
+import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat } from './chatApi';
 
 type Message = { role: 'user' | 'assistant'; text: string };
-
-// A stable anonymous ID per browser, so Dify can rate-limit each visitor.
-function getUserId(): string {
-  const KEY = 'td-user-id';
-  try {
-    let id = localStorage.getItem(KEY);
-    if (!id) {
-      id =
-        'web-' +
-        (typeof crypto !== 'undefined' && crypto.randomUUID
-          ? crypto.randomUUID()
-          : Math.random().toString(36).slice(2) + Date.now().toString(36));
-      localStorage.setItem(KEY, id);
-    }
-    return id;
-  } catch {
-    return 'web-anon';
-  }
-}
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -29,30 +11,43 @@ export default function Chat() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [conversationId, setConversationId] = useState('');
-  const userId = useRef(getUserId());
+
+  const userId = useRef(getBrowserId());
   const inviteCode = useRef(getInviteCode());
-  // Free-trial state for visitors without an invite code
+
+  // Free trial and limits
   const [tier, setTier] = useState<string>(inviteCode.current ? '' : 'visitor');
   const [trialRemaining, setTrialRemaining] = useState<number | null>(null);
   const [trialEnded, setTrialEnded] = useState<{ message: string; contact: string } | null>(null);
   const [trialWelcome, setTrialWelcome] = useState('');
+  const [maxChars, setMaxChars] = useState(DEFAULT_MAX_MESSAGE_CHARS);
 
-  // Load the welcome-screen trial text (set by TRIAL_WELCOME_TEXT in Netlify)
+  const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
+  const mountedRef = useRef(true);
+
+  // Cancel any reply in progress when the chat goes away
   useEffect(() => {
-    if (tier !== 'visitor') return;
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  // Page settings: message length limit and the trial welcome text
+  useEffect(() => {
     let cancelled = false;
-    fetch('/api/chat')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((cfg) => {
-        if (!cancelled && cfg?.welcomeText) setTrialWelcome(cfg.welcomeText);
-      })
-      .catch(() => {});
+    fetchConfig().then((cfg) => {
+      if (cancelled || !cfg) return;
+      setMaxChars(cfg.maxMessageChars);
+      setTrialWelcome(cfg.welcomeText);
+    });
     return () => {
       cancelled = true;
     };
-  }, [tier]);
-  const endRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  }, []);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: 'end' });
@@ -73,39 +68,13 @@ export default function Chat() {
       return copy;
     });
 
-  // Reads one server-sent event from Dify's stream
-  const handleEvent = (raw: string) => {
-    const dataLines = raw
-      .split('\n')
-      .filter((line) => line.startsWith('data:'))
-      .map((line) => line.slice(5).trim());
-    if (dataLines.length === 0) return; // e.g. keep-alive pings
-
-    let data: any;
-    try {
-      data = JSON.parse(dataLines.join(''));
-    } catch {
-      return;
-    }
-
-    if (data.conversation_id) setConversationId(data.conversation_id);
-
-    switch (data.event) {
-      case 'message':
-      case 'agent_message':
-        if (data.answer) appendToReply(data.answer);
-        break;
-      case 'message_replace':
-        replaceReply(data.answer || '');
-        break;
-      case 'error':
-        throw new Error(data.message || 'The tutor ran into a problem.');
-    }
-  };
+  const charCount = input.trim().length;
+  const overLimit = charCount > maxChars;
+  const nearLimit = charCount > maxChars * 0.85;
 
   const send = async () => {
     const query = input.trim();
-    if (!query || sending) return;
+    if (!query || sending || overLimit) return;
 
     setInput('');
     if (inputRef.current) inputRef.current.style.height = '';
@@ -113,64 +82,63 @@ export default function Chat() {
     setMessages((m) => [...m, { role: 'user', text: query }, { role: 'assistant', text: '' }]);
     setSending(true);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+    let gotText = false;
+
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, conversationId, user: userId.current, code: inviteCode.current }),
+      await sendChat({
+        query,
+        conversationId,
+        user: userId.current,
+        code: inviteCode.current,
+        signal: controller.signal,
+        onMeta: ({ tier: t, trialRemaining: r }) => {
+          if (t) setTier(t);
+          if (r !== null && !Number.isNaN(r)) setTrialRemaining(r);
+        },
+        onDelta: (t) => {
+          gotText = true;
+          appendToReply(t);
+        },
+        onReplace: (t) => {
+          gotText = gotText || t.length > 0;
+          replaceReply(t);
+        },
+        onConversationId: setConversationId,
       });
+    } catch (e) {
+      if (!mountedRef.current) return;
+      const err =
+        e instanceof ChatError
+          ? e
+          : new ChatError('network', 'Couldn’t reach the tutor. Check your connection and try again.');
+      if (err.kind === 'aborted') return;
 
-      if (res.status === 404) {
-        throw new Error('Chat server not found (404). In StackBlitz this is expected; on Netlify, check that the chat function deployed.');
+      if (!gotText) {
+        // Nothing arrived: remove the unanswered pair
+        setMessages((m) => m.slice(0, -2));
       }
-      const tierHeader = res.headers.get('X-Access-Tier');
-      if (tierHeader) setTier(tierHeader);
-      const remainingHeader = res.headers.get('X-Trial-Remaining');
-      if (remainingHeader !== null) setTrialRemaining(Number(remainingHeader));
+      // Keep the learner's question in the box so retrying is one tap
+      setInput((current) => current || query);
 
-      if (!res.ok || !res.body) {
-        let msg = `Request failed (${res.status}).`;
-        let j: any = null;
-        try {
-          j = await res.json();
-          if (j?.error) msg = j.error;
-        } catch {}
-        if (j?.trialEnded) {
-          setTrialEnded({ message: msg, contact: j.contact || '' });
-          // Remove the unanswered message pair so the chat stays tidy
-          setMessages((m) => m.slice(0, -2));
-          setInput(query);
-          return;
-        }
-        throw new Error(msg);
+      if (err.kind === 'trial-ended') {
+        setTrialEnded({ message: err.message, contact: err.contact });
+        setTrialRemaining(0);
+        return;
       }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, '\n');
-        const events = buffer.split('\n\n');
-        buffer = events.pop() ?? '';
-        events.forEach(handleEvent);
-      }
-      if (buffer.trim()) handleEvent(buffer);
-    } catch (e: any) {
-      setError(e?.message || 'Couldn\u2019t reach the tutor. Check your connection and try again.');
-      // Remove the empty reply bubble if nothing arrived
-      setMessages((m) => {
-        const last = m[m.length - 1];
-        return last && last.role === 'assistant' && !last.text ? m.slice(0, -1) : m;
-      });
+      setError(err.message);
     } finally {
-      setSending(false);
-      inputRef.current?.focus();
+      if (abortRef.current === controller) abortRef.current = null;
+      if (mountedRef.current) {
+        setSending(false);
+        inputRef.current?.focus();
+      }
     }
   };
 
   const newChat = () => {
+    abortRef.current?.abort();
     setMessages([]);
     setConversationId('');
     setError('');
@@ -250,6 +218,14 @@ export default function Chat() {
         </button>
       )}
 
+      {nearLimit && (
+        <div className={`char-count${overLimit ? ' over' : ''}`} role={overLimit ? 'alert' : undefined}>
+          {overLimit
+            ? `Message too long: ${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters. Please shorten it before sending. 消息过长，请删减后再发送。`
+            : `${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters`}
+        </div>
+      )}
+
       <div className="composer">
         <textarea
           ref={inputRef}
@@ -259,13 +235,14 @@ export default function Chat() {
           onKeyDown={onKeyDown}
           placeholder="Type your message"
           aria-label="Message"
+          aria-invalid={overLimit}
           disabled={sending}
         />
         <button
           type="button"
           className="send-btn"
           onClick={send}
-          disabled={sending}
+          disabled={sending || overLimit}
         >
           Send
         </button>

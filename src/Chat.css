@@ -219,3 +219,26 @@
   font-size: 0.9rem;
   color: #5d6a7c;
 }
+
+/* ---------- Message length limit ---------- */
+.char-count {
+  align-self: flex-end;
+  margin: 0 14px 6px;
+  font-size: 0.88rem;
+  color: #5d6a7c;
+}
+
+.char-count.over {
+  align-self: stretch;
+  padding: 8px 12px;
+  border: 1px solid #f3c9c9;
+  border-radius: 10px;
+  background: #fdeeee;
+  color: #8a1f1f;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.composer textarea[aria-invalid='true'] {
+  border-color: #d64545;
+}
