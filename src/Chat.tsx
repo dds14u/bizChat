@@ -166,7 +166,7 @@ export default function Chat() {
       <div className="messages" aria-live="polite">
         {messages.length === 0 && (
           <div className="empty-state">
-            <h2>Practice your business English</h2>
+            <h2>Practice your Business English</h2>
             <p>Ask about vocabulary, emails, or meetings. You can write in English or Chinese.</p>
             {tier === 'visitor' && !trialEnded && trialWelcome && (
               <p className="trial-note">{trialWelcome}</p>
