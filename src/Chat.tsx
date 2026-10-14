@@ -259,6 +259,15 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     setMode('[QA]');
   };
 
+  // Logo / title: back to the home screen with the Coach and Role-play cards.
+  // Like "Start a new chat", this ends the current conversation.
+  const goHome = () => {
+    newChat();
+    setInput('');
+    if (inputRef.current) inputRef.current.style.height = '';
+    setShowIntro(true);
+  };
+
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     // isComposing keeps Enter working normally while typing Chinese with an input method
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -315,7 +324,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   return (
     <>
       <header className="site-header">
-        {brand}
+        <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
+          {brand}
+        </button>
         <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} />
       </header>
 
