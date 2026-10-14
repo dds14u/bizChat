@@ -2,9 +2,9 @@
 
 // Coach start screen: tapping one sends it as the learner's question.
 export const COACH_STARTERS = [
-  'How do I open a meeting with a clear agenda?',
+  'How do I start a meeting?',
   'How do I handle a tough question during a presentation?',
-  'What small talk works at a networking event?',
+  'How do I handle small talk at a conference or event?',
 ];
 
 // Example shown on the first-visit Coach card.
