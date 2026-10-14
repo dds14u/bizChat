@@ -358,6 +358,11 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   <h1>Practice a conversation</h1>
                   <p className="start-sub">Pick a scene. I’ll play the other person and stay in character.</p>
                   {trialNote}
+                  <p className="difficulty-note">
+                    <span className="difficulty easy">Easy</span> supportive ·{' '}
+                    <span className="difficulty medium">Medium</span> some pushback ·{' '}
+                    <span className="difficulty hard">Hard</span> more pushback
+                  </p>
                   {SCENES.map((s) => (
                     <button
                       key={s.id}
@@ -371,7 +376,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       </span>
                       <span className="scene-card-text">
                         <span className="scene-card-label">{s.label}</span>
-                        <span className="scene-card-title">{s.title}</span>
+                        <span className="scene-card-title">
+                          {s.title}
+                          <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
+                        </span>
                         <span className="scene-card-summary">{s.summary}</span>
                       </span>
                     </button>
@@ -387,7 +395,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="marker-line" />
                       <span className="marker-text">
                         <span className="marker-title">ROLE-PLAY · {item.scene.title.toUpperCase()}</span>
-                        <span className="marker-sub">{item.scene.label.split('·')[1]?.trim()}</span>
+                        <span className="marker-sub">
+                          {item.scene.label.split('·')[1]?.trim()} · {item.scene.difficulty}
+                        </span>
                       </span>
                       <span className="marker-line" />
                     </div>
