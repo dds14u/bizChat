@@ -494,6 +494,10 @@
   color: #0b6650;
 }
 
+.bubble strong {
+  font-weight: 700;
+}
+
 /* Clickable video links in tutor replies */
 .video-link {
   color: #1650c4;

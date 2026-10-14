@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
@@ -52,6 +52,22 @@ function withVideoLinks(text: string): ReactNode {
   if (parts.length === 0) return text;
   if (last < text.length) parts.push(text.slice(last));
   return parts;
+}
+
+// Markdown bold (**text**) in tutor replies, e.g. feedback headings.
+// While a reply is still streaming, an unclosed ** stays as-is until its pair arrives.
+const BOLD = /\*\*([^*\n]+?)\*\*/g;
+
+function formatReply(text: string): ReactNode {
+  const parts = text.split(BOLD); // odd indexes are the bold text
+  if (parts.length === 1) return withVideoLinks(text);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <strong key={i}>{withVideoLinks(part)}</strong>
+    ) : (
+      <Fragment key={i}>{withVideoLinks(part)}</Fragment>
+    )
+  );
 }
 
 const SendArrow = () => (
@@ -445,7 +461,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? withVideoLinks(item.text) : item.text}
+                    {item.kind === 'assistant' ? formatReply(item.text) : item.text}
                   </div>
                 );
               })}
