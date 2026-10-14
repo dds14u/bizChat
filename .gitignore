@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets and invite lists: never commit
+netlify-secrets.env
+invite-links.csv
+INVITE_CODES-env-value.txt
+.env*

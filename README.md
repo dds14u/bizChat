@@ -70,6 +70,14 @@ Kimi (Moonshot)  kimi-k2.6, thinking mode off
 
 ---
 
+## Modes in the app
+
+- **The page owns the mode** (`[QA]` Coach or `[RP]` Role-play). It changes only through the top-right mode menu, the first-visit cards or a scene card. Switching sends nothing; the new mode goes with the next message, and a "Switched to …" divider appears in the chat.
+- **The Netlify function adds the tag.** It removes any `[QA]`/`[RP]` the learner typed at the start and puts the page's mode in front, so Dify always receives exactly one tag and typed tags never switch modes.
+- **Screens:** a two-card intro on a learner's first visit, then a Coach start screen (3 starter questions) or a Role-play start screen (3 scene cards). Tapping a scene sends a hidden kickoff message and shows a scene header instead of a chat bubble.
+- **Text above the box:** "Start a new chat" in Coach; "Type feedback or end to finish the scene" in Role-play.
+- Starter questions, scenes and kickoff wording live in `src/scenes.ts`.
+
 ## Dify Chatflow: one LLM node, two modes
 
 ```
@@ -109,7 +117,9 @@ Start → Code (detect mode) → Variable Assigner → Knowledge Retrieval → L
 ├── netlify/functions/chat.mjs   # access tiers, quotas, Dify proxy (path: /api/chat)
 └── src/
     ├── App.tsx / App.css        # header and page layout
-    ├── Chat.tsx / Chat.css      # chat UI, trial display, character limit
+    ├── Chat.tsx / Chat.css      # header, start screens, chat thread, composer, trial display
+    ├── ModeSwitcher.tsx         # top-right mode menu
+    ├── scenes.ts                # starter questions, scene cards, kickoff messages
     ├── chatApi.ts               # requests, server-sent events parser, timeouts, error types
     ├── invite.ts                # invite code from the URL, browser ID with storage fallbacks
     └── index.css
@@ -180,10 +190,7 @@ INVITE_CODES-env-value.txt
 
 ## Roadmap
 
-- **Mode buttons (planned):** the page will own the mode, and taps recolor the UI instantly.
-  - The Netlify function will replace any tag at the start of the message with the page's mode, so Dify always receives exactly one tag and typed tags can't switch modes on the live site.
-  - The Dify flow stays the same.
-- **Scenario buttons:** start a role-play scenario with one tap, by sending a hidden kickoff message.
+- **Scene behavior in the system prompt:** define each MVP scene (Start a meeting, Disagree, Reject a late request) in the role-play prompt. Today the scene cards send a detailed kickoff message instead (see `src/scenes.ts`).
 - **Skip retrieval in [RP]:** add an IF/ELSE node so role-play turns don't query the knowledge base.
 - **Retrieval quality:** more distinctive keywords per chunk, and an evidence rule for weak matches.
 

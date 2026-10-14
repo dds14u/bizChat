@@ -23,6 +23,8 @@
   padding: env(safe-area-inset-top, 0px) 14px 0;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   background: var(--navy, #16324f);
   color: #ffffff;
   border-bottom: 3px solid var(--jade, #2e8b74);

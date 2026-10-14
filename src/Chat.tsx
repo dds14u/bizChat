@@ -1,16 +1,51 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
-import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat } from './chatApi';
+import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
+import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
+import { COACH_EXAMPLE, COACH_STARTERS, SCENES, SCENE_PEOPLE, type Scene } from './scenes';
 
-type Message = { role: 'user' | 'assistant'; text: string };
+// A chat thread holds messages plus two kinds of markers:
+// a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
+type Item =
+  | { kind: 'user'; text: string; mode: ChatMode }
+  | { kind: 'assistant'; text: string; mode: ChatMode }
+  | { kind: 'scene'; scene: Scene }
+  | { kind: 'divider'; mode: ChatMode };
 
-export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+// The two-card intro (Proposal A1) shows on a learner's first visit only.
+const INTRO_KEY = 'rb.seenIntro';
+const readSeenIntro = () => {
+  try {
+    return localStorage.getItem(INTRO_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
+const saveSeenIntro = () => {
+  try {
+    localStorage.setItem(INTRO_KEY, '1');
+  } catch {
+    // Storage blocked: the intro will just show again next visit
+  }
+};
+
+const SendArrow = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+export default function Chat({ brand }: { brand: ReactNode }) {
+  const [items, setItems] = useState<Item[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [conversationId, setConversationId] = useState('');
+
+  // The page owns the mode. Only the switcher, the intro cards and scene cards change it.
+  const [mode, setMode] = useState<ChatMode>('[QA]');
+  const [showIntro, setShowIntro] = useState(() => !readSeenIntro());
 
   const userId = useRef(getBrowserId());
   const inviteCode = useRef(getInviteCode());
@@ -51,20 +86,28 @@ export default function Chat() {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: 'end' });
-  }, [messages]);
+  }, [items]);
+
+  const leaveIntro = () => {
+    if (showIntro) {
+      setShowIntro(false);
+      saveSeenIntro();
+    }
+  };
 
   const appendToReply = (chunk: string) =>
-    setMessages((m) => {
-      const copy = [...m];
+    setItems((list) => {
+      const copy = [...list];
       const last = copy[copy.length - 1];
-      copy[copy.length - 1] = { ...last, text: last.text + chunk };
+      if (last?.kind === 'assistant') copy[copy.length - 1] = { ...last, text: last.text + chunk };
       return copy;
     });
 
   const replaceReply = (text: string) =>
-    setMessages((m) => {
-      const copy = [...m];
-      copy[copy.length - 1] = { role: 'assistant', text };
+    setItems((list) => {
+      const copy = [...list];
+      const last = copy[copy.length - 1];
+      if (last?.kind === 'assistant') copy[copy.length - 1] = { ...last, text };
       return copy;
     });
 
@@ -72,14 +115,22 @@ export default function Chat() {
   const overLimit = charCount > maxChars;
   const nearLimit = charCount > maxChars * 0.85;
 
-  const send = async () => {
-    const query = input.trim();
-    if (!query || sending || overLimit) return;
+  /**
+   * Send one message in a given mode.
+   * A scene kickoff is sent to the tutor but shown as a scene header, not a bubble.
+   */
+  const sendMessage = async (text: string, sendMode: ChatMode, scene?: Scene) => {
+    const query = text.trim();
+    if (!query || sending || query.length > maxChars) return;
 
-    setInput('');
-    if (inputRef.current) inputRef.current.style.height = '';
+    leaveIntro();
+    if (!scene) {
+      setInput('');
+      if (inputRef.current) inputRef.current.style.height = '';
+    }
     setError('');
-    setMessages((m) => [...m, { role: 'user', text: query }, { role: 'assistant', text: '' }]);
+    const shown: Item = scene ? { kind: 'scene', scene } : { kind: 'user', text: query, mode: sendMode };
+    setItems((list) => [...list, shown, { kind: 'assistant', text: '', mode: sendMode }]);
     setSending(true);
 
     const controller = new AbortController();
@@ -89,6 +140,7 @@ export default function Chat() {
     try {
       await sendChat({
         query,
+        mode: sendMode,
         conversationId,
         user: userId.current,
         code: inviteCode.current,
@@ -117,10 +169,10 @@ export default function Chat() {
 
       if (!gotText) {
         // Nothing arrived: remove the unanswered pair
-        setMessages((m) => m.slice(0, -2));
+        setItems((list) => list.slice(0, -2));
       }
-      // Keep the learner's question in the box so retrying is one tap
-      setInput((current) => current || query);
+      // Keep the learner's own words in the box so retrying is one tap
+      if (!scene) setInput((current) => current || query);
 
       if (err.kind === 'trial-ended') {
         setTrialEnded({ message: err.message, contact: err.contact });
@@ -137,11 +189,34 @@ export default function Chat() {
     }
   };
 
+  const send = () => {
+    if (!overLimit) sendMessage(input, mode);
+  };
+
+  // Switching mode never sends anything: the new mode goes with the next message.
+  const changeMode = (next: ChatMode) => {
+    if (sending || next === mode) return;
+    leaveIntro();
+    setMode(next);
+    if (items.length > 0) setItems((list) => [...list, { kind: 'divider', mode: next }]);
+  };
+
+  const pickIntroMode = (next: ChatMode) => {
+    leaveIntro();
+    setMode(next);
+  };
+
+  const startScene = (scene: Scene) => {
+    setMode('[RP]');
+    sendMessage(scene.kickoff, '[RP]', scene);
+  };
+
   const newChat = () => {
     abortRef.current?.abort();
-    setMessages([]);
+    setItems([]);
     setConversationId('');
     setError('');
+    setMode('[QA]');
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -158,98 +233,262 @@ export default function Chat() {
     e.target.style.height = Math.min(e.target.scrollHeight, 140) + 'px';
   };
 
-  const lastIsEmptyReply =
-    sending && messages.length > 0 && messages[messages.length - 1].text === '';
+  const isRP = mode === '[RP]';
+  const empty = items.length === 0;
+  const last = items[items.length - 1];
+  const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
+  const startDisabled = sending || Boolean(trialEnded);
 
-  return (
-    <div className="chat">
-      <div className="messages" aria-live="polite">
-        {messages.length === 0 && (
-          <div className="empty-state">
-            <h2>Practice your Business English</h2>
-            <p>Ask about vocabulary, emails, or meetings. You can write in English or Chinese.</p>
-            {tier === 'visitor' && !trialEnded && trialWelcome && (
-              <p className="trial-note">{trialWelcome}</p>
-            )}
-          </div>
-        )}
-
-        {messages.map((m, i) =>
-          m.role === 'assistant' && !m.text ? null : (
-            <div key={i} className={`bubble ${m.role}`}>
-              {m.text}
-            </div>
-          )
-        )}
-
-        {lastIsEmptyReply && <div className="bubble assistant typing">Thinking…</div>}
-        <div ref={endRef} />
-      </div>
-
-      {trialEnded && (
-        <div className="trial-card" role="status">
-          <p className="trial-card-title">{trialEnded.message}</p>
-          <p className="trial-card-body">
-            Want to keep practicing? 想继续练习？
-            <br />
-            {trialEnded.contact}
-          </p>
-          <p className="trial-card-hint">Already have an invite link? Open it to continue. 已有邀请链接？直接打开即可继续。</p>
-        </div>
-      )}
-
-      {tier === 'visitor' && trialRemaining !== null && !trialEnded && (
-        <div className="trial-remaining">
-          {trialRemaining === 0
-            ? 'That was your last free message today. 今天的免费消息已用完。'
-            : `${trialRemaining} free message${trialRemaining === 1 ? '' : 's'} left today · 今天还剩 ${trialRemaining} 条`}
-        </div>
-      )}
-
-      {error && (
-        <div className="error-banner" role="alert">
-          {error}
-        </div>
-      )}
-
-      {messages.length > 0 && !sending && (
+  // Text above the box and placeholder depend on the screen
+  let hint: ReactNode = null;
+  let placeholder = 'Type your message';
+  if (showIntro && empty) {
+    placeholder = 'Or just type a question…';
+  } else if (empty) {
+    if (isRP) {
+      hint = <span className="composer-hint">Set your own scene</span>;
+      placeholder = 'e.g. Ask my boss for Friday off';
+    } else {
+      placeholder = 'Ask a question…';
+    }
+  } else if (isRP) {
+    hint = (
+      <span className="composer-hint">
+        Type <b>feedback</b> or <b>end</b> to finish the scene
+      </span>
+    );
+    placeholder = 'Reply…';
+  } else {
+    if (!sending) {
+      hint = (
         <button type="button" className="new-chat" onClick={newChat}>
           Start a new chat
         </button>
-      )}
+      );
+    }
+    placeholder = 'Ask a follow-up…';
+  }
 
-      {nearLimit && (
-        <div className={`char-count${overLimit ? ' over' : ''}`} role={overLimit ? 'alert' : undefined}>
-          {overLimit
-            ? `Message too long: ${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters. Please shorten it before sending. 消息过长，请删减后再发送。`
-            : `${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters`}
+  const trialNote =
+    tier === 'visitor' && !trialEnded && trialWelcome ? <p className="trial-note">{trialWelcome}</p> : null;
+
+  return (
+    <>
+      <header className="site-header">
+        {brand}
+        <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} />
+      </header>
+
+      <main className="chat-area">
+        <div className="chat-slot">
+          <div className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}`}>
+            <div className="messages" aria-live="polite">
+              {/* ---------- First visit: two mode cards (Proposal A1) ---------- */}
+              {empty && showIntro && (
+                <div className="start intro">
+                  <h1>Practice your business English</h1>
+                  <p className="start-sub">How would you like to practice today? You can write in English or Chinese.</p>
+                  {trialNote}
+
+                  <button type="button" className="mode-card qa" onClick={() => pickIntroMode('[QA]')}>
+                    <span className="mode-card-head">
+                      <span className="avatar big" aria-hidden="true">🧑‍🏫</span>
+                      <span className="mode-card-titles">
+                        <span className="mode-card-title">Ask a question</span>
+                        <span className="mode-card-kicker">COACH MODE</span>
+                      </span>
+                    </span>
+                    <span className="mode-card-body">Guidance from Donald’s lessons.</span>
+                    <span className="mode-card-example">“{COACH_EXAMPLE}”</span>
+                  </button>
+
+                  <button type="button" className="mode-card rp" onClick={() => pickIntroMode('[RP]')}>
+                    <span className="mode-card-head">
+                      <span className="avatar big" aria-hidden="true">💬</span>
+                      <span className="mode-card-titles">
+                        <span className="mode-card-title">Practice a conversation</span>
+                        <span className="mode-card-kicker">ROLE-PLAY MODE</span>
+                      </span>
+                    </span>
+                    <span className="mode-card-body">
+                      Talk with a colleague, manager or client. Get feedback when the scene ends.
+                    </span>
+                    <span className="mode-card-people">
+                      <span className="avatar-stack" aria-hidden="true">
+                        {SCENES.map((s) => (
+                          <span key={s.id} className="avatar small" style={{ background: s.avatarBg }}>
+                            {s.avatar}
+                          </span>
+                        ))}
+                      </span>
+                      {SCENE_PEOPLE}
+                    </span>
+                  </button>
+
+                  <p className="start-foot">You can switch modes anytime from the top right.</p>
+                </div>
+              )}
+
+              {/* ---------- Coach start screen (Proposal A2) ---------- */}
+              {empty && !showIntro && !isRP && (
+                <div className="start">
+                  <span className="avatar hero qa" aria-hidden="true">🧑‍🏫</span>
+                  <h1>Ask your coach</h1>
+                  <p className="start-sub">Ask about vocabulary, meetings or presentations. You can write in English or Chinese.</p>
+                  {trialNote}
+                  <p className="start-label">Try a question</p>
+                  {COACH_STARTERS.map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      className="starter"
+                      disabled={startDisabled}
+                      onClick={() => sendMessage(q, '[QA]')}
+                    >
+                      {q}
+                      <span className="starter-arrow" aria-hidden="true">›</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* ---------- Role-play start screen (Proposal A2 cards) ---------- */}
+              {empty && !showIntro && isRP && (
+                <div className="start">
+                  <h1>Practice a conversation</h1>
+                  <p className="start-sub">Pick a scene. I’ll play the other person and stay in character.</p>
+                  {trialNote}
+                  {SCENES.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className="scene-card"
+                      disabled={startDisabled}
+                      onClick={() => startScene(s)}
+                    >
+                      <span className="avatar" aria-hidden="true" style={{ background: s.avatarBg }}>
+                        {s.avatar}
+                      </span>
+                      <span className="scene-card-text">
+                        <span className="scene-card-label">{s.label}</span>
+                        <span className="scene-card-title">{s.title}</span>
+                        <span className="scene-card-summary">{s.summary}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* ---------- Thread ---------- */}
+              {items.map((item, i) => {
+                if (item.kind === 'scene') {
+                  return (
+                    <div key={i} className="marker rp" role="separator">
+                      <span className="marker-line" />
+                      <span className="marker-text">
+                        <span className="marker-title">ROLE-PLAY · {item.scene.title.toUpperCase()}</span>
+                        <span className="marker-sub">{item.scene.label.split('·')[1]?.trim()}</span>
+                      </span>
+                      <span className="marker-line" />
+                    </div>
+                  );
+                }
+                if (item.kind === 'divider') {
+                  return (
+                    <div key={i} className={`marker ${item.mode === '[RP]' ? 'rp' : 'qa'}`} role="separator">
+                      <span className="marker-line" />
+                      <span className="marker-text">
+                        <span className="marker-title">SWITCHED TO {modeLabel(item.mode).toUpperCase()}</span>
+                      </span>
+                      <span className="marker-line" />
+                    </div>
+                  );
+                }
+                if (item.kind === 'assistant' && !item.text) return null;
+                return (
+                  <div
+                    key={i}
+                    className={`bubble ${item.kind}${item.kind === 'assistant' && item.mode === '[RP]' ? ' in-scene' : ''}`}
+                  >
+                    {item.kind === 'assistant' && (
+                      <span className={`who ${item.mode === '[RP]' ? 'rp' : 'qa'}`}>
+                        {item.mode === '[RP]' ? <RoleplayIcon size={14} /> : <CoachIcon size={14} />}
+                        {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
+                      </span>
+                    )}
+                    {item.text}
+                  </div>
+                );
+              })}
+
+              {lastIsEmptyReply && <div className="bubble assistant typing">Thinking…</div>}
+              <div ref={endRef} />
+            </div>
+
+            {trialEnded && (
+              <div className="trial-card" role="status">
+                <p className="trial-card-title">{trialEnded.message}</p>
+                <p className="trial-card-body">
+                  Want to keep practicing?
+                  <br />
+                  {trialEnded.contact}
+                </p>
+                <p className="trial-card-hint">Already have an invite link? Open it to continue.</p>
+              </div>
+            )}
+
+            {tier === 'visitor' && trialRemaining !== null && !trialEnded && (
+              <div className="trial-remaining">
+                {trialRemaining === 0
+                  ? 'That was your last free message today.'
+                  : `${trialRemaining} free message${trialRemaining === 1 ? '' : 's'} left today`}
+              </div>
+            )}
+
+            {error && (
+              <div className="error-banner" role="alert">
+                {error}
+              </div>
+            )}
+
+            {/* Debug aid: only shown when the server confirms an admin code */}
+            {tier === 'admin' && <div className="tier-badge">admin</div>}
+
+            <div className="composer">
+              {nearLimit && (
+                <div className={`char-count${overLimit ? ' over' : ''}`} role={overLimit ? 'alert' : undefined}>
+                  {overLimit
+                    ? `Message too long: ${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters. Please shorten it before sending.`
+                    : `${charCount.toLocaleString()} / ${maxChars.toLocaleString()} characters`}
+                </div>
+              )}
+              {hint && <div className="composer-top">{hint}</div>}
+              <div className="composer-row">
+                <textarea
+                  ref={inputRef}
+                  rows={1}
+                  value={input}
+                  onChange={onChange}
+                  onKeyDown={onKeyDown}
+                  placeholder={placeholder}
+                  aria-label="Message"
+                  aria-invalid={overLimit}
+                  disabled={sending}
+                />
+                <button
+                  type="button"
+                  className="send-btn"
+                  onClick={send}
+                  disabled={sending || overLimit || !input.trim()}
+                  aria-label="Send"
+                >
+                  <SendArrow />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-
-      {/* Debug aid: only shown when the server confirms an admin code */}
-      {tier === 'admin' && <div className="tier-badge">admin</div>}
-
-      <div className="composer">
-        <textarea
-          ref={inputRef}
-          rows={1}
-          value={input}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          placeholder="Type your message"
-          aria-label="Message"
-          aria-invalid={overLimit}
-          disabled={sending}
-        />
-        <button
-          type="button"
-          className="send-btn"
-          onClick={send}
-          disabled={sending || overLimit}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

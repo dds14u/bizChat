@@ -101,8 +101,12 @@ export async function fetchConfig(timeoutMs = 8000): Promise<ChatConfig | null> 
 }
 
 // ---------- Send one message and stream the reply ----------
+// The page owns the chat mode; the server puts this tag in front of each message.
+export type ChatMode = '[QA]' | '[RP]';
+
 export interface SendOptions {
   query: string;
+  mode: ChatMode;
   conversationId: string;
   user: string;
   code: string;
@@ -143,8 +147,8 @@ export async function sendChat(opts: SendOptions): Promise<void> {
   const fail = (e: unknown): ChatError => {
     if (e instanceof ChatError) return e;
     if (opts.signal.aborted) return new ChatError('aborted', 'Cancelled.');
-    if (timedOut) return new ChatError('timeout', 'The tutor took too long to respond. Please try again. 响应超时，请重试。');
-    return new ChatError('network', 'Couldn’t reach the tutor. Check your connection and try again. 网络连接失败，请重试。');
+    if (timedOut) return new ChatError('timeout', 'The tutor took too long to respond. Please try again.');
+    return new ChatError('network', 'Couldn’t reach the tutor. Check your connection and try again.');
   };
 
   try {
@@ -154,7 +158,13 @@ export async function sendChat(opts: SendOptions): Promise<void> {
       res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: opts.query, conversationId: opts.conversationId, user: opts.user, code: opts.code }),
+        body: JSON.stringify({
+          query: opts.query,
+          mode: opts.mode,
+          conversationId: opts.conversationId,
+          user: opts.user,
+          code: opts.code,
+        }),
         signal: controller.signal,
       });
     } catch (e) {
@@ -226,7 +236,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
           chunk = await reader.read();
         } catch (e) {
           if (timedOut || opts.signal.aborted) throw fail(e);
-          throw new ChatError('interrupted', 'The reply was interrupted. Please try again. 回复中断，请重试。');
+          throw new ChatError('interrupted', 'The reply was interrupted. Please try again.');
         }
         if (chunk.done) {
           if (timedOut || opts.signal.aborted) throw fail(null);
@@ -241,7 +251,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
     }
 
     if (!completed) {
-      throw new ChatError('interrupted', 'The reply was interrupted before it finished. Please try again. 回复未完成，请重试。');
+      throw new ChatError('interrupted', 'The reply was interrupted before it finished. Please try again.');
     }
   } catch (e) {
     throw fail(e);

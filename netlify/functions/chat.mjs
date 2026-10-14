@@ -49,12 +49,12 @@ const ATTEMPTS_PER_MINUTE = num("ATTEMPT_LIMIT_PER_MINUTE", 20);
 
 // Visitor-facing text. {limit} = TRIAL_DAILY_LIMIT, {hours} = hours until reset.
 const TRIAL_WELCOME_TEXT =
-  env.TRIAL_WELCOME_TEXT || "Free trial: {limit} messages a day. 免费体验：每天 {limit} 条消息。";
+  env.TRIAL_WELCOME_TEXT || "Free trial: {limit} messages a day.";
 const TRIAL_ENDED_TEXT =
   env.TRIAL_ENDED_TEXT ||
-  "You've used today's {limit} free messages. They refresh in about {hours} hours. 今天的 {limit} 条免费消息已用完。";
+  "You've used today's {limit} free messages. They refresh in about {hours} hours.";
 const TRIAL_CONTACT =
-  env.TRIAL_CONTACT_TEXT || "Ask Donald for your personal invite link. 联系 Donald 获取专属邀请链接。";
+  env.TRIAL_CONTACT_TEXT || "Ask Donald for your personal invite link.";
 
 const TZ_OFFSET_HOURS = num("LIMIT_TZ_OFFSET_HOURS", 8);
 
@@ -62,6 +62,10 @@ const TZ_OFFSET_HOURS = num("LIMIT_TZ_OFFSET_HOURS", 8);
 const REDIS_TIMEOUT_MS = 3000;
 const DIFY_CONNECT_TIMEOUT_MS = num("DIFY_CONNECT_TIMEOUT_MS", 30000);
 const DIFY_IDLE_TIMEOUT_MS = num("DIFY_IDLE_TIMEOUT_MS", 60000);
+
+// Chat modes. Dify's Code node reads this tag from the start of each message.
+const MODES = ["[QA]", "[RP]"];
+const startsWithTag = (text) => MODES.includes(text.slice(0, 4));
 
 // ---------- Small helpers ----------
 const json = (obj, status, headers = {}) =>
@@ -240,16 +244,16 @@ async function refund(access) {
 function denial(reason) {
   switch (reason) {
     case "attempts":
-      return json({ error: "Too many requests. Please wait a minute and try again. 请求过于频繁，请稍等一分钟再试。" }, 429);
+      return json({ error: "Too many requests. Please wait a minute and try again." }, 429);
     case "invite-hourly": {
       const minsLeft = 60 - localNow().getUTCMinutes();
-      return json({ error: `You've had a great session! Your hourly limit resets in about ${minsLeft} minutes. 本小时练习次数已用完，请稍后再来～` }, 429);
+      return json({ error: `You've had a great session! Your hourly limit resets in about ${minsLeft} minutes.` }, 429);
     }
     case "invite-daily":
-      return json({ error: "You've reached today's practice limit. See you tomorrow! 今天的练习次数已用完，明天见～" }, 429);
+      return json({ error: "You've reached today's practice limit. See you tomorrow!" }, 429);
     case "trial-global":
       return json(
-        { error: "Free trial spots are full for today. Please try again tomorrow, or use an invite link. 今日免费体验名额已满，请明天再来，或使用邀请链接。", trialEnded: true, contact: TRIAL_CONTACT },
+        { error: "Free trial spots are full for today. Please try again tomorrow, or use an invite link.", trialEnded: true, contact: TRIAL_CONTACT },
         403,
         { "X-Access-Tier": "visitor", "X-Trial-Remaining": "0" }
       );
@@ -268,8 +272,8 @@ const unavailable = (tier) =>
     {
       error:
         tier === "visitor"
-          ? "The free trial is temporarily unavailable. Please try again in a few minutes. 免费体验暂时不可用，请稍后再试。"
-          : "Practice is temporarily unavailable. Please try again in a few minutes. 服务暂时不可用，请稍后再试。",
+          ? "The free trial is temporarily unavailable. Please try again in a few minutes."
+          : "Practice is temporarily unavailable. Please try again in a few minutes.",
       unavailable: true,
     },
     503,
@@ -336,13 +340,21 @@ export default async (req, context) => {
   if (query.length > MAX_MESSAGE_CHARS) {
     return json(
       {
-        error: `Your message is ${query.length.toLocaleString("en-US")} characters; the limit is ${MAX_MESSAGE_CHARS.toLocaleString("en-US")}. Please shorten it and send again. 消息过长，请删减后再发送。`,
+        error: `Your message is ${query.length.toLocaleString("en-US")} characters; the limit is ${MAX_MESSAGE_CHARS.toLocaleString("en-US")}. Please shorten it and send again.`,
         tooLong: true,
         maxChars: MAX_MESSAGE_CHARS,
       },
       413
     );
   }
+
+  // Mode: the page owns it and sends it with every message. Any [QA]/[RP] the
+  // learner typed at the start is replaced, so Dify always gets exactly one tag
+  // and only the page's mode buttons can switch modes.
+  const mode = MODES.includes(body?.mode) ? body.mode : "[QA]";
+  const learnerText = startsWithTag(query) ? query.slice(4).trim() : query;
+  if (!learnerText) return json({ error: "Message is empty." }, 400);
+  const taggedQuery = `${mode} ${learnerText}`;
 
   // 1. Resolve the tier and identity
   const code = String(body?.code ?? "").trim().slice(0, 200);
@@ -359,7 +371,7 @@ export default async (req, context) => {
   let admitted = false;
   if (access.tier === "visitor" && !TRIAL_ENABLED) {
     return json(
-      { error: "This chat is invite-only right now. 目前仅限受邀用户使用。", trialEnded: true, contact: TRIAL_CONTACT },
+      { error: "This chat is invite-only right now.", trialEnded: true, contact: TRIAL_CONTACT },
       403,
       { ...headers, "X-Trial-Remaining": "0" }
     );
@@ -392,7 +404,7 @@ export default async (req, context) => {
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         inputs: {},
-        query,
+        query: taggedQuery,
         response_mode: "streaming",
         conversation_id: conversationId,
         user: access.difyUser,
@@ -404,7 +416,7 @@ export default async (req, context) => {
     if (admitted) await refund(access);
     const timedOut = difyAbort.signal.aborted;
     return json(
-      { error: timedOut ? "The tutor took too long to start. Please try again. 响应超时，请重试。" : "Couldn't reach the tutor. Please try again. 无法连接，请重试。" },
+      { error: timedOut ? "The tutor took too long to start. Please try again." : "Couldn't reach the tutor. Please try again." },
       timedOut ? 504 : 502,
       headers
     );

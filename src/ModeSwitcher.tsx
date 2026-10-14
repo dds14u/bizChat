@@ -1,0 +1,112 @@
+import { useEffect, useRef, useState } from 'react';
+import type { ChatMode } from './chatApi';
+
+// Line icons from the Proposal designs
+export const CoachIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z" />
+  </svg>
+);
+
+export const RoleplayIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+);
+
+const OPTIONS: { mode: ChatMode; label: string; hint: string; Icon: typeof CoachIcon }[] = [
+  { mode: '[QA]', label: 'Coach', hint: 'Ask questions, get guidance', Icon: CoachIcon },
+  { mode: '[RP]', label: 'Role-play', hint: 'Practice a conversation', Icon: RoleplayIcon },
+];
+
+export const modeLabel = (mode: ChatMode) => (mode === '[RP]' ? 'Role-play' : 'Coach');
+
+interface Props {
+  mode: ChatMode;
+  onChange: (mode: ChatMode) => void;
+  disabled?: boolean;
+}
+
+// Top-right mode pill with a dropdown (Proposal C)
+export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const current = OPTIONS.find((o) => o.mode === mode) ?? OPTIONS[0];
+
+  // Close on outside tap or Escape
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  // A reply started streaming: close the menu
+  useEffect(() => {
+    if (disabled) setOpen(false);
+  }, [disabled]);
+
+  const pick = (m: ChatMode) => {
+    setOpen(false);
+    if (m !== mode) onChange(m);
+  };
+
+  return (
+    <div className="mode-switcher" ref={rootRef}>
+      <button
+        type="button"
+        className={`mode-pill ${mode === '[RP]' ? 'rp' : 'qa'}`}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`Mode: ${current.label}. Tap to switch`}
+        disabled={disabled}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <current.Icon />
+        {current.label}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="mode-menu" role="menu" aria-label="Switch mode">
+          {OPTIONS.map(({ mode: m, label, hint, Icon }) => (
+            <button
+              key={m}
+              type="button"
+              role="menuitemradio"
+              aria-checked={m === mode}
+              className={`mode-option ${m === '[RP]' ? 'rp' : 'qa'}${m === mode ? ' current' : ''}`}
+              onClick={() => pick(m)}
+            >
+              <span className="mode-option-icon">
+                <Icon size={18} />
+              </span>
+              <span className="mode-option-text">
+                <span className="mode-option-label">{label}</span>
+                <span className="mode-option-hint">{hint}</span>
+              </span>
+              {m === mode && (
+                <svg className="mode-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
