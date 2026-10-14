@@ -13,6 +13,18 @@ type Item =
   | { kind: 'scene'; scene: Scene }
   | { kind: 'divider'; mode: ChatMode };
 
+// Switching mode without sending anything never stacks dividers: any divider at the
+// end of the chat is replaced, and none is shown if the learner switched back to the
+// mode of the last message (e.g. Coach -> Role-play -> Coach).
+function withModeDivider(list: Item[], next: ChatMode): Item[] {
+  let end = list.length;
+  while (end > 0 && list[end - 1].kind === 'divider') end--;
+  const thread = list.slice(0, end);
+  const last = thread[thread.length - 1];
+  const lastMode: ChatMode | null = !last ? null : last.kind === 'scene' ? '[RP]' : 'mode' in last ? last.mode : null;
+  return lastMode === null || lastMode === next ? thread : [...thread, { kind: 'divider', mode: next }];
+}
+
 // The two-card intro (Proposal A1) shows on a learner's first visit only.
 const INTRO_KEY = 'rb.seenIntro';
 const readSeenIntro = () => {
@@ -238,7 +250,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     if (sending || next === mode) return;
     leaveIntro();
     setMode(next);
-    if (items.length > 0) setItems((list) => [...list, { kind: 'divider', mode: next }]);
+    if (items.length > 0) setItems((list) => withModeDivider(list, next));
   };
 
   const pickIntroMode = (next: ChatMode) => {
