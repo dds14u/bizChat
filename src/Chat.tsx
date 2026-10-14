@@ -358,11 +358,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   <h1>Practice a conversation</h1>
                   <p className="start-sub">Pick a scene. I’ll play the other person and stay in character.</p>
                   {trialNote}
-                  <p className="difficulty-note">
-                    <span className="difficulty easy">Easy</span> supportive ·{' '}
-                    <span className="difficulty medium">Medium</span> some pushback ·{' '}
-                    <span className="difficulty hard">Hard</span> more pushback
-                  </p>
                   {SCENES.map((s) => (
                     <button
                       key={s.id}
