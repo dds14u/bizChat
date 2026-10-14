@@ -30,6 +30,30 @@ const saveSeenIntro = () => {
   }
 };
 
+// Video links in tutor replies. Only Bilibili links become clickable (the only links
+// the system prompt asks for); any other address stays plain text.
+const VIDEO_LINK = /https:\/\/(?:[a-z0-9-]+\.)?(?:bilibili\.com|b23\.tv)\/[^\s<>"'，。！？）】]*/gi;
+
+function withVideoLinks(text: string): ReactNode {
+  const parts: ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(VIDEO_LINK)) {
+    // Leave trailing punctuation (e.g. "…/BV1x/." or "…)") outside the link
+    const url = match[0].replace(/[.,;:!?)\]]+$/, '');
+    const start = match.index ?? 0;
+    if (start > last) parts.push(text.slice(last, start));
+    parts.push(
+      <a key={start} href={url} target="_blank" rel="noopener noreferrer" className="video-link">
+        {url}
+      </a>
+    );
+    last = start + url.length;
+  }
+  if (parts.length === 0) return text;
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
+
 const SendArrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M5 12h14M13 6l6 6-6 6" />
@@ -421,7 +445,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.text}
+                    {item.kind === 'assistant' ? withVideoLinks(item.text) : item.text}
                   </div>
                 );
               })}
