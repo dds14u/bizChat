@@ -759,7 +759,7 @@
   border-color: #d64545;
 }
 
-/* ---------- Admin badge (debug aid) ---------- */
+/* ---------- Tier badge: ADMIN / PRO ---------- */
 .tier-badge {
   align-self: center;
   margin: 0 0 6px;
@@ -771,4 +771,10 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* PRO (invite codes): warm tag, dark text on a light background */
+.tier-badge.invite {
+  background: #fdf0dc;
+  color: #7a3e06;
 }

@@ -519,8 +519,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               </div>
             )}
 
-            {/* Debug aid: only shown when the server confirms an admin code */}
-            {tier === 'admin' && <div className="tier-badge">admin</div>}
+            {/* Shown once the server confirms the code: ADMIN for admin codes, PRO for invite codes */}
+            {(tier === 'admin' || tier === 'invite') && (
+              <div className={`tier-badge ${tier}`}>{tier === 'admin' ? 'admin' : 'pro'}</div>
+            )}
 
             <div className="composer">
               {nearLimit && (
