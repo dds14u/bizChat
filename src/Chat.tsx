@@ -397,7 +397,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                 <div className="start">
                   <span className="avatar hero qa" aria-hidden="true">🧑‍🏫</span>
                   <h1>Ask your coach</h1>
-                  <p className="start-sub">Ask about vocabulary, meetings or presentations. You can write in English or Chinese.</p>
+                  <p className="start-sub">Ask about vocabulary, meetings or presentations.<br />You can write in English or Chinese.</p>
                   {trialNote}
                   <p className="start-label">Try a question</p>
                   {COACH_STARTERS.map((q) => (
