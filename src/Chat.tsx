@@ -350,7 +350,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               {empty && showIntro && (
                 <div className="start intro">
                   <h1>Practice your business English</h1>
-                  <p className="start-sub">How would you like to practice today? You can write in English or Chinese.</p>
+                  <p className="start-sub">How would you like to practice today? <br />You can write in English or Chinese.</p>
                   {trialNote}
 
                   <button type="button" className="mode-card qa" onClick={() => pickIntroMode('[QA]')}>
