@@ -308,7 +308,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   } else if (empty) {
     if (isRP) {
       hint = <span className="composer-hint">Set your own scene</span>;
-      placeholder = 'e.g. Ask my boss for Friday off';
+      placeholder = 'e.g. I\'m a PM at Apple working on...';
     } else {
       placeholder = 'Ask a question…';
     }
