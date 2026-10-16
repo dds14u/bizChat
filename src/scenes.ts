@@ -16,7 +16,7 @@ export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 export interface Scene {
   id: string;
   difficulty: Difficulty;
-  /** Small label above the title, e.g. who the learner talks to */
+  /** Who the learner talks to; not shown on the card, only in the in-chat scene divider (text after '·') */
   label: string;
   title: string;
   summary: string;

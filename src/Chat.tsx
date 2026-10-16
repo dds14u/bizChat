@@ -433,7 +433,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {s.avatar}
                       </span>
                       <span className="scene-card-text">
-                        <span className="scene-card-label">{s.label}</span>
                         <span className="scene-card-title">
                           {s.title}
                           <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
