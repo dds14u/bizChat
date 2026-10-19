@@ -15,7 +15,8 @@ export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
 export interface Scene {
   id: string;
-  difficulty: Difficulty;
+  /** Shown as a tag on the card; leave out for no tag */
+  difficulty?: Difficulty;
   /** Who the learner talks to; not shown on the card, only in the in-chat scene divider (text after '·') */
   label: string;
   title: string;
@@ -34,14 +35,13 @@ export interface Scene {
 export const SCENES: Scene[] = [
   {
     id: 'choose-scene',
-    difficulty: 'Medium',
     label: 'YOUR SCENE · You choose',
     title: 'Choose your scene',
     summary: 'A status meeting, client meeting, or 1:1 with a coworker.',
     avatar: '💬',
     avatarBg: '#E2F3EC',
     kickoff:
-      'I want to set up my own role-play scene. Difficulty: Medium. Ask me which one I want to practice: ' +
+      'I want to set up my own role-play scene. Ask me which one I want to practice: ' +
       'a status meeting, a client meeting, or a 1:1 with a coworker. Also ask for my role and company if I want it tailored.',
   },
   {

@@ -424,7 +424,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="scene-card-text">
                         <span className="scene-card-title">
                           {s.title}
-                          <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
+                          {s.difficulty && (
+                            <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
+                          )}
                         </span>
                         <span className="scene-card-summary">{s.summary}</span>
                       </span>
@@ -442,7 +444,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="marker-text">
                         <span className="marker-title">ROLE-PLAY · {item.scene.title.toUpperCase()}</span>
                         <span className="marker-sub">
-                          {item.scene.label.split('·')[1]?.trim()} · {item.scene.difficulty}
+                          {item.scene.label.split('·')[1]?.trim()}
+                          {item.scene.difficulty && ` · ${item.scene.difficulty}`}
                         </span>
                       </span>
                       <span className="marker-line" />
