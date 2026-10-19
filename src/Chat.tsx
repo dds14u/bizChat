@@ -96,7 +96,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const [conversationId, setConversationId] = useState('');
 
   // The page owns the mode. Only the switcher, the intro cards and scene cards change it.
-  const [mode, setMode] = useState<ChatMode>('[QA]');
+  const [mode, setMode] = useState<ChatMode>('[RP]'); // the app opens in Role-play
   const [showIntro, setShowIntro] = useState(() => !readSeenIntro());
 
   const userId = useRef(getBrowserId());
@@ -277,6 +277,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     newChat();
     setInput('');
     if (inputRef.current) inputRef.current.style.height = '';
+    setMode('[RP]'); // the home screen defaults to Role-play
     setShowIntro(true);
   };
 
@@ -361,7 +362,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         <span className="mode-card-kicker">ROLE-PLAY MODE</span>
                       </span>
                     </span>
-                    <span className="mode-card-body">Talk with a colleague, manager, or client. Get feedback.</span>
+                    <span className="mode-card-body">Talk with a colleague, manager, or client and get feedback.</span>
                   </button>
 
                   <button type="button" className="mode-card qa" onClick={() => pickIntroMode('[QA]')}>
@@ -373,7 +374,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       </span>
                     </span>
                     <span className="mode-card-body">Guidance from Donald’s lessons.</span>
-                    <span className="mode-card-example">“{COACH_EXAMPLE}”</span>
+                    <span className="mode-card-example">{COACH_EXAMPLE}</span>
                   </button>
 
                   <p className="start-foot">You can switch modes anytime from the top right.</p>

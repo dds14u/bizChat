@@ -7,8 +7,8 @@ export const COACH_STARTERS = [
   'How do I handle small talk at a conference or event?',
 ];
 
-// Example shown on the first-visit Coach card.
-export const COACH_EXAMPLE = 'How do I decline an unreasonable or late request?';
+// Second line on the home screen's Coach card.
+export const COACH_EXAMPLE = 'Ask work questions.';
 
 /** How much the character pushes back. The levels are defined in the Dify system prompt. */
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
