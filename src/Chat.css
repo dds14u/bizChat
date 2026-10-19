@@ -607,12 +607,15 @@
 }
 
 /* Learner bubbles keep the color of the mode they were sent in */
+/* The learner's own bubbles get a tinted outline so the tutor's replies carry the strong black */
 .bubble.user.qa {
   background: var(--qa-soft);
+  border-color: var(--qa-edge);
 }
 
 .bubble.user.rp {
   background: var(--rp-bubble);
+  border-color: var(--rp-edge);
 }
 
 .bubble.assistant {
@@ -765,7 +768,7 @@
 
 /* Rule above the box once a conversation is on screen */
 .chat.has-thread .composer {
-  border-top-color: var(--line);
+  border-top-color: var(--line-rule);
 }
 
 /* Role-play scene picker: "Set your own scene" sits in a dashed highlighter box */

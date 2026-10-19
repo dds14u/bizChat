@@ -8,6 +8,7 @@
   --ink-faint: #77726a; /* placeholders, footnotes */
   --line: #1d1b18; /* card and box outlines */
   --line-soft: #dcd7cd; /* quiet borders */
+  --line-rule: rgba(29, 27, 24, 0.16); /* rules framing the chat (under the header, above the box) */
   --paper: #faf7f1; /* off-white page */
   --card: #ffffff;
 
@@ -20,10 +21,12 @@
   --rp-soft: #fdeedc; /* apricot wash */
   --rp-bubble: #fdd5a8; /* learner bubble in Role-play */
   --rp-shadow: #fbc283; /* offset shadow on scene cards */
+  --rp-edge: #e7ae76; /* learner bubble outline in Role-play */
 
   --qa: #7fa6d3; /* powder blue dot */
   --qa-ink: #2c5d91; /* powder blue text */
   --qa-soft: #e3ecf8; /* learner bubble in Coach */
+  --qa-edge: #a9bfdc; /* learner bubble outline in Coach */
 
   --header-h: 64px;
 

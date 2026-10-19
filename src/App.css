@@ -32,7 +32,7 @@
 
 /* Rule under the header once a conversation is on screen */
 .site-header.with-line {
-  border-bottom-color: var(--line);
+  border-bottom-color: var(--line-rule);
 }
 
 /* Logo and title act as a "home" button */
