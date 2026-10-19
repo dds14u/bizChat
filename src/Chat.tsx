@@ -197,7 +197,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     leaveIntro();
     if (!scene) {
       setInput('');
-      if (inputRef.current) inputRef.current.style.height = '';
+      if (inputRef.current) {
+        inputRef.current.style.height = '';
+        inputRef.current.style.overflowY = '';
+      }
     }
     setError('');
     const shown: Item = scene ? { kind: 'scene', scene } : { kind: 'user', text: query, mode: sendMode };
@@ -304,7 +307,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const goHome = () => {
     newChat();
     setInput('');
-    if (inputRef.current) inputRef.current.style.height = '';
+    if (inputRef.current) {
+      inputRef.current.style.height = '';
+      inputRef.current.style.overflowY = '';
+    }
     setMode('[RP]'); // the home screen defaults to Role-play
     setShowIntro(true);
   };
@@ -317,10 +323,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     }
   };
 
+  // Grow the box with the text, up to 140px. scrollHeight leaves out the borders, so add
+  // them back; otherwise the box is a few pixels short and shows a scrollbar on one line.
+  // The scrollbar only appears once the text is taller than the 140px cap.
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-    e.target.style.height = 'auto';
-    e.target.style.height = Math.min(e.target.scrollHeight, 140) + 'px';
+    const box = e.target;
+    box.style.height = 'auto';
+    const borders = box.offsetHeight - box.clientHeight;
+    const needed = box.scrollHeight + borders;
+    box.style.height = Math.min(needed, 140) + 'px';
+    box.style.overflowY = needed > 140 ? 'auto' : 'hidden';
   };
 
   const isRP = mode === '[RP]';

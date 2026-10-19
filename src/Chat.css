@@ -853,6 +853,7 @@
   font: inherit;
   font-size: 1.02rem;
   resize: none;
+  overflow-y: hidden; /* the resize code turns scrolling on only past the max height */
 }
 
 /* Long placeholders stay on one line in the one-line box */
