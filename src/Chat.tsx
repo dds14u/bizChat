@@ -107,6 +107,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const [trialRemaining, setTrialRemaining] = useState<number | null>(null);
   const [trialEnded, setTrialEnded] = useState<{ message: string; contact: string } | null>(null);
   const [trialWelcome, setTrialWelcome] = useState('');
+  // Text for the "used up" card, so it can show without sending anything
+  const [usedUp, setUsedUp] = useState({ message: '', contact: '' });
   const [maxChars, setMaxChars] = useState(DEFAULT_MAX_MESSAGE_CHARS);
 
   const endRef = useRef<HTMLDivElement>(null);
@@ -130,11 +132,25 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (cancelled || !cfg) return;
       setMaxChars(cfg.maxMessageChars);
       setTrialWelcome(cfg.welcomeText);
+      setUsedUp({ message: cfg.trialEndedText, contact: cfg.trialContact });
     });
     return () => {
       cancelled = true;
     };
   }, []);
+
+  // Last free message used: refresh the card text so "refresh in about N hours" is current.
+  // This is a settings request only; it never reaches the tutor or uses a message.
+  useEffect(() => {
+    if (tier !== 'visitor' || trialRemaining !== 0) return;
+    let cancelled = false;
+    fetchConfig().then((cfg) => {
+      if (!cancelled && cfg?.trialEndedText) setUsedUp({ message: cfg.trialEndedText, contact: cfg.trialContact });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [tier, trialRemaining]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ block: 'end' });
@@ -163,6 +179,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       return copy;
     });
 
+  // Visitor's free messages are used up: sending is off until they refresh or an invite link is opened
+  const trialUsedUp = tier === 'visitor' && (trialRemaining === 0 || Boolean(trialEnded));
+
   const charCount = input.trim().length;
   const overLimit = charCount > maxChars;
   const nearLimit = charCount > maxChars * 0.85;
@@ -173,7 +192,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
    */
   const sendMessage = async (text: string, sendMode: ChatMode, scene?: Scene) => {
     const query = text.trim();
-    if (!query || sending || query.length > maxChars) return;
+    if (!query || sending || trialUsedUp || query.length > maxChars) return;
 
     leaveIntro();
     if (!scene) {
@@ -308,7 +327,11 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const empty = items.length === 0;
   const last = items[items.length - 1];
   const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
-  const startDisabled = sending || Boolean(trialEnded);
+  const startDisabled = sending || trialUsedUp;
+  // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
+  const showUsedUpCard = Boolean(trialEnded) || (trialUsedUp && input.trim().length > 0);
+  const usedUpMessage = trialEnded?.message || usedUp.message || 'You’ve used today’s free messages.';
+  const usedUpContact = trialEnded?.contact || usedUp.contact || 'Ask Donald for your personal invite link.';
 
   // Text above the box and placeholder depend on the screen
   let hint: ReactNode = null;
@@ -499,13 +522,13 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               <div ref={endRef} />
             </div>
 
-            {trialEnded && (
+            {showUsedUpCard && (
               <div className="trial-card" role="status">
-                <p className="trial-card-title">{trialEnded.message}</p>
+                <p className="trial-card-title">{usedUpMessage}</p>
                 <p className="trial-card-body">
                   Want to keep practicing?
                   <br />
-                  {trialEnded.contact}
+                  {usedUpContact}
                 </p>
                 <p className="trial-card-hint">Already have an invite link? Open it to continue.</p>
               </div>
@@ -519,7 +542,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
             <div className="composer">
               {/* Status pills float just above the box instead of taking a row of their own */}
-              {tier === 'visitor' && trialRemaining !== null && !trialEnded && (
+              {tier === 'visitor' && trialRemaining !== null && !showUsedUpCard && (
                 <div className="trial-remaining">
                   {trialRemaining === 0
                     ? 'That was your last free message today.'
@@ -554,7 +577,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   type="button"
                   className="send-btn"
                   onClick={send}
-                  disabled={sending || overLimit || !input.trim()}
+                  disabled={sending || trialUsedUp || overLimit || !input.trim()}
                   aria-label="Send"
                 >
                   <SendArrow />

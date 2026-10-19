@@ -27,6 +27,9 @@ export class ChatError extends Error {
 export interface ChatConfig {
   trialEnabled: boolean;
   welcomeText: string;
+  /** "You've used today's free messages…" with the hours filled in when fetched */
+  trialEndedText: string;
+  trialContact: string;
   maxMessageChars: number;
 }
 
@@ -93,6 +96,8 @@ export async function fetchConfig(timeoutMs = 8000): Promise<ChatConfig | null> 
     return {
       trialEnabled: Boolean(cfg?.trialEnabled),
       welcomeText: String(cfg?.welcomeText || ''),
+      trialEndedText: String(cfg?.trialEndedText || ''),
+      trialContact: String(cfg?.trialContact || ''),
       maxMessageChars: Number(cfg?.maxMessageChars) > 0 ? Number(cfg.maxMessageChars) : DEFAULT_MAX_MESSAGE_CHARS,
     };
   } catch {

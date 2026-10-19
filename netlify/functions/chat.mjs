@@ -316,6 +316,9 @@ export default async (req, context) => {
         trialEnabled: trialOpen,
         trialDailyLimit: TRIAL_DAILY,
         welcomeText: trialOpen ? fill(TRIAL_WELCOME_TEXT) : "",
+        // Shown by the page once the trial is used up, without sending anything
+        trialEndedText: trialOpen ? fill(TRIAL_ENDED_TEXT) : "",
+        trialContact: TRIAL_CONTACT,
         maxMessageChars: MAX_MESSAGE_CHARS,
       },
       200
