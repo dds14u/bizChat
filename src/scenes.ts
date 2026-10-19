@@ -18,7 +18,10 @@ export interface Scene {
   difficulty: Difficulty;
   /** Who the learner talks to; not shown on the card, only in the in-chat scene divider (text after '·') */
   label: string;
+  /** Scene name, used in the kickoff and the in-chat scene divider */
   title: string;
+  /** Optional different title on the scene card */
+  cardTitle?: string;
   summary: string;
   avatar: string;
   avatarBg: string;
@@ -37,7 +40,8 @@ export const SCENES: Scene[] = [
     difficulty: 'Easy',
     label: 'KICKOFF MEETING · Sarah and the team',
     title: 'Start a meeting',
-    summary: 'Open with Introductions, Context and Expectations.',
+    cardTitle: 'Choose your scene',
+    summary: 'A status meeting, client meeting, or 1:1 with a coworker.',
     avatar: '👩‍💼',
     avatarBg: '#FCE7E3',
     kickoff: 'Start the role-play scene "Start a meeting". Difficulty: Easy.',
@@ -52,17 +56,4 @@ export const SCENES: Scene[] = [
     avatarBg: '#EFE7F7',
     kickoff: 'Start the role-play scene "Disagree with a coworker". Difficulty: Medium.',
   },
-  {
-    id: 'late-request',
-    difficulty: 'Medium',
-    label: 'MANAGER · David',
-    title: 'Reject a late request',
-    summary: 'David wants extra work by Monday. Push back politely.',
-    avatar: '🧑‍💼',
-    avatarBg: '#F3EBD9',
-    kickoff: 'Start the role-play scene "Reject a late request". Difficulty: Medium.',
-  },
 ];
-
-// Names shown on the first-visit Role-play card.
-export const SCENE_PEOPLE = 'Sarah, Lin, David and more';

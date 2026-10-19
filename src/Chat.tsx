@@ -3,7 +3,7 @@ import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
-import { COACH_EXAMPLE, COACH_STARTERS, SCENES, SCENE_PEOPLE, type Scene } from './scenes';
+import { COACH_EXAMPLE, COACH_STARTERS, SCENES, type Scene } from './scenes';
 
 // A chat thread holds messages plus two kinds of markers:
 // a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
@@ -353,6 +353,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   <p className="start-sub">How would you like to practice today? <br />You can write in English or Chinese.</p>
                   {trialNote}
 
+                  <button type="button" className="mode-card rp" onClick={() => pickIntroMode('[RP]')}>
+                    <span className="mode-card-head">
+                      <span className="avatar big" aria-hidden="true">💬</span>
+                      <span className="mode-card-titles">
+                        <span className="mode-card-title">Practice a conversation</span>
+                        <span className="mode-card-kicker">ROLE-PLAY MODE</span>
+                      </span>
+                    </span>
+                    <span className="mode-card-body">Talk with a colleague, manager, or client. Get feedback.</span>
+                  </button>
+
                   <button type="button" className="mode-card qa" onClick={() => pickIntroMode('[QA]')}>
                     <span className="mode-card-head">
                       <span className="avatar big" aria-hidden="true">🧑‍🏫</span>
@@ -363,29 +374,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                     </span>
                     <span className="mode-card-body">Guidance from Donald’s lessons.</span>
                     <span className="mode-card-example">“{COACH_EXAMPLE}”</span>
-                  </button>
-
-                  <button type="button" className="mode-card rp" onClick={() => pickIntroMode('[RP]')}>
-                    <span className="mode-card-head">
-                      <span className="avatar big" aria-hidden="true">💬</span>
-                      <span className="mode-card-titles">
-                        <span className="mode-card-title">Practice a conversation</span>
-                        <span className="mode-card-kicker">ROLE-PLAY MODE</span>
-                      </span>
-                    </span>
-                    <span className="mode-card-body">
-                      Talk with a colleague, manager or client. Get feedback when the scene ends.
-                    </span>
-                    <span className="mode-card-people">
-                      <span className="avatar-stack" aria-hidden="true">
-                        {SCENES.map((s) => (
-                          <span key={s.id} className="avatar small" style={{ background: s.avatarBg }}>
-                            {s.avatar}
-                          </span>
-                        ))}
-                      </span>
-                      {SCENE_PEOPLE}
-                    </span>
                   </button>
 
                   <p className="start-foot">You can switch modes anytime from the top right.</p>
@@ -434,7 +422,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       </span>
                       <span className="scene-card-text">
                         <span className="scene-card-title">
-                          {s.title}
+                          {s.cardTitle ?? s.title}
                           <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
                         </span>
                         <span className="scene-card-summary">{s.summary}</span>
