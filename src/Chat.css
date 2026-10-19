@@ -602,6 +602,7 @@
 
 .bubble.user {
   align-self: flex-end;
+  border-bottom-right-radius: 4px; /* chat tail on the outer bottom corner */
   background: var(--mode-soft);
   color: var(--ink);
 }
@@ -620,6 +621,7 @@
 
 .bubble.assistant {
   align-self: flex-start;
+  border-bottom-left-radius: 4px; /* chat tail on the outer bottom corner */
   margin-top: 1.5rem; /* room for the speaker label above the bubble */
   background: var(--card);
   color: var(--ink);
