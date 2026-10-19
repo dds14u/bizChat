@@ -727,7 +727,7 @@
 .marker.scene {
   margin: 0 0 4px;
   padding: 12px 16px;
-  border: 2px solid var(--line);
+  border: 2px solid var(--line-soft); /* reference info: quieter than the tutor's replies */
   border-radius: 14px;
   background: var(--card);
 }
@@ -990,7 +990,7 @@
 .trial-card {
   margin: 0 16px 12px;
   padding: 14px 16px;
-  border: 2px solid var(--line);
+  border: 2px solid var(--hl-edge); /* a notice, not an alert: gold to match its shadow */
   border-radius: 14px;
   background: var(--hl-soft);
   box-shadow: 4px 4px 0 var(--hl-edge);
