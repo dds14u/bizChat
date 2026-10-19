@@ -423,7 +423,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       </span>
                       <span className="scene-card-text">
                         <span className="scene-card-title">
-                          {s.cardTitle ?? s.title}
+                          {s.title}
                           <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
                         </span>
                         <span className="scene-card-summary">{s.summary}</span>

@@ -18,10 +18,7 @@ export interface Scene {
   difficulty: Difficulty;
   /** Who the learner talks to; not shown on the card, only in the in-chat scene divider (text after '·') */
   label: string;
-  /** Scene name, used in the kickoff and the in-chat scene divider */
   title: string;
-  /** Optional different title on the scene card */
-  cardTitle?: string;
   summary: string;
   avatar: string;
   avatarBg: string;
@@ -33,15 +30,26 @@ export interface Scene {
   kickoff: string;
 }
 
-// The 3 MVP scenes from the Business Chat PRD.
+// Scene cards on the Role-play screen: a free-choice scene plus the MVP scenes from the Business Chat PRD.
 export const SCENES: Scene[] = [
+  {
+    id: 'choose-scene',
+    difficulty: 'Medium',
+    label: 'YOUR SCENE · You choose',
+    title: 'Choose your scene',
+    summary: 'A status meeting, client meeting, or 1:1 with a coworker.',
+    avatar: '💬',
+    avatarBg: '#E2F3EC',
+    kickoff:
+      'I want to set up my own role-play scene. Difficulty: Medium. Ask me which one I want to practice: ' +
+      'a status meeting, a client meeting, or a 1:1 with a coworker. Also ask for my role and company if I want it tailored.',
+  },
   {
     id: 'start-meeting',
     difficulty: 'Easy',
     label: 'KICKOFF MEETING · Sarah and the team',
     title: 'Start a meeting',
-    cardTitle: 'Choose your scene',
-    summary: 'A status meeting, client meeting, or 1:1 with a coworker.',
+    summary: 'Open with Introductions, Context and Expectations.',
     avatar: '👩‍💼',
     avatarBg: '#FCE7E3',
     kickoff: 'Start the role-play scene "Start a meeting". Difficulty: Easy.',
