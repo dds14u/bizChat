@@ -55,11 +55,21 @@
 }
 
 .brand-name {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
   min-width: 0;
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.005em;
+}
+
+.brand-emoji {
+  flex: none;
+}
+
+.brand-text {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -112,14 +122,14 @@
   }
 }
 
-/* Phones: "by Donald" drops under the title so the mode menu never cuts it off */
+/* Phones: "by Donald" drops under the title, left-aligned with "Real" */
 @media (max-width: 479px) {
-  .brand-name {
+  .brand-text {
     line-height: 1.15;
   }
   .brand-by {
     display: block;
-    margin: 1px 0 0 1.55em; /* lines up under "Real" */
+    margin: 1px 0 0;
     font-size: 0.68em;
   }
 }

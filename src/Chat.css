@@ -470,6 +470,122 @@
   outline-offset: 3px;
 }
 
+/* Start screens fit without a scroll bar; on very short screens they can still scroll, just without the bar */
+.chat.screen-intro .messages,
+.chat.screen-home .messages {
+  scrollbar-width: none;
+}
+
+.chat.screen-intro .messages::-webkit-scrollbar,
+.chat.screen-home .messages::-webkit-scrollbar {
+  display: none;
+}
+
+/* Short phone screens (most iPhones with Safari's bars showing): tighten the start screens so they fit */
+@media (max-width: 719px) and (max-height: 760px) {
+  .chat.screen-intro .messages,
+  .chat.screen-home .messages {
+    padding-top: 12px;
+    padding-bottom: 8px;
+    gap: 8px;
+  }
+  .start {
+    gap: 9px;
+  }
+  .start h1 {
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+  .start-sub {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+  .start-label {
+    margin-top: 0;
+  }
+  .trial-note {
+    padding: 5px 12px;
+  }
+  .starter {
+    min-height: 48px;
+    padding: 10px 16px;
+  }
+
+  /* First-visit cards */
+  .mode-card {
+    gap: 6px;
+    padding: 12px 16px;
+  }
+  .mode-card.rp {
+    padding: 14px 16px 15px;
+  }
+  .mode-card.rp .avatar.big {
+    width: 46px;
+    height: 46px;
+  }
+  .mode-card.qa .avatar.big {
+    width: 40px;
+    height: 40px;
+  }
+  .mode-card-title {
+    font-size: 1.18rem;
+  }
+  .mode-card-body,
+  .mode-card-example {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+  /* The Coach card's two short lines sit side by side */
+  .mode-card.qa .mode-card-body,
+  .mode-card.qa .mode-card-example {
+    display: inline;
+  }
+  .mode-card.qa {
+    display: block;
+  }
+  .mode-card.qa .mode-card-head {
+    margin-bottom: 6px;
+  }
+  .mode-card.qa .mode-card-example {
+    margin-left: 4px;
+  }
+  .start-foot {
+    padding-top: 6px;
+    font-size: 0.9rem;
+  }
+
+  /* Scene cards */
+  .scene-card {
+    margin-bottom: 2px;
+    padding: 11px 14px;
+  }
+  .scene-card-title {
+    font-size: 1.06rem;
+  }
+  .difficulty {
+    gap: 5px;
+    font-size: 0.82rem;
+  }
+  .scene-card-summary {
+    font-size: 0.93rem;
+    line-height: 1.4;
+  }
+
+  /* "Set your own scene" box */
+  .chat.mode-rp.screen-home .composer {
+    gap: 6px;
+    margin-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 12px 11px;
+  }
+  .chat.mode-rp.screen-home .composer-top {
+    min-height: 0;
+  }
+  .composer {
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ---------- Thread ---------- */
 .bubble {
   position: relative;
@@ -818,10 +934,22 @@
 }
 
 /* ---------- Free trial ---------- */
+/* Status pills (free messages left, ADMIN / PRO) float just above the box, over the chat */
+.trial-remaining,
+.tier-badge {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  z-index: 2;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  pointer-events: none; /* never blocks taps on the chat underneath */
+  box-shadow: 0 2px 8px rgba(40, 32, 20, 0.12);
+}
+
 .trial-remaining {
-  align-self: center;
-  margin: 0 16px 8px;
-  padding: 4px 12px;
+  padding: 4px 14px;
   border-radius: 999px;
   background: var(--hl-soft);
   border: 1.5px solid var(--hl-edge);
@@ -885,8 +1013,6 @@
 
 /* ---------- Tier badge: ADMIN / PRO ---------- */
 .tier-badge {
-  align-self: center;
-  margin: 0 0 6px;
   padding: 2px 10px;
   border: 1.5px solid var(--line-soft);
   border-radius: 999px;

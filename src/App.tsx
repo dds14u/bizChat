@@ -8,7 +8,11 @@ function App() {
       <Chat
         brand={
           <span className="brand-name">
-            🙋🏻‍♀️ Real <span className="hl">Business</span><span className="brand-by">by Donald</span>
+            <span className="brand-emoji">🙋🏻‍♀️</span>
+            <span className="brand-text">
+              Real <span className="hl">Business</span>
+              <span className="brand-by">by Donald</span>
+            </span>
           </span>
         }
       />

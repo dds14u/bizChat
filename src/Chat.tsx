@@ -389,7 +389,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   <span className="avatar hero qa" aria-hidden="true">🧑‍🏫</span>
                   <h1>Ask your coach</h1>
                   <p className="start-sub">Ask about vocabulary, meetings or presentations.<br />You can write in English or Chinese.</p>
-                  {trialNote}
                   <p className="start-label">Try a question</p>
                   {COACH_STARTERS.map((q) => (
                     <button
@@ -411,7 +410,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                 <div className="start">
                   <h1>Practice a conversation</h1>
                   <p className="start-sub">Pick a scene. I’ll play the other person and stay in character.</p>
-                  {trialNote}
                   {SCENES.map((s) => (
                     <button
                       key={s.id}
@@ -501,26 +499,25 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               </div>
             )}
 
-            {tier === 'visitor' && trialRemaining !== null && !trialEnded && (
-              <div className="trial-remaining">
-                {trialRemaining === 0
-                  ? 'That was your last free message today.'
-                  : `${trialRemaining} free message${trialRemaining === 1 ? '' : 's'} left today`}
-              </div>
-            )}
-
             {error && (
               <div className="error-banner" role="alert">
                 {error}
               </div>
             )}
 
-            {/* Shown once the server confirms the code: ADMIN for admin codes, PRO for invite codes */}
-            {(tier === 'admin' || tier === 'invite') && (
-              <div className={`tier-badge ${tier}`}>{tier === 'admin' ? 'admin' : 'pro'}</div>
-            )}
-
             <div className="composer">
+              {/* Status pills float just above the box instead of taking a row of their own */}
+              {tier === 'visitor' && trialRemaining !== null && !trialEnded && (
+                <div className="trial-remaining">
+                  {trialRemaining === 0
+                    ? 'That was your last free message today.'
+                    : `${trialRemaining} free message${trialRemaining === 1 ? '' : 's'} left today`}
+                </div>
+              )}
+              {/* Shown once the server confirms the code: ADMIN for admin codes, PRO for invite codes */}
+              {(tier === 'admin' || tier === 'invite') && (
+                <div className={`tier-badge ${tier}`}>{tier === 'admin' ? 'admin' : 'pro'}</div>
+              )}
               {nearLimit && (
                 <div className={`char-count${overLimit ? ' over' : ''}`} role={overLimit ? 'alert' : undefined}>
                   {overLimit
