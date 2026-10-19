@@ -8,7 +8,7 @@ function App() {
       <Chat
         brand={
           <span className="brand-name">
-            🙋🏻‍♀️ Real Business<span className="brand-by">by Donald</span>
+            🙋🏻‍♀️ Real <span className="hl">Business</span><span className="brand-by">by Donald</span>
           </span>
         }
       />

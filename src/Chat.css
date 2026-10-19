@@ -1,18 +1,18 @@
-/* ---------- Mode colors (Harbor palette from the Proposal designs) ---------- */
+/* ---------- Mode colors (Study Desk: Apricot Role-play, Powder Blue Coach) ---------- */
 .chat.mode-qa {
-  --mode-accent: #1d63ed; /* send button */
-  --mode-accent-hover: #1650c4;
-  --mode-ink: #1a4fb0; /* labels on light backgrounds */
-  --mode-soft: #eaf1fd; /* tinted backgrounds */
-  --mode-border: #9db8ee; /* text box outline */
+  --mode-dot: var(--qa);
+  --mode-ink: var(--qa-ink); /* labels and links */
+  --mode-soft: var(--qa-soft); /* learner bubble */
+  --send-bg: var(--card); /* Coach send button: white with a blue arrow */
+  --send-ink: var(--qa-ink);
 }
 
 .chat.mode-rp {
-  --mode-accent: #0d7a5f;
-  --mode-accent-hover: #0a6550;
-  --mode-ink: #0b6650;
-  --mode-soft: #e2f3ec;
-  --mode-border: #6fbfa3;
+  --mode-dot: var(--rp);
+  --mode-ink: var(--rp-ink);
+  --mode-soft: var(--rp-bubble);
+  --send-bg: var(--rp-bubble); /* lighter apricot send button */
+  --send-ink: var(--ink);
 }
 
 .chat {
@@ -26,13 +26,13 @@
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 14px 12px;
+  padding: 22px 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-/* ---------- Top-right mode switcher (Proposal C) ---------- */
+/* ---------- Top-right mode switcher ---------- */
 .mode-switcher {
   position: relative;
   flex: none;
@@ -41,51 +41,65 @@
 .mode-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 40px;
-  padding: 0 12px;
-  border: 0;
-  border-radius: 999px;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 12px 0 14px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--line);
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
 }
 
-.mode-pill.qa {
-  background: #eaf1fd;
-  color: #1a4fb0;
+.mode-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
 }
 
-.mode-pill.rp {
-  background: #e2f3ec;
-  color: #0b6650;
+.mode-pill.rp .mode-dot {
+  background: var(--rp);
+}
+
+.mode-pill.qa .mode-dot {
+  background: var(--qa);
+}
+
+.mode-pill:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--line);
 }
 
 .mode-pill:disabled {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: default;
 }
 
 .mode-pill:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
+  outline: 2px solid var(--qa-ink);
+  outline-offset: 3px;
 }
 
 .mode-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
   z-index: 20;
-  width: min(290px, calc(100vw - 24px));
+  width: min(290px, calc(100vw - 28px));
   padding: 6px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border: 1px solid #d3dbe4;
-  border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(14, 28, 44, 0.22);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 4px 4px 0 var(--line);
 }
 
 .mode-option {
@@ -93,12 +107,12 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 56px;
+  min-height: 58px;
   padding: 8px 10px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 10px;
   background: none;
-  color: var(--ink, #142233);
+  color: var(--ink);
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -106,36 +120,36 @@
 
 .mode-option:hover,
 .mode-option:focus-visible {
-  background: #f2f5f9;
+  background: #f4f1ea;
   outline: none;
 }
 
 .mode-option.current.qa {
-  background: #eaf1fd;
+  background: var(--qa-soft);
 }
 
 .mode-option.current.rp {
-  background: #e2f3ec;
+  background: var(--rp-soft);
 }
 
 .mode-option-icon {
   flex: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .mode-option.qa .mode-option-icon {
-  background: #eaf1fd;
-  color: #1d5fd6;
+  background: var(--qa-soft);
+  color: var(--qa-ink);
 }
 
 .mode-option.rp .mode-option-icon {
-  background: #e2f3ec;
-  color: #0d7a5f;
+  background: var(--rp);
+  color: var(--ink);
 }
 
 .mode-option-text {
@@ -146,65 +160,74 @@
 }
 
 .mode-option-label {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .mode-option-hint {
-  font-size: 0.88rem;
-  color: #4a5868;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
 }
 
 .mode-check {
   flex: none;
-  color: #142233;
+  color: var(--ink);
 }
 
-/* ---------- Start screens (Proposals A1, A2) ---------- */
+/* ---------- Start screens ---------- */
 .start {
-  margin: auto 0;
   width: 100%;
-  max-width: 34rem;
   align-self: center;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+}
+
+/* First-visit screen fills the height so its footnote sits at the bottom */
+.start.intro {
+  flex: 1 0 auto;
 }
 
 .start h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.25;
-  font-weight: 700;
-  text-align: center;
-  color: var(--ink, #142233);
+  margin: 4px 0 0;
+  font-size: 1.85rem;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
 .start-sub {
   margin: 0 0 6px;
-  text-align: center;
-  color: #3e4c5c;
+  color: var(--ink-soft);
 }
 
+/* Hand-lettered section label ("Try a question") */
 .start-label {
-  margin: 6px 0 0;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #4a5868;
+  margin: 8px 0 0;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--mode-ink);
 }
 
 .start-foot {
-  margin: 4px 0 0;
+  margin: auto 0 0;
+  padding-top: 18px;
   text-align: center;
-  font-size: 0.92rem;
-  color: #4a5868;
+  font-family: var(--font-hand);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink-soft);
 }
 
 .trial-note {
   margin: 0;
-  text-align: center;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #1650c4;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--hl-soft);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .avatar {
@@ -220,70 +243,68 @@
 }
 
 .avatar.big {
-  width: 56px;
-  height: 56px;
-  font-size: 32px;
+  width: 54px;
+  height: 54px;
+  font-size: 30px;
 }
 
-.avatar.hero {
-  width: 68px;
-  height: 68px;
-  font-size: 38px;
-  align-self: center;
+/* The design keeps the start screens text-first: no emoji avatars on scene cards or the Coach hero */
+.avatar.hero,
+.scene-card > .avatar {
+  display: none;
 }
 
-.avatar.hero.qa {
-  background: #eaf1fd;
-}
-
-.avatar.small {
-  width: 32px;
-  height: 32px;
-  font-size: 18px;
-  border: 2px solid #ffffff;
-}
-
-/* A1 mode cards */
+/* First-visit mode cards */
 .mode-card {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   padding: 18px;
-  border: 1px solid #d3dbe4;
-  border-radius: 18px;
-  background: #ffffff;
-  color: var(--ink, #142233);
+  border: 2px solid var(--line-soft);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--ink);
   font: inherit;
   text-align: left;
-  box-shadow: 0 1px 2px rgba(18, 48, 77, 0.06);
   cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
 }
 
-.mode-card.qa {
-  border-color: #b9cdf3;
-}
-
+/* Role-play is the hero card: apricot wash, dark outline, offset shadow */
 .mode-card.rp {
-  border-color: #a9d8c6;
-}
-
-.mode-card.qa .avatar {
-  background: #eaf1fd;
+  padding: 20px 20px 22px;
+  border-color: var(--line);
+  background: var(--rp-soft);
+  box-shadow: 5px 5px 0 var(--line);
 }
 
 .mode-card.rp .avatar.big {
-  background: #e2f3ec;
+  background: var(--rp);
+  border: 2px solid var(--line);
+  color: var(--ink);
 }
 
-.mode-card:hover {
-  box-shadow: 0 3px 10px rgba(18, 48, 77, 0.1);
+.mode-card.qa .avatar.big {
+  width: 48px;
+  height: 48px;
+  background: var(--qa-soft);
+  color: var(--qa-ink);
+}
+
+.mode-card.rp:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--line);
+}
+
+.mode-card.qa:hover {
+  border-color: #c7c0b3;
 }
 
 .mode-card-head {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .mode-card-titles {
@@ -292,247 +313,268 @@
 }
 
 .mode-card-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.mode-card.qa .mode-card-title {
   font-size: 1.12rem;
-  font-weight: 700;
 }
 
 .mode-card-kicker {
   font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-weight: 800;
+  letter-spacing: 0.05em;
 }
 
 .mode-card.qa .mode-card-kicker {
-  color: #1a4fb0;
+  color: var(--qa-ink);
 }
 
 .mode-card.rp .mode-card-kicker {
-  color: #0b6650;
+  color: var(--rp-ink);
 }
 
 .mode-card-body {
-  color: #3e4c5c;
+  color: var(--ink-soft);
+}
+
+.mode-card.rp .mode-card-body {
+  color: var(--ink);
 }
 
 .mode-card-example {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-style: italic;
-  color: #4a5868;
+  color: var(--ink-soft);
 }
 
-.mode-card-people {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: #4a5868;
-}
-
-.avatar-stack {
-  display: flex;
-}
-
-.avatar-stack .avatar + .avatar {
-  margin-left: -8px;
-}
-
-/* A2 coach starter questions */
+/* Coach starter questions: white cards, no colored borders */
 .starter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   width: 100%;
-  min-height: 50px;
-  padding: 12px 14px;
-  border: 1px solid #d3dbe4;
+  min-height: 56px;
+  padding: 14px 18px;
+  border: 0;
   border-radius: 14px;
-  background: #ffffff;
-  color: var(--ink, #142233);
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(40, 32, 20, 0.1), 0 0 0 1px rgba(40, 32, 20, 0.04);
   font: inherit;
-  font-size: 1rem;
+  font-size: 1.02rem;
+  font-weight: 700;
   text-align: left;
   cursor: pointer;
 }
 
 .starter-arrow {
-  color: #1d5fd6;
-  font-size: 1.2rem;
+  color: var(--qa-ink);
+  font-size: 1.3rem;
 }
 
-/* A2 role-play scene cards */
+.starter:hover:not(:disabled) {
+  box-shadow: 0 3px 10px rgba(40, 32, 20, 0.12), 0 0 0 1px rgba(44, 93, 145, 0.25);
+}
+
+/* Role-play scene cards: dark outline, apricot offset shadow */
 .scene-card {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
   width: 100%;
-  padding: 14px 15px;
-  border: 1px solid #d3dbe4;
-  border-radius: 16px;
-  background: #ffffff;
-  color: var(--ink, #142233);
+  margin-bottom: 4px;
+  padding: 16px 18px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--rp-shadow);
   font: inherit;
   text-align: left;
   cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+
+.scene-card:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--rp-shadow);
 }
 
 .scene-card-text {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
+/* Title on the left, difficulty on the right; a long title wraps instead of pushing the tag down */
 .scene-card-title {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  font-weight: 700;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.3;
 }
 
-/* Difficulty tags: light backgrounds, dark text */
+/* Difficulty: three apricot dots plus the level */
 .difficulty {
-  display: inline-block;
-  padding: 1px 8px;
-  border-radius: 999px;
-  font-size: 0.78rem;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
-.difficulty.easy {
-  background: #e2f3ec;
-  color: #0b5a45;
+.dots {
+  display: inline-flex;
+  gap: 3px;
 }
 
-.difficulty.medium {
-  background: #fdf0dc;
-  color: #7a3e06;
+.dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--rp);
 }
 
-.difficulty.hard {
-  background: #fde4e1;
-  color: #8a1f1f;
+.difficulty.easy .dots i:nth-child(-n + 1),
+.difficulty.medium .dots i:nth-child(-n + 2),
+.difficulty.hard .dots i {
+  background: var(--rp);
 }
 
 .scene-card-summary {
-  font-size: 0.92rem;
-  color: #4a5868;
-}
-
-.starter:hover:not(:disabled),
-.scene-card:hover:not(:disabled) {
-  border-color: var(--mode-border);
+  font-size: 0.98rem;
+  color: var(--ink-soft);
 }
 
 .starter:disabled,
 .scene-card:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: default;
 }
 
 .mode-card:focus-visible,
 .starter:focus-visible,
 .scene-card:focus-visible {
-  outline: 2px solid var(--mode-accent);
-  outline-offset: 2px;
+  outline: 2px solid var(--qa-ink);
+  outline-offset: 3px;
 }
 
 /* ---------- Thread ---------- */
 .bubble {
+  position: relative;
   max-width: 85%;
-  padding: 10px 14px;
+  padding: 12px 16px;
+  border: 2px solid var(--line);
   border-radius: 14px;
   font-size: 1.02rem;
-  line-height: 1.55;
+  line-height: 1.6;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
 .bubble.user {
   align-self: flex-end;
-  background: var(--navy);
-  color: #ffffff;
-  border-bottom-right-radius: 4px;
+  background: var(--mode-soft);
+  color: var(--ink);
+}
+
+/* Learner bubbles keep the color of the mode they were sent in */
+.bubble.user.qa {
+  background: var(--qa-soft);
+}
+
+.bubble.user.rp {
+  background: var(--rp-bubble);
 }
 
 .bubble.assistant {
   align-self: flex-start;
-  background: #ffffff;
+  margin-top: 1.5rem; /* room for the speaker label above the bubble */
+  background: var(--card);
   color: var(--ink);
-  border: 1px solid #dce3ea;
-  border-bottom-left-radius: 4px;
 }
 
-.bubble.assistant.in-scene {
-  border-color: #a9d8c6;
-}
-
+/* Speaker label sits just above the bubble in hand lettering */
 .who {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 2px;
-  font-size: 0.82rem;
+  position: absolute;
+  left: 2px;
+  bottom: calc(100% + 4px);
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 1rem;
   font-weight: 700;
-  white-space: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.who svg {
+  display: none;
 }
 
 .who.qa {
-  color: #1a4fb0;
+  color: var(--qa-ink);
 }
 
 .who.rp {
-  color: #0b6650;
+  color: var(--ink);
 }
 
 .bubble strong {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* Clickable video links in tutor replies */
 .video-link {
-  color: #1650c4;
+  color: var(--qa-ink);
+  font-weight: 700;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-color: var(--hl-edge);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }
 
 .video-link:hover {
-  color: #0f3d99;
+  color: #1d426b;
 }
 
 .video-link:focus-visible {
-  outline: 2px solid #1650c4;
+  outline: 2px solid var(--qa-ink);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
 .bubble.typing {
-  color: #6b7787;
+  margin-top: 0;
+  border-style: dashed;
+  border-color: var(--line-soft);
+  color: var(--ink-faint);
   font-style: italic;
 }
 
-/* Scene start and mode-switch markers (Proposal B3) */
+/* Mode-switch divider */
 .marker {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 4px 0;
+  margin: 6px 0;
 }
 
 .marker-line {
   flex: 1;
-  height: 1px;
-}
-
-.marker.rp .marker-line {
-  background: #a9d8c6;
-}
-
-.marker.qa .marker-line {
-  background: #b9cdf3;
+  height: 0;
+  border-top: 2px dashed var(--line-soft);
 }
 
 .marker-text {
@@ -543,32 +585,52 @@
 }
 
 .marker-title {
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .marker.rp .marker-title {
-  color: #0b6650;
+  color: var(--rp-ink);
 }
 
 .marker.qa .marker-title {
-  color: #1a4fb0;
+  color: var(--qa-ink);
 }
 
 .marker-sub {
-  font-size: 0.85rem;
-  color: #4a5868;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+/* Scene start: a card pinned to the top of the scene */
+.marker.scene {
+  margin: 0 0 4px;
+  padding: 12px 16px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.marker.scene .marker-line {
+  display: none;
+}
+
+.marker.scene .marker-text {
+  align-items: flex-start;
+  text-align: left;
+  gap: 2px;
 }
 
 .error-banner {
-  margin: 0 14px 8px;
-  padding: 10px 12px;
-  border: 1px solid #f3c9c9;
-  border-radius: 10px;
-  background: #fdeeee;
-  color: #8a1f1f;
-  font-size: 0.95rem;
+  margin: 0 16px 10px;
+  padding: 10px 14px;
+  border: 2px solid #c94a3a;
+  border-radius: 12px;
+  background: #fdecea;
+  color: #7d2318;
+  font-size: 0.98rem;
+  font-weight: 600;
 }
 
 /* ---------- Composer ---------- */
@@ -579,9 +641,30 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
-  border-top: 1px solid #dce3ea;
-  background: #ffffff;
+  padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  border-top: 2px solid transparent;
+  background: var(--paper);
+}
+
+/* Rule above the box once a conversation is on screen */
+.chat.has-thread .composer {
+  border-top-color: var(--line);
+}
+
+/* Role-play scene picker: "Set your own scene" sits in a dashed highlighter box */
+.chat.mode-rp.screen-home .composer {
+  margin: 0 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  padding: 12px 14px 14px;
+  border: 2px dashed var(--hl-edge);
+  border-radius: 14px;
+  background: var(--hl-soft);
+}
+
+.chat.mode-rp.screen-home .composer-hint {
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
 }
 
 .composer-top {
@@ -592,121 +675,169 @@
 }
 
 .composer-hint {
-  font-size: 0.92rem;
-  color: #4a5868;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
 }
 
 .composer-hint b {
-  color: var(--ink, #142233);
+  color: var(--ink);
+  font-weight: 800;
 }
 
+/* "Start a new chat": text link with a plus */
 .new-chat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 2px 0;
   border: 0;
   background: none;
   color: var(--mode-ink);
   font: inherit;
-  font-size: 0.92rem;
-  text-decoration: underline;
+  font-size: 0.98rem;
+  font-weight: 800;
   cursor: pointer;
+}
+
+.new-chat::before {
+  content: '+';
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.new-chat:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .composer-row {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
 }
 
 /* 16px+ font stops iPhones from zooming in when the box is tapped */
 .composer textarea {
   flex: 1 1 auto;
   min-width: 0;
-  min-height: 46px;
+  min-height: 50px;
   max-height: 140px;
-  padding: 10px 14px;
-  border: 1.5px solid var(--mode-border);
+  padding: 12px 16px;
+  border: 2px solid var(--line);
   border-radius: 14px;
-  background: #ffffff;
-  color: var(--ink, #1b2533);
+  background: var(--card);
+  color: var(--ink);
   font: inherit;
   font-size: 1.02rem;
   resize: none;
 }
 
+/* Long placeholders stay on one line in the one-line box */
 .composer textarea::placeholder {
-  color: #5b6776;
+  color: var(--ink-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .composer textarea:focus-visible {
-  outline: 2px solid var(--mode-accent);
-  outline-offset: 1px;
+  outline: 3px solid var(--hl);
+  outline-offset: 0;
 }
 
-/* Send button: arrow icon, colored by mode; fixed colors so no global style can hide it */
+.composer textarea:disabled {
+  background: #f4f1ea;
+}
+
+/* Send button: up arrow, colored by mode, offset shadow; fixed colors so no global style can hide it */
 .chat .composer .send-btn {
   appearance: none;
   -webkit-appearance: none;
   flex: 0 0 auto;
-  width: 50px;
-  height: 46px;
-  margin: 0;
+  width: 54px;
+  height: 50px;
+  margin: 0 3px 3px 0; /* keeps the offset shadow inside the row */
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0;
+  border: 2px solid var(--line);
   border-radius: 14px;
-  background-color: var(--mode-accent);
-  color: #ffffff;
+  background-color: var(--send-bg);
+  color: var(--send-ink);
+  box-shadow: 3px 3px 0 var(--line);
   cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s;
 }
 
-.chat .composer .send-btn:hover:not(:disabled) {
-  background-color: var(--mode-accent-hover);
+.chat .composer .send-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--line);
 }
 
 .chat .composer .send-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: default;
 }
 
 .composer .send-btn:focus-visible,
 .new-chat:focus-visible {
-  outline: 2px solid var(--ink, #142233);
-  outline-offset: 2px;
+  outline: 2px solid var(--qa-ink);
+  outline-offset: 3px;
 }
 
 @media (min-width: 720px) {
   .messages {
-    padding: 24px 24px 12px;
+    padding: 28px 24px 14px;
   }
   .composer {
-    padding: 12px 24px 16px;
+    padding: 12px 24px 18px;
+  }
+  .chat.mode-rp.screen-home .composer {
+    margin: 0 24px 18px;
   }
   .bubble {
     max-width: 75%;
+  }
+  .start h1 {
+    font-size: 2.1rem;
+  }
+}
+
+/* Hover lift only where there is a real pointer (avoids sticky hover on phones) */
+@media (hover: hover) {
+  .scene-card:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--rp-shadow);
+  }
+  .mode-card.rp:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0 var(--line);
   }
 }
 
 /* ---------- Free trial ---------- */
 .trial-remaining {
   align-self: center;
-  margin: 0 14px 6px;
+  margin: 0 16px 8px;
   padding: 4px 12px;
   border-radius: 999px;
-  background: #e8f0fe;
-  color: #1650c4;
-  font-size: 0.9rem;
-  font-weight: 600;
+  background: var(--hl-soft);
+  border: 1.5px solid var(--hl-edge);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .trial-card {
-  margin: 0 14px 10px;
+  margin: 0 16px 12px;
   padding: 14px 16px;
-  border: 1px solid #c6d6f7;
+  border: 2px solid var(--line);
   border-radius: 14px;
-  background: #f3f7ff;
-  color: var(--ink, #1b2533);
+  background: var(--hl-soft);
+  box-shadow: 4px 4px 0 var(--hl-edge);
+  color: var(--ink);
 }
 
 .trial-card p {
@@ -714,8 +845,8 @@
 }
 
 .trial-card-title {
-  font-size: 1.05rem;
-  font-weight: 650;
+  font-size: 1.08rem;
+  font-weight: 800;
   margin-bottom: 6px !important;
 }
 
@@ -726,30 +857,30 @@
 
 .trial-card-hint {
   margin-top: 8px !important;
-  font-size: 0.9rem;
-  color: #5d6a7c;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
 }
 
 /* ---------- Message length limit ---------- */
 .char-count {
   align-self: flex-end;
-  font-size: 0.88rem;
-  color: #5d6a7c;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
 }
 
 .char-count.over {
   align-self: stretch;
   padding: 8px 12px;
-  border: 1px solid #f3c9c9;
+  border: 2px solid #c94a3a;
   border-radius: 10px;
-  background: #fdeeee;
-  color: #8a1f1f;
-  font-size: 0.92rem;
-  font-weight: 600;
+  background: #fdecea;
+  color: #7d2318;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .composer textarea[aria-invalid='true'] {
-  border-color: #d64545;
+  border-color: #c94a3a;
 }
 
 /* ---------- Tier badge: ADMIN / PRO ---------- */
@@ -757,17 +888,19 @@
   align-self: center;
   margin: 0 0 6px;
   padding: 2px 10px;
+  border: 1.5px solid var(--line-soft);
   border-radius: 999px;
-  background: #eef1f5;
-  color: #5d6a7c;
+  background: var(--card);
+  color: var(--ink-soft);
   font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-/* PRO (invite codes): warm tag, dark text on a light background */
+/* PRO (invite codes): apricot tag, dark text on a light background */
 .tier-badge.invite {
-  background: #fdf0dc;
-  color: #7a3e06;
+  border-color: var(--rp-shadow);
+  background: var(--rp-soft);
+  color: var(--rp-ink);
 }

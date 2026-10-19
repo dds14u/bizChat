@@ -1,18 +1,39 @@
 /* Replaces the Vite template's index.css entirely.
    The template defaults (dark theme, centered flex body) would fight this layout. */
 
+/* Study Desk design · Powder Blue (Coach) + Apricot (Role-play) */
 :root {
-  --ink: #1b2533; /* body text */
-  --navy: #8da4bd; /* header */
-  --jade: #64635a00; /* accent line */
-  --paper: #f6f8fa; /* page background */
-  --blue: ##ffffff; /* blue button */
+  --ink: #1d1b18; /* body text and outlines */
+  --ink-soft: #55514a; /* secondary text */
+  --ink-faint: #77726a; /* placeholders, footnotes */
+  --line: #1d1b18; /* card and box outlines */
+  --line-soft: #dcd7cd; /* quiet borders */
+  --paper: #faf7f1; /* off-white page */
+  --card: #ffffff;
+
+  --hl: #fde68a; /* yellow highlighter */
+  --hl-soft: #fff6d3; /* highlighter wash */
+  --hl-edge: #e4c04f; /* dashed highlighter edge */
+
+  --rp: #f59a3c; /* apricot dots and icon fill */
+  --rp-ink: #8f4a0b; /* apricot text on light backgrounds */
+  --rp-soft: #fdeedc; /* apricot wash */
+  --rp-bubble: #fdd5a8; /* learner bubble in Role-play */
+  --rp-shadow: #fbc283; /* offset shadow on scene cards */
+
+  --qa: #7fa6d3; /* powder blue dot */
+  --qa-ink: #2c5d91; /* powder blue text */
+  --qa-soft: #e3ecf8; /* learner bubble in Coach */
+
   --header-h: 64px;
 
-  /* System fonts only: Google Fonts is unreliable in mainland China. */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
-    'Hiragino Sans GB', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
+  /* Nunito and Comic Neue are bundled with the app (no Google Fonts request).
+     Chinese text falls through to the system fonts. */
+  --font-body: 'Nunito Variable', 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-hand: 'Comic Neue', 'Nunito Variable', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.55;
   color: var(--ink);
@@ -38,4 +59,10 @@ body,
 body {
   background: var(--paper);
   color: var(--ink);
+}
+
+/* Yellow highlighter behind a word (brand name) */
+.hl {
+  background: linear-gradient(transparent 52%, var(--hl) 52%, var(--hl) 92%, transparent 92%);
+  padding: 0 2px;
 }

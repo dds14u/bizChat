@@ -25,9 +25,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: var(--navy, #16324f);
-  color: #ffffff;
-  border-bottom: 3px solid var(--jade, #2e8b74);
+  background: var(--paper);
+  color: var(--ink);
+  border-bottom: 2px solid transparent;
+}
+
+/* Rule under the header once a conversation is on screen */
+.site-header.with-line {
+  border-bottom-color: var(--line);
 }
 
 /* Logo and title act as a "home" button */
@@ -45,16 +50,16 @@
 }
 
 .brand-home:focus-visible {
-  outline: 2px solid #ffffff;
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
 .brand-name {
   display: block;
   min-width: 0;
-  font-size: 1.2rem;
-  font-weight: 650;
-  letter-spacing: 0.01em;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.005em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,9 +69,10 @@
 .brand-by {
   margin-left: 8px;
   font-size: 0.72em;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.72);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
 }
 
 /* Fills the space under the header */
@@ -84,7 +90,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 900px;
+  max-width: 640px; /* one column for cards, bubbles and the box */
   margin: 0 auto;
 }
 
@@ -102,13 +108,25 @@
     padding-right: 28px;
   }
   .brand-name {
-    font-size: 1.45rem;
+    font-size: 1.4rem;
+  }
+}
+
+/* Phones: "by Donald" drops under the title so the mode menu never cuts it off */
+@media (max-width: 479px) {
+  .brand-name {
+    line-height: 1.15;
+  }
+  .brand-by {
+    display: block;
+    margin: 1px 0 0 1.55em; /* lines up under "Real" */
+    font-size: 0.68em;
   }
 }
 
 /* Small phones */
 @media (max-width: 400px) {
   .brand-name {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 }

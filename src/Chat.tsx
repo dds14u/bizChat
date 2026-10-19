@@ -84,7 +84,7 @@ function formatReply(text: string): ReactNode {
 
 const SendArrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M5 12h14M13 6l6 6-6 6" />
+    <path d="M12 19V5M6 11l6-6 6 6" />
   </svg>
 );
 
@@ -336,7 +336,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${empty ? '' : ' with-line'}`}>
         <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
           {brand}
         </button>
@@ -345,7 +345,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
       <main className="chat-area">
         <div className="chat-slot">
-          <div className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}`}>
+          <div
+            className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}${empty ? (showIntro ? ' screen-intro' : ' screen-home') : ' has-thread'}`}
+          >
             <div className="messages" aria-live="polite">
               {/* ---------- First visit: two mode cards (Proposal A1) ---------- */}
               {empty && showIntro && (
@@ -356,7 +358,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
                   <button type="button" className="mode-card rp" onClick={() => pickIntroMode('[RP]')}>
                     <span className="mode-card-head">
-                      <span className="avatar big" aria-hidden="true">💬</span>
+                      <span className="avatar big" aria-hidden="true"><RoleplayIcon size={26} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Practice a conversation</span>
                         <span className="mode-card-kicker">ROLE-PLAY MODE</span>
@@ -367,7 +369,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
                   <button type="button" className="mode-card qa" onClick={() => pickIntroMode('[QA]')}>
                     <span className="mode-card-head">
-                      <span className="avatar big" aria-hidden="true">🧑‍🏫</span>
+                      <span className="avatar big" aria-hidden="true"><CoachIcon size={22} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Ask a question</span>
                         <span className="mode-card-kicker">COACH MODE</span>
@@ -425,7 +427,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         <span className="scene-card-title">
                           {s.title}
                           {s.difficulty && (
-                            <span className={`difficulty ${s.difficulty.toLowerCase()}`}>{s.difficulty}</span>
+                            <span className={`difficulty ${s.difficulty.toLowerCase()}`}>
+                              <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                              {s.difficulty}
+                            </span>
                           )}
                         </span>
                         <span className="scene-card-summary">{s.summary}</span>
@@ -439,7 +444,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               {items.map((item, i) => {
                 if (item.kind === 'scene') {
                   return (
-                    <div key={i} className="marker rp" role="separator">
+                    <div key={i} className="marker rp scene" role="separator">
                       <span className="marker-line" />
                       <span className="marker-text">
                         <span className="marker-title">ROLE-PLAY · {item.scene.title.toUpperCase()}</span>
@@ -467,7 +472,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                 return (
                   <div
                     key={i}
-                    className={`bubble ${item.kind}${item.kind === 'assistant' && item.mode === '[RP]' ? ' in-scene' : ''}`}
+                    className={`bubble ${item.kind} ${item.mode === '[RP]' ? 'rp' : 'qa'}${item.kind === 'assistant' && item.mode === '[RP]' ? ' in-scene' : ''}`}
                   >
                     {item.kind === 'assistant' && (
                       <span className={`who ${item.mode === '[RP]' ? 'rp' : 'qa'}`}>

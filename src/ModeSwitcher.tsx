@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ChatMode } from './chatApi';
 
-// Line icons from the Proposal designs
+// Line icons (Powder Blue design: chat bubble for Coach, people for Role-play)
 export const CoachIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V16h8v-1.3A7 7 0 0 0 12 2z" />
+    <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.5-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z" />
   </svg>
 );
 
@@ -73,7 +73,7 @@ export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
         disabled={disabled}
         onClick={() => setOpen((o) => !o)}
       >
-        <current.Icon />
+        <span className="mode-dot" aria-hidden="true" />
         {current.label}
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M6 9l6 6 6-6" />
