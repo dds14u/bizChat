@@ -260,7 +260,16 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   const startScene = (scene: Scene) => {
     setMode('[RP]');
-    sendMessage(scene.kickoff, '[RP]', scene);
+    if (scene.kickoff) {
+      sendMessage(scene.kickoff, '[RP]', scene);
+      return;
+    }
+    // No kickoff (e.g. "Set your scene"): show the scene header only, no tutor call.
+    // The learner's next message describes their role, company and situation.
+    leaveIntro();
+    setError('');
+    setItems((list) => [...list, { kind: 'scene', scene }]);
+    inputRef.current?.focus();
   };
 
   const newChat = () => {
@@ -313,6 +322,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     } else {
       placeholder = 'Ask a question…';
     }
+  } else if (isRP && last?.kind === 'scene' && !last.scene.kickoff) {
+    // A self-set scene is waiting for the learner to describe it
+    placeholder = 'e.g. I\'m a PM at Apple working on...';
   } else if (isRP) {
     hint = (
       <span className="composer-hint">

@@ -26,23 +26,22 @@ export interface Scene {
   /**
    * Sent to the tutor (not shown as a chat bubble) to start the scene.
    * Each scene's behavior is defined in the system prompt (Part B), so this only
-   * names the scene and its difficulty.
+   * names the scene and its difficulty. Leave out to start the scene without calling
+   * the tutor: the learner's first message then sets up the scene.
    */
-  kickoff: string;
+  kickoff?: string;
 }
 
 // Scene cards on the Role-play screen: a free-choice scene plus the MVP scenes from the Business Chat PRD.
 export const SCENES: Scene[] = [
   {
     id: 'choose-scene',
-    label: 'YOUR SCENE · You choose',
-    title: 'Choose your scene',
+    label: 'YOUR SCENE · State your role, company, and situation (meeting, presentation, difficult co-worker ...)',
+    title: 'Set your scene',
     summary: 'A status meeting, client meeting, or 1:1 with a coworker.',
     avatar: '💬',
     avatarBg: '#E2F3EC',
-    kickoff:
-      'I want to set up my own role-play scene. Ask me which one I want to practice: ' +
-      'a status meeting, a client meeting, or a 1:1 with a coworker. Also ask for my role and company if I want it tailored.',
+    // No kickoff: tapping opens the scene header and waits for the learner to describe their scene.
   },
   {
     id: 'start-meeting',
