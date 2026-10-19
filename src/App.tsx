@@ -11,7 +11,7 @@ function App() {
             <span className="brand-emoji">🙋🏻‍♀️</span>
             <span className="brand-text">
               Real <span className="hl">Business</span>
-              <span className="brand-by">by Donald</span>
+              <span className="brand-by">by Donald · beta</span>
             </span>
           </span>
         }
