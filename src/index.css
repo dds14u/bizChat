@@ -35,7 +35,7 @@
 
   font-family: var(--font-body);
   font-size: 17px;
-  line-height: 1.55;
+  line-height: 1.37; /* ~12% tighter than 1.55 for denser text */
   color: var(--ink);
   background: var(--paper);
   color-scheme: light;
