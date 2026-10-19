@@ -905,6 +905,22 @@
 }
 
 @media (min-width: 720px) {
+  /* Notices (trial used up, errors) share the text box's edges in a chat */
+  .chat .trial-card,
+  .chat .error-banner {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+  /* On start screens they match the 40rem column of cards, like the box */
+  .chat.screen-intro .trial-card,
+  .chat.screen-intro .error-banner,
+  .chat.screen-home .trial-card,
+  .chat.screen-home .error-banner {
+    align-self: center;
+    width: min(calc(100% - 48px), 40rem);
+    margin-left: 0;
+    margin-right: 0;
+  }
   /* On start screens the box lines up with the cards above it */
   .chat.screen-intro .composer,
   .chat.screen-home .composer {
