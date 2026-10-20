@@ -495,6 +495,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   return (
                     <div key={i} className="marker rp scene" role="separator">
                       <span className="marker-line" />
+                      <span className="avatar scene-avatar" aria-hidden="true" style={{ background: item.scene.avatarBg }}>
+                        {item.scene.avatar}
+                      </span>
                       <span className="marker-text">
                         <span className="marker-title">ROLE-PLAY · {item.scene.title.toUpperCase()}</span>
                         <span className="marker-sub">

@@ -59,10 +59,10 @@ export const SCENES: Scene[] = [
   {
     id: 'disagree',
     difficulty: 'Medium',
-    label: 'TEAM DISCUSSION · Lin, teammate',
+    label: 'TEAM DISCUSSION · Bob, teammate',
     title: 'Disagree with a coworker',
     summary: 'Agree with part of their idea first, then share your view.',
-    avatar: '👩‍💻',
+    avatar: '👨‍💻',
     avatarBg: '#EFE7F7',
     kickoff: 'Start the role-play scene "Disagree with a coworker". Difficulty: Medium.',
   },
