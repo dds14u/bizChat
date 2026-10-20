@@ -412,10 +412,10 @@
   gap: 4px;
 }
 
-/* Title on the left, difficulty on the right; a long title wraps instead of pushing the tag down */
+/* Title on the left, difficulty pinned to the top right; a long title wraps instead of pushing the tag down */
 .scene-card-title {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
   font-size: 1.15rem;
@@ -423,16 +423,23 @@
   line-height: 1.3;
 }
 
-/* Difficulty: three apricot dots plus the level */
+/* Difficulty: short label right-aligned against three apricot dots.
+   Its height matches one title line, so it sits level with the first line even when the title wraps. */
 .difficulty {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.88rem;
+  justify-content: flex-end;
+  gap: 7px;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--ink-soft);
   white-space: nowrap;
+}
+
+/* The label sits inside the title (1.15rem), so size the line box from the title */
+.scene-card-title .difficulty {
+  height: calc(1.15rem * 1.3);
 }
 
 .dots {
@@ -441,10 +448,10 @@
 }
 
 .dots i {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  border: 1.5px solid var(--rp);
+  border: 2px solid var(--rp);
 }
 
 .difficulty.easy .dots i:nth-child(-n + 1),
@@ -564,8 +571,11 @@
   .scene-card-title {
     font-size: 1.06rem;
   }
+  .scene-card-title .difficulty {
+    height: calc(1.06rem * 1.3);
+  }
   .difficulty {
-    gap: 5px;
+    gap: 6px;
     font-size: 0.82rem;
   }
   .scene-card-summary {
@@ -853,6 +863,7 @@
   font: inherit;
   font-size: 1.02rem;
   resize: none;
+  overflow-y: hidden; /* the resize code turns scrolling on only past the max height */
 }
 
 /* Long placeholders stay on one line in the one-line box */

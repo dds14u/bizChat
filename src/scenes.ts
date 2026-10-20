@@ -13,6 +13,9 @@ export const COACH_EXAMPLE = 'Ask work questions.';
 /** How much the character pushes back. The levels are defined in the Dify system prompt. */
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
+/** Short label shown next to the dots on scene cards (4 characters max) */
+export const DIFFICULTY_SHORT: Record<Difficulty, string> = { Easy: 'Easy', Medium: 'Med', Hard: 'Hard' };
+
 export interface Scene {
   id: string;
   /** Shown as a tag on the card; leave out for no tag */
