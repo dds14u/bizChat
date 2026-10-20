@@ -748,6 +748,13 @@
   display: none;
 }
 
+/* Small character emoji on the scene card, e.g. Sarah or Bob */
+.marker.scene .scene-avatar {
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+}
+
 .marker.scene .marker-text {
   align-items: flex-start;
   text-align: left;
