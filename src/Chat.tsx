@@ -3,7 +3,7 @@ import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
-import { COACH_EXAMPLE, COACH_STARTERS, SCENES, type Scene } from './scenes';
+import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } from './scenes';
 
 // A chat thread holds messages plus two kinds of markers:
 // a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
@@ -473,9 +473,12 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         <span className="scene-card-title">
                           {s.title}
                           {s.difficulty && (
-                            <span className={`difficulty ${s.difficulty.toLowerCase()}`}>
+                            <span
+                              className={`difficulty ${s.difficulty.toLowerCase()}`}
+                              aria-label={`Difficulty: ${s.difficulty}`}
+                            >
+                              <span aria-hidden="true">{DIFFICULTY_SHORT[s.difficulty]}</span>
                               <span className="dots" aria-hidden="true"><i /><i /><i /></span>
-                              {s.difficulty}
                             </span>
                           )}
                         </span>
