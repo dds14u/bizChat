@@ -3,7 +3,7 @@
 // Coach start screen: tapping one sends it as the learner's question.
 export const COACH_STARTERS = [
   'How do I start a meeting?',
-  'How do I handle a tough question during a presentation?',
+  'What should I do in my first 90 days?',
   'How do I handle small talk at a conference or event?',
 ];
 
