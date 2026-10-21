@@ -17,8 +17,8 @@ export const RoleplayIcon = ({ size = 16 }: { size?: number }) => (
 );
 
 const OPTIONS: { mode: ChatMode; label: string; zh: string; hint: string; Icon: typeof CoachIcon }[] = [
-  { mode: '[RP]', label: 'Role-play', zh: '模拟交流', hint: 'Practice a conversation', Icon: RoleplayIcon },
-  { mode: '[QA]', label: 'Coach', zh: '咨询模式', hint: 'Ask questions, get guidance', Icon: CoachIcon },
+  { mode: '[RP]', label: 'Role-play', zh: '情景模拟', hint: 'Practice a conversation', Icon: RoleplayIcon },
+  { mode: '[QA]', label: 'Coach', zh: '答疑模式', hint: 'Ask questions, get guidance', Icon: CoachIcon },
 ];
 
 export const modeLabel = (mode: ChatMode) => (mode === '[RP]' ? 'Role-play' : 'Coach');

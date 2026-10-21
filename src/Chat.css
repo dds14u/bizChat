@@ -164,16 +164,10 @@
 }
 
 .mode-option .zh {
-  margin-left: 8px;
+  margin-left: 6px;
+  font-size: 0.85rem;
   font-weight: 700;
-}
-
-.mode-option.qa .zh {
-  color: var(--qa-ink);
-}
-
-.mode-option.rp .zh {
-  color: var(--rp-ink);
+  color: var(--ink);
 }
 
 .mode-option-hint {
