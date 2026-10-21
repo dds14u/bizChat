@@ -146,35 +146,26 @@ const HintBulb = () => (
   </svg>
 );
 
-// Tutor reply: text and bracketed notes in their original order. A note at the very
-// top or bottom of the reply sits flush with the bubble's edge.
+// Tutor reply: the character's text in the bubble, then every bracketed note below it.
+// Notes always sit under the text, even when the model wrote one first (e.g. the scene
+// setup); while streaming, a note can appear before any text, and the text then fills
+// in above it.
 function ReplyBody({ text }: { text: string }) {
   const segs = splitHints(text);
+  const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
+  const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
   return (
     <>
-      {segs.map((s, k) => {
-        if (s.kind === 'text') {
-          return (
-            <div key={k} className="reply-text">
-              {formatReply(s.text)}
-            </div>
-          );
-        }
-        const label = s.text.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
-        const cls = [
-          'hint',
-          k === 0 && 'first',
-          k === segs.length - 1 && 'last',
-          segs[k + 1]?.kind === 'hint' && 'joined', // another note follows directly
-        ]
-          .filter(Boolean)
-          .join(' ');
+      {body && formatReply(body)}
+      {hints.map((h, k) => {
+        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+        const cls = ['hint', !body && k === 0 && 'first', k === hints.length - 1 && 'last'].filter(Boolean).join(' ');
         return (
           <div key={k} className={cls}>
             <HintBulb />
             <span>
               {label && <b>{label[1]}: </b>}
-              {formatReply(label ? s.text.slice(label[0].length) : s.text)}
+              {formatReply(label ? h.slice(label[0].length) : h)}
             </span>
           </div>
         );
