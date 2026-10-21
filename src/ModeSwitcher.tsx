@@ -35,10 +35,14 @@ interface Props {
 // Top-right mode pill with a dropdown (Proposal C)
 export default function ModeSwitcher({ mode, onChange, disabled, onAbout, nudge = 0 }: Props) {
   const [open, setOpen] = useState(false);
-  // Two light pulses each time `nudge` goes up (restarted if one is already playing)
+  // Heartbeat each time `nudge` goes up (restarted if one is already playing). The value
+  // the button starts with is ignored, so it doesn't replay when the button reappears
+  // (e.g. after closing the About page, which swaps it out for a Close button).
   const [pulsing, setPulsing] = useState(false);
+  const seenNudge = useRef(nudge);
   useEffect(() => {
-    if (!nudge) return;
+    if (nudge <= seenNudge.current) return;
+    seenNudge.current = nudge;
     setPulsing(false);
     const frame = requestAnimationFrame(() => setPulsing(true));
     return () => cancelAnimationFrame(frame);
