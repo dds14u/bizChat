@@ -709,7 +709,7 @@
   font-weight: 800;
 }
 
-/* Hint attached to the bottom of a tutor reply (bracketed lines after the character's text) */
+/* Notes under a tutor reply's text (bracketed lines: scene setup, cues, hints) */
 .hint {
   display: flex;
   align-items: flex-start;
@@ -724,23 +724,25 @@
   white-space: normal;
 }
 
+/* Notes in a row share one divider */
 .hint + .hint {
   margin-top: 0;
 }
 
-/* Last hint sits flush with the bubble's bottom and follows its corners
-   (inner radius = bubble radius minus its border; tail on the bottom left) */
-.hint:last-child {
-  margin-bottom: -12px;
-  border-radius: 0 0 12px 2px;
-}
-
-/* A reply that is only hints: the first one sits flush with the bubble's top too */
-.hint.top {
+/* A reply with no text yet (or only notes): the first note sits flush with the bubble's
+   top edge and corners (inner radius = bubble radius minus its border) */
+.hint.first {
   margin-top: -12px;
   border-top: 0;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+}
+
+/* Last note: flush with the bubble's bottom edge (chat tail on the bottom left) */
+.hint.last {
+  margin-bottom: -12px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 12px;
 }
 
 .hint b {

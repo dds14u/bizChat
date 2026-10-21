@@ -84,24 +84,29 @@ function formatReply(text: string): ReactNode {
 }
 
 // Hints: every line (or run of lines) wrapped in [ ] in a tutor reply, e.g.
+//   [At Apple in Shanghai. You lead a new app launch…]   ← scene setup
 //   Sarah: "Thanks, sounds good."
 //   [Now give the context: the past, the present, and the future.]
-// is pulled out of the bubble text and shown as an attached note under it.
-// One exception: in a scene's opening reply, the first bracket is the scene-setting
-// line, so it stays in the bubble. Brackets inside a sentence ("send it to [the
-// client]") are ordinary text. Works on partial text, so a hint appears live as it
-// streams in.
-function splitHints(text: string, keepSceneSetting: boolean): { body: string; hints: string[] } {
+// becomes a note inside the bubble, in the same place it appears in the reply, with the
+// brackets removed. Brackets inside a sentence ("send it to [the client]") are ordinary
+// text. Works on partial text, so a note appears live as it streams in.
+type Segment = { kind: 'text' | 'hint'; text: string };
+
+function splitHints(text: string): Segment[] {
   // 1. Group lines into blocks: a bracket block runs from a line starting with [
-  //    to the line where its brackets close; every other line is its own block.
-  type Block = { bracket: boolean; lines: string[] };
-  const blocks: Block[] = [];
-  let open: Block | null = null;
+  //    to the line where its brackets close; other lines are plain text.
+  const segs: Segment[] = [];
+  const addText = (line: string) => {
+    const last = segs[segs.length - 1];
+    if (last?.kind === 'text') last.text += '\n' + line;
+    else segs.push({ kind: 'text', text: line });
+  };
+  let open: string[] | null = null;
   let depth = 0;
   for (const line of text.split('\n')) {
     const t = line.trim();
     if (!open && !t.startsWith('[')) {
-      blocks.push({ bracket: false, lines: [line] });
+      addText(line);
       continue;
     }
     let d = open ? depth : 0;
@@ -110,37 +115,29 @@ function splitHints(text: string, keepSceneSetting: boolean): { body: string; hi
       else if (ch === ']') d = Math.max(0, d - 1);
     }
     if (open) {
-      open.lines.push(line);
+      open.push(t);
     } else if (d === 0 && !t.endsWith(']')) {
       // Starts with [ but text runs on past the closing ] ("[Note] then ..."): ordinary text
-      blocks.push({ bracket: false, lines: [line] });
+      addText(line);
       continue;
     } else {
-      open = { bracket: true, lines: [line] };
-      blocks.push(open);
+      open = [t];
+      segs.push({ kind: 'hint', text: '' });
     }
+    // Keep the hint's text current, so a hint still streaming in shows what has arrived
+    segs[segs.length - 1].text = open.join(' ');
     depth = d;
     if (d === 0) open = null;
   }
 
-  // 2. Bracket blocks become hints, except a scene opening's first block (the scene-setting line)
-  const body: string[] = [];
-  const hints: string[] = [];
-  let first = true;
-  for (const b of blocks) {
-    const hasText = b.lines.some((l) => l.trim());
-    if (b.bracket && !(keepSceneSetting && first)) {
-      // Keep the hint's own [ ] so it reads as written; while streaming, the ] may not have arrived yet
-      hints.push(b.lines.join(' ').trim());
-    } else {
-      body.push(...b.lines);
-    }
-    if (hasText) first = false;
-  }
-  return {
-    body: body.join('\n').replace(/\n{3,}/g, '\n\n').trim(),
-    hints: hints.filter((h) => h.replace(/[[\]\s]/g, '')), // skip a lone "[" mid-stream
-  };
+  // 2. Tidy: strip the outer [ ] from hints, trim text, drop anything left empty
+  return segs
+    .map((s) =>
+      s.kind === 'hint'
+        ? { kind: s.kind, text: s.text.trim().replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim() }
+        : { kind: s.kind, text: s.text.replace(/^\s*\n|\n\s*$/g, '').replace(/\n{3,}/g, '\n\n').trim() }
+    )
+    .filter((s) => s.text);
 }
 
 const HintBulb = () => (
@@ -149,27 +146,26 @@ const HintBulb = () => (
   </svg>
 );
 
-// Tutor reply: bubble text plus its bracketed hints as attached notes.
-// sceneOpening: the first reply after a scene starts, whose first bracket is the scene setup.
-function ReplyBody({ text, sceneOpening }: { text: string; sceneOpening: boolean }) {
-  const { body, hints } = splitHints(text, sceneOpening);
+// Tutor reply: the character's text in the bubble, then every bracketed note below it.
+// Notes always sit under the text, even when the model wrote one first (e.g. the scene
+// setup); while streaming, a note can appear before any text, and the text then fills
+// in above it.
+function ReplyBody({ text }: { text: string }) {
+  const segs = splitHints(text);
+  const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
+  const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
   return (
     <>
-      {formatReply(body)}
+      {body && formatReply(body)}
       {hints.map((h, k) => {
-        // "[Hint: …]" keeps its brackets, with the label in bold: [**Hint:** …]
-        const label = h.match(/^\[\s*(Hint|Note|提示)\s*[:：]\s*/i);
+        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+        const cls = ['hint', !body && k === 0 && 'first', k === hints.length - 1 && 'last'].filter(Boolean).join(' ');
         return (
-          <div key={k} className={`hint${!body && k === 0 ? ' top' : ''}`}>
+          <div key={k} className={cls}>
             <HintBulb />
             <span>
-              {label ? (
-                <>
-                  [<b>{label[1]}:</b> {formatReply(h.slice(label[0].length))}
-                </>
-              ) : (
-                formatReply(h)
-              )}
+              {label && <b>{label[1]}: </b>}
+              {formatReply(label ? h.slice(label[0].length) : h)}
             </span>
           </div>
         );
@@ -490,13 +486,6 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const empty = items.length === 0;
   const last = items[items.length - 1];
   const lastReplyIndex = items.map((x) => x.kind).lastIndexOf('assistant');
-  // Scene openings: the first tutor reply after each scene header (its first bracket is the scene setup)
-  const sceneOpenings = new Set<number>();
-  items.forEach((x, i) => {
-    if (x.kind !== 'scene') return;
-    const next = items.findIndex((y, j) => j > i && (y.kind === 'assistant' || y.kind === 'scene'));
-    if (next >= 0 && items[next].kind === 'assistant') sceneOpenings.add(next);
-  });
   const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
   const startDisabled = sending || trialUsedUp;
   // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
@@ -711,7 +700,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} sceneOpening={sceneOpenings.has(i)} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">
