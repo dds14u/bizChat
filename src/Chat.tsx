@@ -130,7 +130,8 @@ function splitHints(text: string, keepSceneSetting: boolean): { body: string; hi
   for (const b of blocks) {
     const hasText = b.lines.some((l) => l.trim());
     if (b.bracket && !(keepSceneSetting && first)) {
-      hints.push(b.lines.join(' ').trim().replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim());
+      // Keep the hint's own [ ] so it reads as written; while streaming, the ] may not have arrived yet
+      hints.push(b.lines.join(' ').trim());
     } else {
       body.push(...b.lines);
     }
@@ -138,7 +139,7 @@ function splitHints(text: string, keepSceneSetting: boolean): { body: string; hi
   }
   return {
     body: body.join('\n').replace(/\n{3,}/g, '\n\n').trim(),
-    hints: hints.filter(Boolean),
+    hints: hints.filter((h) => h.replace(/[[\]\s]/g, '')), // skip a lone "[" mid-stream
   };
 }
 
@@ -156,13 +157,19 @@ function ReplyBody({ text, sceneOpening }: { text: string; sceneOpening: boolean
     <>
       {formatReply(body)}
       {hints.map((h, k) => {
-        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+        // "[Hint: …]" keeps its brackets, with the label in bold: [**Hint:** …]
+        const label = h.match(/^\[\s*(Hint|Note|提示)\s*[:：]\s*/i);
         return (
           <div key={k} className={`hint${!body && k === 0 ? ' top' : ''}`}>
             <HintBulb />
             <span>
-              {label && <b>{label[1]}: </b>}
-              {formatReply(label ? h.slice(label[0].length) : h)}
+              {label ? (
+                <>
+                  [<b>{label[1]}:</b> {formatReply(h.slice(label[0].length))}
+                </>
+              ) : (
+                formatReply(h)
+              )}
             </span>
           </div>
         );
