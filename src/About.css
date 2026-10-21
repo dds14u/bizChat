@@ -37,23 +37,41 @@
   text-underline-offset: 3px;
 }
 
-/* "← Back" in the header, where the mode menu usually sits */
-.back-link {
+/* "Close ✕" in the header, where the mode menu usually sits (sheet-style close) */
+.close-link {
   flex: none;
-  padding: 8px 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 2px 6px 6px;
   border: 0;
   background: none;
   font: inherit;
   font-size: 1rem;
-  font-weight: 800;
-  color: var(--qa-ink);
+  font-weight: 700;
+  color: var(--ink-soft);
   cursor: pointer;
 }
 
-.back-link:focus-visible {
+.close-x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ece7dd;
+  color: var(--ink);
+}
+
+.close-link:hover .close-x {
+  background: #e2dccf;
+}
+
+.close-link:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
-  border-radius: 6px;
+  border-radius: 18px;
 }
 
 /* The chat stays mounted (and keeps its scroll) while the About page is open */

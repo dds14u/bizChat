@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
-import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
+import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
 import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } from './scenes';
@@ -10,7 +10,7 @@ import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } f
 // a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
 type Item =
   | { kind: 'user'; text: string; mode: ChatMode }
-  | { kind: 'assistant'; text: string; mode: ChatMode }
+  | { kind: 'assistant'; text: string; mode: ChatMode; messageId?: string; rating?: Rating }
   | { kind: 'scene'; scene: Scene }
   | { kind: 'divider'; mode: ChatMode };
 
@@ -86,6 +86,15 @@ function formatReply(text: string): ReactNode {
 const SendArrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 19V5M6 11l6-6 6 6" />
+  </svg>
+);
+
+// Thumbs for rating the newest tutor reply (outline; filled in the mode color once chosen)
+const THUMB_UP = 'M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3';
+const THUMB_DOWN = 'M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3';
+const Thumb = ({ path, on }: { path: string; on: boolean }) => (
+  <svg width="17" height="17" viewBox="0 0 24 24" fill={on ? 'var(--fb-fill)' : 'none'} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d={path} />
   </svg>
 );
 
@@ -182,6 +191,29 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       return copy;
     });
 
+  // Dify's id for the reply that just finished, so it can be rated
+  const setReplyMessageId = (messageId: string) =>
+    setItems((list) => {
+      const copy = [...list];
+      const last = copy[copy.length - 1];
+      if (last?.kind === 'assistant') copy[copy.length - 1] = { ...last, messageId };
+      return copy;
+    });
+
+  // Thumbs: tapping the chosen thumb again clears it. The rating shows right away and
+  // goes back if it couldn't be saved. Nothing else happens on a thumbs down for now.
+  const rateReply = async (index: number, pick: 'like' | 'dislike') => {
+    const item = items[index];
+    if (item?.kind !== 'assistant' || !item.messageId) return;
+    const previous = item.rating ?? null;
+    const next: Rating = previous === pick ? null : pick;
+    const setRating = (rating: Rating) =>
+      setItems((list) => list.map((x, i) => (i === index && x.kind === 'assistant' ? { ...x, rating } : x)));
+    setRating(next);
+    const ok = await sendFeedback({ messageId: item.messageId, rating: next, user: userId.current, code: inviteCode.current });
+    if (!ok && mountedRef.current) setRating(previous);
+  };
+
   // Visitor's free messages are used up: sending is off until they refresh or an invite link is opened
   const trialUsedUp = tier === 'visitor' && (trialRemaining === 0 || Boolean(trialEnded));
 
@@ -235,6 +267,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
           replaceReply(t);
         },
         onConversationId: setConversationId,
+        onMessageId: setReplyMessageId,
       });
     } catch (e) {
       if (!mountedRef.current) return;
@@ -361,6 +394,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const isRP = mode === '[RP]';
   const empty = items.length === 0;
   const last = items[items.length - 1];
+  const lastReplyIndex = items.map((x) => x.kind).lastIndexOf('assistant');
   const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
   const startDisabled = sending || trialUsedUp;
   // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
@@ -417,8 +451,13 @@ export default function Chat({ brand }: { brand: ReactNode }) {
           {brand}
         </button>
         {showAbout ? (
-          <button type="button" className="back-link" onClick={closeAbout}>
-            ← Back
+          <button type="button" className="close-link" onClick={closeAbout}>
+            Close
+            <span className="close-x" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </span>
           </button>
         ) : (
           <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} />
@@ -557,9 +596,11 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                   );
                 }
                 if (item.kind === 'assistant' && !item.text) return null;
+                // Thumbs only on the newest tutor reply, once it has finished (same on desktop and phone)
+                const showThumbs = item.kind === 'assistant' && i === lastReplyIndex && !sending && Boolean(item.messageId);
                 return (
+                  <Fragment key={i}>
                   <div
-                    key={i}
                     className={`bubble ${item.kind} ${item.mode === '[RP]' ? 'rp' : 'qa'}${item.kind === 'assistant' && item.mode === '[RP]' ? ' in-scene' : ''}`}
                   >
                     {item.kind === 'assistant' && (
@@ -570,6 +611,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                     )}
                     {item.kind === 'assistant' ? formatReply(item.text) : item.text}
                   </div>
+                  {showThumbs && item.kind === 'assistant' && (
+                    <div className="fb" role="group" aria-label="Rate this reply">
+                      <button type="button" className={`fb-btn${item.rating === 'like' ? ' on' : ''}`} aria-label="Helpful" aria-pressed={item.rating === 'like'} onClick={() => rateReply(i, 'like')}>
+                        <Thumb path={THUMB_UP} on={item.rating === 'like'} />
+                      </button>
+                      <button type="button" className={`fb-btn${item.rating === 'dislike' ? ' on' : ''}`} aria-label="Not helpful" aria-pressed={item.rating === 'dislike'} onClick={() => rateReply(i, 'dislike')}>
+                        <Thumb path={THUMB_DOWN} on={item.rating === 'dislike'} />
+                      </button>
+                    </div>
+                  )}
+                  </Fragment>
                 );
               })}
 

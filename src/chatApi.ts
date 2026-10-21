@@ -120,6 +120,8 @@ export interface SendOptions {
   onDelta: (text: string) => void;
   onReplace: (text: string) => void;
   onConversationId: (id: string) => void;
+  /** Dify's id for the finished reply, needed to rate it */
+  onMessageId?: (id: string) => void;
   firstResponseTimeoutMs?: number;
   idleTimeoutMs?: number;
 }
@@ -217,6 +219,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
           opts.onReplace(data.answer || '');
           break;
         case 'message_end':
+          if (data.message_id) opts.onMessageId?.(String(data.message_id));
           completed = true;
           break;
         case 'workflow_finished':
@@ -265,5 +268,23 @@ export async function sendChat(opts: SendOptions): Promise<void> {
     activeReader = null;
     opts.signal.removeEventListener('abort', onOuterAbort);
     opts.signal.removeEventListener('abort', onOuterAbortReader);
+  }
+}
+
+// ---------- Rate a tutor reply (thumbs up / down) ----------
+// Saved in Dify against the message, so it shows in the app's Logs. null removes a rating.
+export type Rating = 'like' | 'dislike' | null;
+
+export async function sendFeedback(opts: { messageId: string; rating: Rating; user: string; code: string }): Promise<boolean> {
+  try {
+    const res = await fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(opts),
+      signal: AbortSignal.timeout(10000),
+    });
+    return res.ok;
+  } catch {
+    return false;
   }
 }
