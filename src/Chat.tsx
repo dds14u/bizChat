@@ -417,8 +417,13 @@ export default function Chat({ brand }: { brand: ReactNode }) {
           {brand}
         </button>
         {showAbout ? (
-          <button type="button" className="back-link" onClick={closeAbout}>
-            ← Back
+          <button type="button" className="close-link" onClick={closeAbout}>
+            Close
+            <span className="close-x" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </span>
           </button>
         ) : (
           <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} />
