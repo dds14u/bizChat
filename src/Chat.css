@@ -198,9 +198,14 @@
   outline: none;
 }
 
+/* The checkmark's space is reserved on every row, so selecting a mode never reflows the text */
 .mode-check {
   flex: none;
   color: var(--ink);
+}
+
+.mode-option:not(.current) .mode-check {
+  visibility: hidden;
 }
 
 /* ---------- Start screens ---------- */
@@ -702,6 +707,51 @@
 
 .bubble strong {
   font-weight: 800;
+}
+
+/* Hint attached to the bottom of a tutor reply (bracketed lines after the character's text) */
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px -16px 0; /* spans the bubble's full width */
+  padding: 8px 16px 9px;
+  background: var(--hl-soft);
+  border-top: 1.5px dashed var(--hl-edge);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  white-space: normal;
+}
+
+.hint + .hint {
+  margin-top: 0;
+}
+
+/* Last hint sits flush with the bubble's bottom and follows its corners
+   (inner radius = bubble radius minus its border; tail on the bottom left) */
+.hint:last-child {
+  margin-bottom: -12px;
+  border-radius: 0 0 12px 2px;
+}
+
+/* A reply that is only hints: the first one sits flush with the bubble's top too */
+.hint.top {
+  margin-top: -12px;
+  border-top: 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.hint b {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.hint-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #9a7600;
 }
 
 /* Clickable video links in tutor replies */
