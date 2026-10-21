@@ -1079,3 +1079,16 @@
   background: var(--rp-soft);
   color: var(--rp-ink);
 }
+
+/* ---------- Room for floating status pills (kept last so screen-size rules can't undo it) ---------- */
+/* A floating status pill (free messages left, ADMIN / PRO) sits just above the box.
+   Keep that much room at the end of the chat, and scroll new messages clear of it. */
+.chat.has-pill .messages {
+  padding-bottom: 56px;
+  scroll-padding-bottom: 56px;
+}
+
+/* First-visit screen has no text box: keep its footnote clear of the phone's home bar */
+.chat.screen-intro .messages {
+  padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+}

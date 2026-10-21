@@ -346,12 +346,18 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const usedUpMessage = trialEnded?.message || usedUp.message || 'You’ve used today’s free messages.';
   const usedUpContact = trialEnded?.contact || usedUp.contact || 'Ask Donald for your personal invite link.';
 
+  // First-visit screen: the learner picks Role-play or Coach from the cards, so there's no text box
+  const onIntro = showIntro && empty;
+
+  // Status pills float just above the box; the chat keeps room for them at the bottom so they never cover text
+  const showTrialPill = tier === 'visitor' && trialRemaining !== null && !showUsedUpCard;
+  const showTierBadge = tier === 'admin' || tier === 'invite';
+  const hasPill = !onIntro && (showTrialPill || showTierBadge);
+
   // Text above the box and placeholder depend on the screen
   let hint: ReactNode = null;
   let placeholder = 'Type your message';
-  if (showIntro && empty) {
-    placeholder = 'Or just type a question…';
-  } else if (empty) {
+  if (empty) {
     if (isRP) {
       hint = <span className="composer-hint">Set your own scene</span>;
       placeholder = 'e.g. I\'m a PM at Apple working on...';
@@ -394,7 +400,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       <main className="chat-area">
         <div className="chat-slot">
           <div
-            className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}${empty ? (showIntro ? ' screen-intro' : ' screen-home') : ' has-thread'}`}
+            className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}${empty ? (showIntro ? ' screen-intro' : ' screen-home') : ' has-thread'}${hasPill ? ' has-pill' : ''}`}
           >
             <div className="messages" aria-live="polite">
               {/* ---------- First visit: two mode cards (Proposal A1) ---------- */}
@@ -559,9 +565,10 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               </div>
             )}
 
+            {!onIntro && (
             <div className="composer">
               {/* Status pills float just above the box instead of taking a row of their own */}
-              {tier === 'visitor' && trialRemaining !== null && !showUsedUpCard && (
+              {showTrialPill && (
                 <div className="trial-remaining">
                   {trialRemaining === 0
                     ? 'That was your last free message today.'
@@ -569,7 +576,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                 </div>
               )}
               {/* Shown once the server confirms the code: ADMIN for admin codes, PRO for invite codes */}
-              {(tier === 'admin' || tier === 'invite') && (
+              {showTierBadge && (
                 <div className={`tier-badge ${tier}`}>{tier === 'admin' ? 'admin' : 'pro'}</div>
               )}
               {nearLimit && (
@@ -603,6 +610,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                 </button>
               </div>
             </div>
+            )}
           </div>
         </div>
       </main>
