@@ -26,23 +26,6 @@ function withModeDivider(list: Item[], next: ChatMode): Item[] {
   return lastMode === null || lastMode === next ? thread : [...thread, { kind: 'divider', mode: next }];
 }
 
-// The two-card intro (Proposal A1) shows on a learner's first visit only.
-const INTRO_KEY = 'rb.seenIntro';
-const readSeenIntro = () => {
-  try {
-    return localStorage.getItem(INTRO_KEY) === '1';
-  } catch {
-    return false;
-  }
-};
-const saveSeenIntro = () => {
-  try {
-    localStorage.setItem(INTRO_KEY, '1');
-  } catch {
-    // Storage blocked: the intro will just show again next visit
-  }
-};
-
 // Video links in tutor replies. Only Bilibili links become clickable (the only links
 // the system prompt asks for); any other address stays plain text.
 const VIDEO_LINK = /https:\/\/(?:[a-z0-9-]+\.)?(?:bilibili\.com|b23\.tv)\/[^\s<>"'，。！？）】]*/gi;
@@ -200,7 +183,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const [mode, setMode] = useState<ChatMode>('[RP]'); // the app opens in Role-play
   // About page: #about in the URL, so the phone's back gesture closes it
   const [showAbout, setShowAbout] = useState(() => window.location.hash === '#about');
-  const [showIntro, setShowIntro] = useState(() => !readSeenIntro());
+  // Every visit or refresh starts on the home screen (the two-card intro)
+  const [showIntro, setShowIntro] = useState(true);
 
   const userId = useRef(getBrowserId());
   const inviteCode = useRef(getInviteCode());
@@ -260,10 +244,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   }, [items]);
 
   const leaveIntro = () => {
-    if (showIntro) {
-      setShowIntro(false);
-      saveSeenIntro();
-    }
+    if (showIntro) setShowIntro(false);
   };
 
   const appendToReply = (chunk: string) =>
