@@ -68,6 +68,13 @@
   flex: none;
 }
 
+/* Home icon in place of the emoji on screens with a text box or chat */
+.brand-house {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+}
+
 .brand-text {
   min-width: 0;
   white-space: nowrap;

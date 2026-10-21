@@ -239,6 +239,12 @@ function ReplyBody({ text }: { text: string }) {
   );
 }
 
+const HomeIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 10.5 12 3l9 7.5M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" />
+  </svg>
+);
+
 const SendArrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 19V5M6 11l6-6 6 6" />
@@ -616,7 +622,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     <>
       <header className={`site-header${empty && !showAbout ? '' : ' with-line'}`}>
         <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
-          {brand}
+          <span className="brand-name">
+            {/* 🙋🏻‍♀️ on the two-card home screen and About page; a home icon wherever there's a text box or chat */}
+            {onIntro || showAbout ? (
+              <span className="brand-emoji">🙋🏻‍♀️</span>
+            ) : (
+              <span className="brand-emoji brand-house">
+                <HomeIcon />
+              </span>
+            )}
+            {brand}
+          </span>
         </button>
         {showAbout ? (
           <button type="button" className="close-link" onClick={closeAbout}>
