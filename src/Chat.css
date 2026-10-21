@@ -77,9 +77,9 @@
 }
 
 /* Heartbeat to point the learner to the mode button (see MODE_NUDGE):
-   two quick swells to 120%, a 1s pause, then two more (2.4s in total) */
+   two smooth swells to 120% (0.78s), a 0.6s rest, then two more (2.16s in total) */
 .mode-pill.pulse {
-  animation: mode-heartbeat 2.4s ease-in-out 1;
+  animation: mode-heartbeat 2.16s ease-in-out 1;
   transform-origin: 85% 50%; /* grow mostly to the left, so it stays on screen at the right edge */
 }
 
@@ -87,29 +87,28 @@
   0% {
     transform: scale(1);
   }
-  5% {
-    transform: scale(1.2); /* 0.12s: first beat */
+  6.67% {
+    transform: scale(1.2); /* 0.14s: first beat */
   }
-  12.5% {
+  16.67% {
     transform: scale(1);
   }
-  17.5% {
-    transform: scale(1.2); /* second beat */
+  23.33% {
+    transform: scale(1.2); /* 0.50s: second beat */
   }
-  27%,
-  68.75% {
-    transform: scale(1); /* about 1s rest */
+  36.11%,
+  63.89% {
+    transform: scale(1); /* 0.78s to 1.38s: rest */
   }
-  73.75% {
+  70.56% {
     transform: scale(1.2);
   }
-  81.25% {
+  80.56% {
     transform: scale(1);
   }
-  86.25% {
+  87.22% {
     transform: scale(1.2);
   }
-  96%,
   100% {
     transform: scale(1);
   }
