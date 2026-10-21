@@ -415,7 +415,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="avatar big" aria-hidden="true"><RoleplayIcon size={26} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Practice a conversation</span>
-                        <span className="mode-card-kicker">ROLE-PLAY MODE</span>
+                        <span className="mode-card-kicker">ROLE-PLAY MODE<span className="zh" lang="zh-CN">模拟交流</span></span>
                       </span>
                     </span>
                     <span className="mode-card-body">Talk with a colleague, manager, or client and get feedback.</span>
@@ -426,7 +426,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="avatar big" aria-hidden="true"><CoachIcon size={22} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Ask a question</span>
-                        <span className="mode-card-kicker">COACH MODE</span>
+                        <span className="mode-card-kicker">COACH MODE<span className="zh" lang="zh-CN">咨询模式</span></span>
                       </span>
                     </span>
                     <span className="mode-card-body">Guidance from Donald’s lessons.</span>

@@ -163,6 +163,19 @@
   font-weight: 800;
 }
 
+.mode-option .zh {
+  margin-left: 8px;
+  font-weight: 700;
+}
+
+.mode-option.qa .zh {
+  color: var(--qa-ink);
+}
+
+.mode-option.rp .zh {
+  color: var(--rp-ink);
+}
+
 .mode-option-hint {
   font-size: 0.9rem;
   color: var(--ink-soft);
@@ -327,6 +340,14 @@
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.05em;
+}
+
+ /* Chinese name beside the kicker: same color, no tracking (letter-spacing breaks up CJK) */
+.mode-card-kicker .zh {
+  margin-left: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .mode-card.qa .mode-card-kicker {
