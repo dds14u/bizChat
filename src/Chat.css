@@ -709,6 +709,43 @@
   font-weight: 800;
 }
 
+/* Hint attached to the bottom of a tutor reply (bracketed lines after the character's text) */
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px -16px 0; /* spans the bubble's full width */
+  padding: 8px 16px 9px;
+  background: var(--hl-soft);
+  border-top: 1.5px dashed var(--hl-edge);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  white-space: normal;
+}
+
+.hint + .hint {
+  margin-top: 0;
+}
+
+/* Last hint sits flush with the bubble's bottom and follows its corners
+   (inner radius = bubble radius minus its border; tail on the bottom left) */
+.hint:last-child {
+  margin-bottom: -12px;
+  border-radius: 0 0 12px 2px;
+}
+
+.hint b {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.hint-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #9a7600;
+}
+
 /* Clickable video links in tutor replies */
 .video-link {
   color: var(--qa-ink);

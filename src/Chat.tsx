@@ -83,6 +83,76 @@ function formatReply(text: string): ReactNode {
   );
 }
 
+// Hints: bracketed lines that come after the character's own text, e.g.
+//   Sarah: "Thanks, sounds good."
+//   [Now give the context: the past, the present, and the future.]
+// are pulled out of the bubble text and shown as attached notes under it.
+// Brackets before any regular text (the scene-setting line, an out-of-character
+// answer) stay in the bubble. Works on partial text, so a hint appears live as it
+// streams in; if regular text follows a bracket later, it moves back into the bubble.
+function splitHints(text: string): { body: string; hints: string[] } {
+  const lines = text.split('\n');
+  let depth = 0; // open [ brackets carried over from earlier lines
+  let sawRegular = false;
+  let hintStart = -1; // first line of the trailing bracket run
+  const starts: number[] = []; // first line of each bracket block within that run
+  lines.forEach((line, i) => {
+    const t = line.trim();
+    if (!t) return;
+    const opensHere = depth === 0 && t.startsWith('[');
+    const continuing = depth > 0;
+    for (const ch of t) {
+      if (ch === '[') depth++;
+      else if (ch === ']') depth = Math.max(0, depth - 1);
+    }
+    // A bracket line: starts a bracket (or continues one) and doesn't run on past the closing ]
+    const isBracket = (opensHere || continuing) && (depth > 0 || t.endsWith(']'));
+    if (!isBracket) {
+      sawRegular = true;
+      hintStart = -1;
+      starts.length = 0;
+      return;
+    }
+    if (!sawRegular) return;
+    if (hintStart < 0) hintStart = i;
+    if (opensHere) starts.push(i);
+  });
+  if (hintStart < 0) return { body: text, hints: [] };
+  const hints = starts
+    .map((s, k) => lines.slice(s, starts[k + 1] ?? lines.length).join(' ').trim())
+    .map((h) => h.replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim())
+    .filter(Boolean);
+  return { body: lines.slice(0, hintStart).join('\n').trimEnd(), hints };
+}
+
+const HintBulb = () => (
+  <svg className="hint-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" />
+  </svg>
+);
+
+// Tutor reply: bubble text plus any trailing bracketed hints as attached notes
+function ReplyBody({ text }: { text: string }) {
+  const { body, hints } = splitHints(text);
+  return (
+    <>
+      {formatReply(body)}
+      {hints.map((h, k) => {
+        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+        return (
+          <div key={k} className="hint">
+            <HintBulb />
+            <span>
+              {label && <b>{label[1]}: </b>}
+              {formatReply(label ? h.slice(label[0].length) : h)}
+            </span>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
 const SendArrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 19V5M6 11l6-6 6 6" />
@@ -609,7 +679,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? formatReply(item.text) : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">
