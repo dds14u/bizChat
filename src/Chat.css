@@ -735,6 +735,14 @@
   border-radius: 0 0 12px 2px;
 }
 
+/* A reply that is only hints: the first one sits flush with the bubble's top too */
+.hint.top {
+  margin-top: -12px;
+  border-top: 0;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
 .hint b {
   color: var(--ink);
   font-weight: 800;

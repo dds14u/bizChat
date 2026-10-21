@@ -83,46 +83,63 @@ function formatReply(text: string): ReactNode {
   );
 }
 
-// Hints: bracketed lines that come after the character's own text, e.g.
+// Hints: every line (or run of lines) wrapped in [ ] in a tutor reply, e.g.
 //   Sarah: "Thanks, sounds good."
 //   [Now give the context: the past, the present, and the future.]
-// are pulled out of the bubble text and shown as attached notes under it.
-// Brackets before any regular text (the scene-setting line, an out-of-character
-// answer) stay in the bubble. Works on partial text, so a hint appears live as it
-// streams in; if regular text follows a bracket later, it moves back into the bubble.
-function splitHints(text: string): { body: string; hints: string[] } {
-  const lines = text.split('\n');
-  let depth = 0; // open [ brackets carried over from earlier lines
-  let sawRegular = false;
-  let hintStart = -1; // first line of the trailing bracket run
-  const starts: number[] = []; // first line of each bracket block within that run
-  lines.forEach((line, i) => {
+// is pulled out of the bubble text and shown as an attached note under it.
+// One exception: in a scene's opening reply, the first bracket is the scene-setting
+// line, so it stays in the bubble. Brackets inside a sentence ("send it to [the
+// client]") are ordinary text. Works on partial text, so a hint appears live as it
+// streams in.
+function splitHints(text: string, keepSceneSetting: boolean): { body: string; hints: string[] } {
+  // 1. Group lines into blocks: a bracket block runs from a line starting with [
+  //    to the line where its brackets close; every other line is its own block.
+  type Block = { bracket: boolean; lines: string[] };
+  const blocks: Block[] = [];
+  let open: Block | null = null;
+  let depth = 0;
+  for (const line of text.split('\n')) {
     const t = line.trim();
-    if (!t) return;
-    const opensHere = depth === 0 && t.startsWith('[');
-    const continuing = depth > 0;
+    if (!open && !t.startsWith('[')) {
+      blocks.push({ bracket: false, lines: [line] });
+      continue;
+    }
+    let d = open ? depth : 0;
     for (const ch of t) {
-      if (ch === '[') depth++;
-      else if (ch === ']') depth = Math.max(0, depth - 1);
+      if (ch === '[') d++;
+      else if (ch === ']') d = Math.max(0, d - 1);
     }
-    // A bracket line: starts a bracket (or continues one) and doesn't run on past the closing ]
-    const isBracket = (opensHere || continuing) && (depth > 0 || t.endsWith(']'));
-    if (!isBracket) {
-      sawRegular = true;
-      hintStart = -1;
-      starts.length = 0;
-      return;
+    if (open) {
+      open.lines.push(line);
+    } else if (d === 0 && !t.endsWith(']')) {
+      // Starts with [ but text runs on past the closing ] ("[Note] then ..."): ordinary text
+      blocks.push({ bracket: false, lines: [line] });
+      continue;
+    } else {
+      open = { bracket: true, lines: [line] };
+      blocks.push(open);
     }
-    if (!sawRegular) return;
-    if (hintStart < 0) hintStart = i;
-    if (opensHere) starts.push(i);
-  });
-  if (hintStart < 0) return { body: text, hints: [] };
-  const hints = starts
-    .map((s, k) => lines.slice(s, starts[k + 1] ?? lines.length).join(' ').trim())
-    .map((h) => h.replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim())
-    .filter(Boolean);
-  return { body: lines.slice(0, hintStart).join('\n').trimEnd(), hints };
+    depth = d;
+    if (d === 0) open = null;
+  }
+
+  // 2. Bracket blocks become hints, except a scene opening's first block (the scene-setting line)
+  const body: string[] = [];
+  const hints: string[] = [];
+  let first = true;
+  for (const b of blocks) {
+    const hasText = b.lines.some((l) => l.trim());
+    if (b.bracket && !(keepSceneSetting && first)) {
+      hints.push(b.lines.join(' ').trim().replace(/^\[\s*/, '').replace(/\s*\]$/, '').trim());
+    } else {
+      body.push(...b.lines);
+    }
+    if (hasText) first = false;
+  }
+  return {
+    body: body.join('\n').replace(/\n{3,}/g, '\n\n').trim(),
+    hints: hints.filter(Boolean),
+  };
 }
 
 const HintBulb = () => (
@@ -131,16 +148,17 @@ const HintBulb = () => (
   </svg>
 );
 
-// Tutor reply: bubble text plus any trailing bracketed hints as attached notes
-function ReplyBody({ text }: { text: string }) {
-  const { body, hints } = splitHints(text);
+// Tutor reply: bubble text plus its bracketed hints as attached notes.
+// sceneOpening: the first reply after a scene starts, whose first bracket is the scene setup.
+function ReplyBody({ text, sceneOpening }: { text: string; sceneOpening: boolean }) {
+  const { body, hints } = splitHints(text, sceneOpening);
   return (
     <>
       {formatReply(body)}
       {hints.map((h, k) => {
         const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
         return (
-          <div key={k} className="hint">
+          <div key={k} className={`hint${!body && k === 0 ? ' top' : ''}`}>
             <HintBulb />
             <span>
               {label && <b>{label[1]}: </b>}
@@ -465,6 +483,13 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const empty = items.length === 0;
   const last = items[items.length - 1];
   const lastReplyIndex = items.map((x) => x.kind).lastIndexOf('assistant');
+  // Scene openings: the first tutor reply after each scene header (its first bracket is the scene setup)
+  const sceneOpenings = new Set<number>();
+  items.forEach((x, i) => {
+    if (x.kind !== 'scene') return;
+    const next = items.findIndex((y, j) => j > i && (y.kind === 'assistant' || y.kind === 'scene'));
+    if (next >= 0 && items[next].kind === 'assistant') sceneOpenings.add(next);
+  });
   const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
   const startDisabled = sending || trialUsedUp;
   // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
@@ -679,7 +704,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} sceneOpening={sceneOpenings.has(i)} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">
