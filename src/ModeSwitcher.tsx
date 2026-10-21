@@ -18,7 +18,7 @@ export const RoleplayIcon = ({ size = 16 }: { size?: number }) => (
 
 const OPTIONS: { mode: ChatMode; label: string; zh: string; hint: string; Icon: typeof CoachIcon }[] = [
   { mode: '[RP]', label: 'Role-play', zh: '情景模拟', hint: 'Practice a conversation', Icon: RoleplayIcon },
-  { mode: '[QA]', label: 'Coach', zh: '答疑模式', hint: 'Ask questions, get guidance', Icon: CoachIcon },
+  { mode: '[QA]', label: 'Coach', zh: '答疑模式', hint: 'Ask questions', Icon: CoachIcon },
 ];
 
 export const modeLabel = (mode: ChatMode) => (mode === '[RP]' ? 'Role-play' : 'Coach');
@@ -102,11 +102,10 @@ export default function ModeSwitcher({ mode, onChange, disabled, onAbout }: Prop
                 </span>
                 <span className="mode-option-hint">{hint}</span>
               </span>
-              {m === mode && (
-                <svg className="mode-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-              )}
+              {/* Always rendered so every row keeps the same width; only the selected row shows it */}
+              <svg className="mode-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
             </button>
           ))}
           {onAbout && (

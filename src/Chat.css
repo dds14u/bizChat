@@ -198,9 +198,14 @@
   outline: none;
 }
 
+/* The checkmark's space is reserved on every row, so selecting a mode never reflows the text */
 .mode-check {
   flex: none;
   color: var(--ink);
+}
+
+.mode-option:not(.current) .mode-check {
+  visibility: hidden;
 }
 
 /* ---------- Start screens ---------- */
