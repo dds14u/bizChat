@@ -999,12 +999,12 @@
 
 /* Free messages left: a quiet neutral pill (matches the ADMIN / PRO badge); the gold "used up" card is the alert */
 .trial-remaining {
-  padding: 3px 12px;
+  padding: 4px 14px;
   border-radius: 999px;
   background: var(--card);
   border: 1.5px solid var(--line-soft);
   color: var(--ink-soft);
-  font-size: 0.83rem;
+  font-size: 0.92rem;
   font-weight: 600;
   box-shadow: none;
 }
