@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
@@ -133,26 +133,108 @@ const HintBulb = () => (
 // Notes always sit under the text, even when the model wrote one first (e.g. the scene
 // setup); while streaming, a note can appear before any text, and the text then fills
 // in above it.
+// All of a reply's notes count together: as soon as they add up to more than NOTE_LINES
+// lines (even mid-stream), the group is cut at that line with "… See more", and "Hide" at
+// the end of the last note folds it back.
+const NOTE_LINES = 8;
+
+// A Role-play reply that points the learner to the mode button, e.g. "tap the mode menu and
+// choose Coach": a verb (tap/press/push/click/select/open), up to 3 words, then mode/menu/button.
+// Also the Chinese form (点击/按 … 模式/菜单/按钮). Makes the mode button pulse twice.
+const MODE_NUDGE =
+  /\b(?:tap|press|push|click|select|open)\b(?:\s+[\w'’-]+){0,3}?\s+(?:mode|menu|button)s?\b|(?:点击|点|按)[^。！？\n]{0,8}?(?:模式|菜单|按钮)/i;
+
 function ReplyBody({ text }: { text: string }) {
   const segs = splitHints(text);
   const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
   const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
+
+  const groupRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  // Where to cut the group (px from its top) and where "… See more" sits; null = fits
+  const [cut, setCut] = useState<{ height: number; moreTop: number; lineH: number } | null>(null);
+
+  // Measure the notes' rendered lines, also while the reply is still streaming, so the
+  // 8-line cap applies live. At most once per screen redraw; again on resize.
+  useLayoutEffect(() => {
+    const group = groupRef.current;
+    if (!group) {
+      setCut(null);
+      return;
+    }
+    const measure = () => {
+      const top = group.getBoundingClientRect().top;
+      let lines = 0;
+      let next: { height: number; moreTop: number; lineH: number } | null = null;
+      for (const span of group.querySelectorAll<HTMLElement>('.hint-text')) {
+        const lineH = parseFloat(getComputedStyle(span).lineHeight) || 20;
+        const r = span.getBoundingClientRect();
+        const n = Math.max(1, Math.round(r.height / lineH));
+        if (!next && lines + n > NOTE_LINES) {
+          // The last visible line falls inside this note
+          const lineTop = r.top - top + (NOTE_LINES - lines - 1) * lineH;
+          next = { height: Math.round(lineTop + lineH + 9), moreTop: Math.round(lineTop), lineH };
+        }
+        lines += n;
+      }
+      const found = lines > NOTE_LINES ? next : null;
+      setCut((prev) =>
+        prev && found && prev.height === found.height && prev.moreTop === found.moreTop ? prev : found
+      );
+    };
+    let frame = requestAnimationFrame(measure);
+    const onResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [text, hints.length]);
+
+  const collapsed = Boolean(cut) && !expanded;
   return (
     <>
       {body && formatReply(body)}
-      {hints.map((h, k) => {
-        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
-        const cls = ['hint', !body && k === 0 && 'first', k === hints.length - 1 && 'last'].filter(Boolean).join(' ');
-        return (
-          <div key={k} className={cls}>
-            <HintBulb />
-            <span>
-              {label && <b>{label[1]}: </b>}
-              {formatReply(label ? h.slice(label[0].length) : h)}
-            </span>
-          </div>
-        );
-      })}
+      {hints.length > 0 && (
+        <div
+          ref={groupRef}
+          className={`hints${!body ? ' first' : ''}${collapsed ? ' collapsed' : ''}`}
+          style={collapsed && cut ? { maxHeight: cut.height } : undefined}
+        >
+          {hints.map((h, k) => {
+            const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+            const isLast = k === hints.length - 1;
+            return (
+              <div key={k} className="hint">
+                <HintBulb />
+                <span className="hint-text">
+                  {label && <b>{label[1]}: </b>}
+                  {formatReply(label ? h.slice(label[0].length) : h)}
+                  {cut && expanded && isLast && (
+                    <button type="button" className="hint-toggle hide" aria-expanded="true" onClick={() => setExpanded(false)}>
+                      Hide
+                    </button>
+                  )}
+                </span>
+              </div>
+            );
+          })}
+          {collapsed && cut && (
+            <button
+              type="button"
+              className="hint-toggle more"
+              style={{ top: cut.moreTop, height: cut.lineH }}
+              aria-expanded="false"
+              onClick={() => setExpanded(true)}
+            >
+              … See more
+            </button>
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -202,6 +284,20 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const mountedRef = useRef(true);
+
+  // Pulse the mode button when a finished Role-play reply tells the learner to tap it
+  const [modeNudge, setModeNudge] = useState(0);
+  const nudgedReply = useRef('');
+  useEffect(() => {
+    if (sending) return; // wait until the reply is finished (the button is disabled while streaming)
+    const i = items.map((x) => x.kind).lastIndexOf('assistant');
+    const reply = items[i];
+    if (!reply || reply.kind !== 'assistant' || reply.mode !== '[RP]') return;
+    const key = `${i}:${reply.text}`;
+    if (key === nudgedReply.current || !MODE_NUDGE.test(reply.text)) return;
+    nudgedReply.current = key; // once per reply
+    setModeNudge((n) => n + 1);
+  }, [items, sending]);
 
   // Cancel any reply in progress when the chat goes away
   useEffect(() => {
@@ -532,7 +628,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
             </span>
           </button>
         ) : (
-          <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} />
+          <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} nudge={modeNudge} />
         )}
       </header>
 
