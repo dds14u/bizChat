@@ -1,0 +1,71 @@
+/* About page: header stays fixed, the body scrolls under it */
+.about-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: calc(var(--header-h, 64px) + env(safe-area-inset-top, 0px));
+}
+
+.about {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 26px 20px 48px;
+}
+
+.about h1 {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.about h2 {
+  margin: 26px 0 6px;
+  font-size: 1.15rem;
+}
+
+.about p {
+  margin: 0 0 12px;
+}
+
+.about-zh {
+  color: var(--ink-soft);
+}
+
+.about-link {
+  font-weight: 800;
+  color: var(--qa-ink);
+  text-underline-offset: 3px;
+}
+
+/* "← Back" in the header, where the mode menu usually sits */
+.back-link {
+  flex: none;
+  padding: 8px 4px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--qa-ink);
+  cursor: pointer;
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* The chat stays mounted (and keeps its scroll) while the About page is open */
+.chat-area[hidden] {
+  display: none;
+}
+
+@media (max-width: 479px) {
+  .about {
+    padding: 20px 16px 40px;
+  }
+  .about h1 {
+    font-size: 1.7rem;
+  }
+}

@@ -27,10 +27,11 @@ interface Props {
   mode: ChatMode;
   onChange: (mode: ChatMode) => void;
   disabled?: boolean;
+  onAbout?: () => void;
 }
 
 // Top-right mode pill with a dropdown (Proposal C)
-export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
+export default function ModeSwitcher({ mode, onChange, disabled, onAbout }: Props) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const current = OPTIONS.find((o) => o.mode === mode) ?? OPTIONS[0];
@@ -108,6 +109,19 @@ export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
               )}
             </button>
           ))}
+          {onAbout && (
+            <button
+              type="button"
+              role="menuitem"
+              className="mode-about"
+              onClick={() => {
+                setOpen(false);
+                onAbout();
+              }}
+            >
+              About
+            </button>
+          )}
         </div>
       )}
     </div>

@@ -175,6 +175,29 @@
   color: var(--ink-soft);
 }
 
+ /* "About" at the bottom of the mode menu, under a quiet divider */
+.mode-about {
+  width: 100%;
+  margin-top: 2px;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+  border-radius: 0 0 10px 10px;
+  background: none;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-align: center;
+  cursor: pointer;
+}
+
+.mode-about:hover,
+.mode-about:focus-visible {
+  background: #f4f1ea;
+  outline: none;
+}
+
 .mode-check {
   flex: none;
   color: var(--ink);
