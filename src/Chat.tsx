@@ -2,6 +2,7 @@ import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ChangeE
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, type ChatMode } from './chatApi';
+import About from './About';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
 import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } from './scenes';
 
@@ -97,6 +98,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   // The page owns the mode. Only the switcher, the intro cards and scene cards change it.
   const [mode, setMode] = useState<ChatMode>('[RP]'); // the app opens in Role-play
+  // About page: #about in the URL, so the phone's back gesture closes it
+  const [showAbout, setShowAbout] = useState(() => window.location.hash === '#about');
   const [showIntro, setShowIntro] = useState(() => !readSeenIntro());
 
   const userId = useRef(getBrowserId());
@@ -304,7 +307,26 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   // Logo / title: back to the home screen with the Coach and Role-play cards.
   // Like "Start a new chat", this ends the current conversation.
+  useEffect(() => {
+    const onPop = () => setShowAbout(window.location.hash === '#about');
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  const openAbout = () => {
+    if (window.location.hash !== '#about') window.history.pushState({ about: true }, '', '#about');
+    setShowAbout(true);
+  };
+
+  const closeAbout = () => {
+    // Opened from the menu: step back in history. Landed on #about directly: just clear it.
+    if (window.history.state?.about) window.history.back();
+    else window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    setShowAbout(false);
+  };
+
   const goHome = () => {
+    if (showAbout) closeAbout();
     newChat();
     setInput('');
     if (inputRef.current) {
@@ -390,14 +412,22 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   return (
     <>
-      <header className={`site-header${empty ? '' : ' with-line'}`}>
+      <header className={`site-header${empty && !showAbout ? '' : ' with-line'}`}>
         <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
           {brand}
         </button>
-        <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} />
+        {showAbout ? (
+          <button type="button" className="back-link" onClick={closeAbout}>
+            ← Back
+          </button>
+        ) : (
+          <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} />
+        )}
       </header>
 
-      <main className="chat-area">
+      {showAbout && <About />}
+
+      <main className="chat-area" hidden={showAbout}>
         <div className="chat-slot">
           <div
             className={`chat ${isRP ? 'mode-rp' : 'mode-qa'}${empty ? (showIntro ? ' screen-intro' : ' screen-home') : ' has-thread'}${hasPill ? ' has-pill' : ''}`}
@@ -415,7 +445,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="avatar big" aria-hidden="true"><RoleplayIcon size={26} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Practice a conversation</span>
-                        <span className="mode-card-kicker">ROLE-PLAY MODE</span>
+                        <span className="mode-card-kicker">ROLE-PLAY MODE<span className="zh" lang="zh-CN">模拟同事/客户</span></span>
                       </span>
                     </span>
                     <span className="mode-card-body">Talk with a colleague, manager, or client and get feedback.</span>
@@ -426,7 +456,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                       <span className="avatar big" aria-hidden="true"><CoachIcon size={22} /></span>
                       <span className="mode-card-titles">
                         <span className="mode-card-title">Ask a question</span>
-                        <span className="mode-card-kicker">COACH MODE</span>
+                        <span className="mode-card-kicker">COACH MODE<span className="zh" lang="zh-CN">答疑模式</span></span>
                       </span>
                     </span>
                     <span className="mode-card-body">Guidance from Donald’s lessons.</span>

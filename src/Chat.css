@@ -163,9 +163,39 @@
   font-weight: 800;
 }
 
+.mode-option .zh {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
 .mode-option-hint {
   font-size: 0.9rem;
   color: var(--ink-soft);
+}
+
+ /* "About" at the bottom of the mode menu, under a quiet divider */
+.mode-about {
+  width: 100%;
+  margin-top: 2px;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+  border-radius: 0 0 10px 10px;
+  background: none;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-align: center;
+  cursor: pointer;
+}
+
+.mode-about:hover,
+.mode-about:focus-visible {
+  background: #f4f1ea;
+  outline: none;
 }
 
 .mode-check {
@@ -327,6 +357,14 @@
   font-size: 0.82rem;
   font-weight: 800;
   letter-spacing: 0.05em;
+}
+
+ /* Chinese name beside the kicker: same color, no tracking (letter-spacing breaks up CJK) */
+.mode-card-kicker .zh {
+  margin-left: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .mode-card.qa .mode-card-kicker {

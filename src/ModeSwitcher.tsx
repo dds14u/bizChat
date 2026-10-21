@@ -16,9 +16,9 @@ export const RoleplayIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-const OPTIONS: { mode: ChatMode; label: string; hint: string; Icon: typeof CoachIcon }[] = [
-  { mode: '[RP]', label: 'Role-play', hint: 'Practice a conversation', Icon: RoleplayIcon },
-  { mode: '[QA]', label: 'Coach', hint: 'Ask questions, get guidance', Icon: CoachIcon },
+const OPTIONS: { mode: ChatMode; label: string; zh: string; hint: string; Icon: typeof CoachIcon }[] = [
+  { mode: '[RP]', label: 'Role-play', zh: '情景模拟', hint: 'Practice a conversation', Icon: RoleplayIcon },
+  { mode: '[QA]', label: 'Coach', zh: '答疑模式', hint: 'Ask questions, get guidance', Icon: CoachIcon },
 ];
 
 export const modeLabel = (mode: ChatMode) => (mode === '[RP]' ? 'Role-play' : 'Coach');
@@ -27,10 +27,11 @@ interface Props {
   mode: ChatMode;
   onChange: (mode: ChatMode) => void;
   disabled?: boolean;
+  onAbout?: () => void;
 }
 
 // Top-right mode pill with a dropdown (Proposal C)
-export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
+export default function ModeSwitcher({ mode, onChange, disabled, onAbout }: Props) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const current = OPTIONS.find((o) => o.mode === mode) ?? OPTIONS[0];
@@ -82,7 +83,7 @@ export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
 
       {open && (
         <div className="mode-menu" role="menu" aria-label="Switch mode">
-          {OPTIONS.map(({ mode: m, label, hint, Icon }) => (
+          {OPTIONS.map(({ mode: m, label, zh, hint, Icon }) => (
             <button
               key={m}
               type="button"
@@ -95,7 +96,10 @@ export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
                 <Icon size={18} />
               </span>
               <span className="mode-option-text">
-                <span className="mode-option-label">{label}</span>
+                <span className="mode-option-label">
+                  {label}
+                  <span className="zh" lang="zh-CN">{zh}</span>
+                </span>
                 <span className="mode-option-hint">{hint}</span>
               </span>
               {m === mode && (
@@ -105,6 +109,19 @@ export default function ModeSwitcher({ mode, onChange, disabled }: Props) {
               )}
             </button>
           ))}
+          {onAbout && (
+            <button
+              type="button"
+              role="menuitem"
+              className="mode-about"
+              onClick={() => {
+                setOpen(false);
+                onAbout();
+              }}
+            >
+              About
+            </button>
+          )}
         </div>
       )}
     </div>
