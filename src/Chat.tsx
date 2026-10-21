@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
@@ -133,26 +133,91 @@ const HintBulb = () => (
 // Notes always sit under the text, even when the model wrote one first (e.g. the scene
 // setup); while streaming, a note can appear before any text, and the text then fills
 // in above it.
-function ReplyBody({ text }: { text: string }) {
+// All of a reply's notes count together: once the reply has finished streaming, if they
+// add up to more than NOTE_LINES lines, the group is cut at that line with "… See more",
+// and "Hide" at the end of the last note folds it back.
+const NOTE_LINES = 8;
+
+function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
   const segs = splitHints(text);
   const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
   const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
+
+  const groupRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  // Where to cut the group (px from its top) and where "… See more" sits; null = fits
+  const [cut, setCut] = useState<{ height: number; moreTop: number; lineH: number } | null>(null);
+
+  // Measure the notes' rendered lines (only after streaming, and again on resize)
+  useLayoutEffect(() => {
+    const group = groupRef.current;
+    if (!group || streaming) {
+      setCut(null);
+      return;
+    }
+    const measure = () => {
+      const top = group.getBoundingClientRect().top;
+      let lines = 0;
+      let next: { height: number; moreTop: number; lineH: number } | null = null;
+      for (const span of group.querySelectorAll<HTMLElement>('.hint-text')) {
+        const lineH = parseFloat(getComputedStyle(span).lineHeight) || 20;
+        const r = span.getBoundingClientRect();
+        const n = Math.max(1, Math.round(r.height / lineH));
+        if (!next && lines + n > NOTE_LINES) {
+          // The last visible line falls inside this note
+          const lineTop = r.top - top + (NOTE_LINES - lines - 1) * lineH;
+          next = { height: Math.round(lineTop + lineH + 9), moreTop: Math.round(lineTop), lineH };
+        }
+        lines += n;
+      }
+      setCut(lines > NOTE_LINES ? next : null);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [text, streaming, hints.length]);
+
+  const collapsed = Boolean(cut) && !expanded;
   return (
     <>
       {body && formatReply(body)}
-      {hints.map((h, k) => {
-        const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
-        const cls = ['hint', !body && k === 0 && 'first', k === hints.length - 1 && 'last'].filter(Boolean).join(' ');
-        return (
-          <div key={k} className={cls}>
-            <HintBulb />
-            <span>
-              {label && <b>{label[1]}: </b>}
-              {formatReply(label ? h.slice(label[0].length) : h)}
-            </span>
-          </div>
-        );
-      })}
+      {hints.length > 0 && (
+        <div
+          ref={groupRef}
+          className={`hints${!body ? ' first' : ''}${collapsed ? ' collapsed' : ''}`}
+          style={collapsed && cut ? { maxHeight: cut.height } : undefined}
+        >
+          {hints.map((h, k) => {
+            const label = h.match(/^(Hint|Note|提示)\s*[:：]\s*/i);
+            const isLast = k === hints.length - 1;
+            return (
+              <div key={k} className="hint">
+                <HintBulb />
+                <span className="hint-text">
+                  {label && <b>{label[1]}: </b>}
+                  {formatReply(label ? h.slice(label[0].length) : h)}
+                  {cut && expanded && isLast && (
+                    <button type="button" className="hint-toggle hide" aria-expanded="true" onClick={() => setExpanded(false)}>
+                      Hide
+                    </button>
+                  )}
+                </span>
+              </div>
+            );
+          })}
+          {collapsed && cut && (
+            <button
+              type="button"
+              className="hint-toggle more"
+              style={{ top: cut.moreTop, height: cut.lineH }}
+              aria-expanded="false"
+              onClick={() => setExpanded(true)}
+            >
+              … See more
+            </button>
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -681,7 +746,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} streaming={sending && i === items.length - 1} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">

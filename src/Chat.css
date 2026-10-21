@@ -709,40 +709,85 @@
   font-weight: 800;
 }
 
-/* Notes under a tutor reply's text (bracketed lines: scene setup, cues, hints) */
+/* Notes under a tutor reply's text (bracketed lines: scene setup, cues, hints).
+   The group spans the bubble's full width and sits flush with its bottom edge
+   (inner radius = bubble radius minus its border; chat tail on the bottom left). */
+.hints {
+  position: relative;
+  margin: 10px -16px -12px;
+  overflow: hidden;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 12px;
+}
+
+/* A reply with no text yet (or only notes): flush with the bubble's top too */
+.hints.first {
+  margin-top: -12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
 .hint {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 10px -16px 0; /* spans the bubble's full width */
   padding: 8px 16px 9px;
   background: var(--hl-soft);
-  border-top: 1.5px dashed var(--hl-edge);
+  border-top: 1.5px dashed var(--hl-edge); /* divider above each note */
   font-size: 0.92rem;
   line-height: 1.35;
   color: var(--ink-soft);
   white-space: normal;
 }
 
-/* Notes in a row share one divider */
-.hint + .hint {
-  margin-top: 0;
-}
-
-/* A reply with no text yet (or only notes): the first note sits flush with the bubble's
-   top edge and corners (inner radius = bubble radius minus its border) */
-.hint.first {
-  margin-top: -12px;
+.hints.first .hint:first-child {
   border-top: 0;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
 }
 
-/* Last note: flush with the bubble's bottom edge (chat tail on the bottom left) */
-.hint.last {
-  margin-bottom: -12px;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 12px;
+.hint-text {
+  min-width: 0;
+  flex: 1;
+}
+
+/* Collapsed: keep the strip under the last visible line clear (it would show the top of the next line) */
+.hints.collapsed::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9px;
+  background: var(--hl-soft);
+}
+
+/* "… See more" sits on the last visible line; "Hide" follows the last note's text */
+.hint-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.hint-toggle.more {
+  position: absolute;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  padding-left: 2.2em;
+  background: linear-gradient(to right, transparent, var(--hl-soft) 1.6em);
+}
+
+.hint-toggle.hide {
+  margin-left: 6px;
+}
+
+.hint-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 .hint b {
