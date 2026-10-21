@@ -997,14 +997,16 @@
   box-shadow: 0 2px 8px rgba(40, 32, 20, 0.12);
 }
 
+/* Free messages left: a quiet neutral pill (matches the ADMIN / PRO badge); the gold "used up" card is the alert */
 .trial-remaining {
-  padding: 4px 14px;
+  padding: 3px 12px;
   border-radius: 999px;
-  background: var(--hl-soft);
-  border: 1.5px solid var(--hl-edge);
-  color: var(--ink);
-  font-size: 0.92rem;
-  font-weight: 700;
+  background: var(--card);
+  border: 1.5px solid var(--line-soft);
+  color: var(--ink-soft);
+  font-size: 0.83rem;
+  font-weight: 600;
+  box-shadow: none;
 }
 
 .trial-card {
