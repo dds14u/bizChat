@@ -133,12 +133,18 @@ const HintBulb = () => (
 // Notes always sit under the text, even when the model wrote one first (e.g. the scene
 // setup); while streaming, a note can appear before any text, and the text then fills
 // in above it.
-// All of a reply's notes count together: once the reply has finished streaming, if they
-// add up to more than NOTE_LINES lines, the group is cut at that line with "… See more",
-// and "Hide" at the end of the last note folds it back.
+// All of a reply's notes count together: as soon as they add up to more than NOTE_LINES
+// lines (even mid-stream), the group is cut at that line with "… See more", and "Hide" at
+// the end of the last note folds it back.
 const NOTE_LINES = 8;
 
-function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
+// A Role-play reply that points the learner to the mode button, e.g. "tap the mode menu and
+// choose Coach": a verb (tap/press/push/click/select/open), up to 3 words, then mode/menu/button.
+// Also the Chinese form (点击/按 … 模式/菜单/按钮). Makes the mode button pulse twice.
+const MODE_NUDGE =
+  /\b(?:tap|press|push|click|select|open)\b(?:\s+[\w'’-]+){0,3}?\s+(?:mode|menu|button)s?\b|(?:点击|点|按)[^。！？\n]{0,8}?(?:模式|菜单|按钮)/i;
+
+function ReplyBody({ text }: { text: string }) {
   const segs = splitHints(text);
   const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
   const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
@@ -148,10 +154,11 @@ function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
   // Where to cut the group (px from its top) and where "… See more" sits; null = fits
   const [cut, setCut] = useState<{ height: number; moreTop: number; lineH: number } | null>(null);
 
-  // Measure the notes' rendered lines (only after streaming, and again on resize)
+  // Measure the notes' rendered lines, also while the reply is still streaming, so the
+  // 8-line cap applies live. At most once per screen redraw; again on resize.
   useLayoutEffect(() => {
     const group = groupRef.current;
-    if (!group || streaming) {
+    if (!group) {
       setCut(null);
       return;
     }
@@ -170,12 +177,22 @@ function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
         }
         lines += n;
       }
-      setCut(lines > NOTE_LINES ? next : null);
+      const found = lines > NOTE_LINES ? next : null;
+      setCut((prev) =>
+        prev && found && prev.height === found.height && prev.moreTop === found.moreTop ? prev : found
+      );
     };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [text, streaming, hints.length]);
+    let frame = requestAnimationFrame(measure);
+    const onResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(measure);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [text, hints.length]);
 
   const collapsed = Boolean(cut) && !expanded;
   return (
@@ -267,6 +284,20 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const mountedRef = useRef(true);
+
+  // Pulse the mode button when a finished Role-play reply tells the learner to tap it
+  const [modeNudge, setModeNudge] = useState(0);
+  const nudgedReply = useRef('');
+  useEffect(() => {
+    if (sending) return; // wait until the reply is finished (the button is disabled while streaming)
+    const i = items.map((x) => x.kind).lastIndexOf('assistant');
+    const reply = items[i];
+    if (!reply || reply.kind !== 'assistant' || reply.mode !== '[RP]') return;
+    const key = `${i}:${reply.text}`;
+    if (key === nudgedReply.current || !MODE_NUDGE.test(reply.text)) return;
+    nudgedReply.current = key; // once per reply
+    setModeNudge((n) => n + 1);
+  }, [items, sending]);
 
   // Cancel any reply in progress when the chat goes away
   useEffect(() => {
@@ -597,7 +628,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
             </span>
           </button>
         ) : (
-          <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} />
+          <ModeSwitcher mode={mode} onChange={changeMode} disabled={sending} onAbout={openAbout} nudge={modeNudge} />
         )}
       </header>
 
@@ -746,7 +777,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} streaming={sending && i === items.length - 1} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">

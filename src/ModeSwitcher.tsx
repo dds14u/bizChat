@@ -28,11 +28,21 @@ interface Props {
   onChange: (mode: ChatMode) => void;
   disabled?: boolean;
   onAbout?: () => void;
+  /** Bump this number to make the button pulse twice (draws attention to it) */
+  nudge?: number;
 }
 
 // Top-right mode pill with a dropdown (Proposal C)
-export default function ModeSwitcher({ mode, onChange, disabled, onAbout }: Props) {
+export default function ModeSwitcher({ mode, onChange, disabled, onAbout, nudge = 0 }: Props) {
   const [open, setOpen] = useState(false);
+  // Two light pulses each time `nudge` goes up (restarted if one is already playing)
+  const [pulsing, setPulsing] = useState(false);
+  useEffect(() => {
+    if (!nudge) return;
+    setPulsing(false);
+    const frame = requestAnimationFrame(() => setPulsing(true));
+    return () => cancelAnimationFrame(frame);
+  }, [nudge]);
   const rootRef = useRef<HTMLDivElement>(null);
   const current = OPTIONS.find((o) => o.mode === mode) ?? OPTIONS[0];
 
@@ -67,7 +77,8 @@ export default function ModeSwitcher({ mode, onChange, disabled, onAbout }: Prop
     <div className="mode-switcher" ref={rootRef}>
       <button
         type="button"
-        className={`mode-pill ${mode === '[RP]' ? 'rp' : 'qa'}`}
+        className={`mode-pill ${mode === '[RP]' ? 'rp' : 'qa'}${pulsing ? ' pulse' : ''}`}
+        onAnimationEnd={() => setPulsing(false)}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label={`Mode: ${current.label}. Tap to switch`}
