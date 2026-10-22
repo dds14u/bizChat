@@ -1,10 +1,14 @@
-import { Fragment, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
-import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } from './scenes';
+import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, fixedSpeakerFace, randomSpeakerFace, speakerFaceForGender, type Gender, type Scene, type SpeakerFace } from './scenes';
+import Speaker, { type SpeakerPhase } from './Speaker';
+
+// "feedback" / "end" finish a scene: the tutor answers as a coach, so no character face
+const WRAP_UP = /^(feedback|end)[.!。！]?$/i;
 
 // A chat thread holds messages plus two kinds of markers:
 // a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
@@ -75,7 +79,25 @@ function formatReply(text: string): ReactNode {
 // text. Works on partial text, so a note appears live as it streams in.
 type Segment = { kind: 'text' | 'hint'; text: string };
 
-function splitHints(text: string): Segment[] {
+// Custom scenes: the tutor's first reply starts with a hidden line naming the character it plays,
+// e.g. <character name="Mike" gender="male"/>. The page reads it (for the face) and never shows it.
+const CHARACTER_TAG = /<character\b[^>]*>/gi;
+// A tag still streaming in at the end of the reply ("<chara", '<character name="Mi'): hide it too
+const PARTIAL_CHARACTER_TAG = /<(?:character(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?)?$/i;
+
+const stripCharacterTag = (text: string) => text.replace(CHARACTER_TAG, '').replace(PARTIAL_CHARACTER_TAG, '');
+
+function readCharacterTag(text: string): { name?: string; gender?: Gender } | null {
+  const tag = text.match(/<character\b([^>]*)>/i);
+  if (!tag) return null;
+  const attr = (key: string) => tag[1].match(new RegExp(`${key}\\s*=\\s*["']?([^"'\\s/>]+)`, 'i'))?.[1];
+  const g = attr('gender')?.toLowerCase() ?? '';
+  const gender: Gender | undefined = /^(f|female|woman|girl)$/.test(g) ? 'female' : /^(m|male|man|boy)$/.test(g) ? 'male' : undefined;
+  return { name: attr('name'), gender };
+}
+
+function splitHints(rawText: string): Segment[] {
+  const text = stripCharacterTag(rawText);
   // 1. Group lines into blocks: a bracket block runs from a line starting with [
   //    to the line where its brackets close; other lines are plain text.
   const segs: Segment[] = [];
@@ -123,6 +145,9 @@ function splitHints(text: string): Segment[] {
     .filter((s) => s.text);
 }
 
+// True once a reply has any of the character's own text (not just bracketed notes)
+const hasReplyText = (text: string) => splitHints(text).some((s) => s.kind === 'text');
+
 const HintBulb = () => (
   <svg className="hint-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" />
@@ -144,10 +169,13 @@ const NOTE_LINES = 8;
 const MODE_NUDGE =
   /\b(?:tap|press|push|click|select|open)\b(?:\s+[\w'’-]+){0,3}?\s+(?:mode|menu|button)s?\b|(?:点击|点|按)[^。！？\n]{0,8}?(?:模式|菜单|按钮)/i;
 
-function ReplyBody({ text }: { text: string }) {
+function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
   const segs = splitHints(text);
   const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
-  const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
+  // While streaming, notes stay hidden until the character's text is complete: that is,
+  // once a note starts after the text (or the reply ends). Learners read top to bottom.
+  const textDone = !streaming || (Boolean(body) && segs[segs.length - 1]?.kind === 'hint');
+  const hints = textDone ? segs.filter((s) => s.kind === 'hint').map((s) => s.text) : [];
 
   const groupRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -271,6 +299,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const [mode, setMode] = useState<ChatMode>('[RP]'); // the app opens in Role-play
   // About page: #about in the URL, so the phone's back gesture closes it
   const [showAbout, setShowAbout] = useState(() => window.location.hash === '#about');
+
+  // Role-play: the character's face floats at the top while they reply (see Speaker.tsx).
+  // One face per scene: fixed for built-in characters, random for invented ones.
+  const sceneFace = useRef<SpeakerFace | null>(null);
+  const speakerCount = useRef(0);
+  const [speaker, setSpeaker] = useState<(SpeakerFace & { phase: SpeakerPhase; id: number }) | null>(null);
+  const dismissSpeaker = useCallback(
+    () => setSpeaker((s) => (s && s.phase === 'done' ? { ...s, phase: 'leaving' } : s)),
+    []
+  );
+  const removeSpeaker = useCallback(() => setSpeaker((s) => (s && s.phase === 'leaving' ? null : s)), []);
   // Every visit or refresh starts on the home screen (the two-card intro)
   const [showIntro, setShowIntro] = useState(true);
 
@@ -416,9 +455,49 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     setItems((list) => [...list, shown, { kind: 'assistant', text: '', mode: sendMode }]);
     setSending(true);
 
+    // The character's face appears while they reply (Role-play only, not for feedback/end).
+    // Built-in characters have a fixed face. For an invented character the face waits for the
+    // reply to start: the tutor's hidden <character … gender="…"/> line picks a woman or man,
+    // and without it the first words of the reply bring a random face.
+    const showFace = (f: SpeakerFace) => {
+      speakerCount.current += 1;
+      setSpeaker({ ...f, phase: 'speaking', id: speakerCount.current });
+    };
+    let facePending = false;
+    let tagRead = false;
+    if (sendMode === '[RP]' && !WRAP_UP.test(query)) {
+      if (scene) sceneFace.current = fixedSpeakerFace(scene);
+      if (sceneFace.current) showFace(sceneFace.current);
+      else {
+        facePending = true;
+        setSpeaker(null);
+      }
+    } else {
+      setSpeaker(null);
+    }
+    const watchForCharacter = (reply: string) => {
+      if (!tagRead) {
+        const tag = readCharacterTag(reply);
+        if (tag) {
+          tagRead = true;
+          if (tag.gender && sceneFace.current?.gender !== tag.gender) {
+            sceneFace.current = speakerFaceForGender(tag.gender);
+            // Arrives with the reply's first words, so the face is only just showing: swap it
+            if (!facePending) setSpeaker((s) => (s ? { ...s, ...sceneFace.current! } : s));
+          }
+        }
+      }
+      if (facePending && (tagRead || stripCharacterTag(reply).trim())) {
+        facePending = false;
+        if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+        showFace(sceneFace.current);
+      }
+    };
+
     const controller = new AbortController();
     abortRef.current = controller;
     let gotText = false;
+    let reply = '';
 
     try {
       await sendChat({
@@ -435,10 +514,14 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         onDelta: (t) => {
           gotText = true;
           appendToReply(t);
+          reply += t;
+          watchForCharacter(reply);
         },
         onReplace: (t) => {
           gotText = gotText || t.length > 0;
           replaceReply(t);
+          reply = t;
+          watchForCharacter(reply);
         },
         onConversationId: setConversationId,
         onMessageId: setReplyMessageId,
@@ -452,8 +535,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (err.kind === 'aborted') return;
 
       if (!gotText) {
-        // Nothing arrived: remove the unanswered pair
+        // Nothing arrived: remove the unanswered pair (and the face waiting for it)
         setItems((list) => list.slice(0, -2));
+        setSpeaker(null);
       }
       // Keep the learner's own words in the box so retrying is one tap
       if (!scene) setInput((current) => current || query);
@@ -468,6 +552,13 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (abortRef.current === controller) abortRef.current = null;
       if (mountedRef.current) {
         setSending(false);
+        // A reply that ended before any words (only a tag, say): still show the character
+        if (facePending && gotText) {
+          if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+          showFace(sceneFace.current);
+        }
+        // The character finished: the glow stops, and the face waits for the learner's next action
+        setSpeaker((s) => (s && s.phase === 'speaking' ? { ...s, phase: 'done' } : s));
         inputRef.current?.focus();
       }
     }
@@ -500,12 +591,15 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     // The learner's next message describes their role, company and situation.
     leaveIntro();
     setError('');
+    sceneFace.current = null; // the tutor invents the character: the face is picked when it replies
     setItems((list) => [...list, { kind: 'scene', scene }]);
     inputRef.current?.focus();
   };
 
   const newChat = () => {
     abortRef.current?.abort();
+    sceneFace.current = null;
+    setSpeaker(null);
     setItems([]);
     setConversationId('');
     setError('');
@@ -569,7 +663,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const empty = items.length === 0;
   const last = items[items.length - 1];
   const lastReplyIndex = items.map((x) => x.kind).lastIndexOf('assistant');
-  const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
+  const lastIsEmptyReply = sending && last?.kind === 'assistant' && !hasReplyText(last.text);
   const startDisabled = sending || trialUsedUp;
   // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
   const showUsedUpCard = Boolean(trialEnded) || (trialUsedUp && input.trim().length > 0);
@@ -620,6 +714,16 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   return (
     <>
+      {speaker && !showAbout && (
+        <Speaker
+          key={speaker.id}
+          face={speaker.face}
+          bg={speaker.bg}
+          phase={speaker.phase}
+          onDismiss={dismissSpeaker}
+          onGone={removeSpeaker}
+        />
+      )}
       <header className={`site-header${empty && !showAbout ? '' : ' with-line'}`}>
         <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
           <span className="brand-name">
@@ -779,7 +883,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                     </div>
                   );
                 }
-                if (item.kind === 'assistant' && !item.text) return null;
+                // Until the character's text starts, the "Thinking…" bubble stands in (notes wait for the text)
+                if (item.kind === 'assistant' && (!item.text || (sending && i === items.length - 1 && !hasReplyText(item.text))))
+                  return null;
                 // Thumbs only on the newest tutor reply, once it has finished (same on desktop and phone)
                 const showThumbs = item.kind === 'assistant' && i === lastReplyIndex && !sending && Boolean(item.messageId);
                 return (
@@ -793,7 +899,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} streaming={sending && i === items.length - 1} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">
