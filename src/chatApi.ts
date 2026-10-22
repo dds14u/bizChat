@@ -202,6 +202,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
     }
 
     let completed = false;
+    let messageEnded = false;
     const parser = createSSEParser((raw) => {
       let data: any;
       try {
@@ -221,6 +222,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
         case 'message_end':
           if (data.message_id) opts.onMessageId?.(String(data.message_id));
           completed = true;
+          messageEnded = true;
           break;
         case 'workflow_finished':
           if (data.data?.status && data.data.status !== 'succeeded') {
@@ -251,6 +253,9 @@ export async function sendChat(opts: SendOptions): Promise<void> {
           break;
         }
         parser.push(decoder.decode(chunk.value, { stream: true }));
+        // The reply is complete once message_end arrives: stop here instead of waiting for
+        // the server to close the connection, which can lag on a slow network.
+        if (messageEnded) break;
       }
       parser.push(decoder.decode());
       parser.end();

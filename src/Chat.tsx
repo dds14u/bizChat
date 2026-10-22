@@ -123,6 +123,9 @@ function splitHints(text: string): Segment[] {
     .filter((s) => s.text);
 }
 
+// True once a reply has any of the character's own text (not just bracketed notes)
+const hasReplyText = (text: string) => splitHints(text).some((s) => s.kind === 'text');
+
 const HintBulb = () => (
   <svg className="hint-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" />
@@ -144,10 +147,13 @@ const NOTE_LINES = 8;
 const MODE_NUDGE =
   /\b(?:tap|press|push|click|select|open)\b(?:\s+[\w'’-]+){0,3}?\s+(?:mode|menu|button)s?\b|(?:点击|点|按)[^。！？\n]{0,8}?(?:模式|菜单|按钮)/i;
 
-function ReplyBody({ text }: { text: string }) {
+function ReplyBody({ text, streaming }: { text: string; streaming: boolean }) {
   const segs = splitHints(text);
   const body = segs.filter((s) => s.kind === 'text').map((s) => s.text).join('\n\n');
-  const hints = segs.filter((s) => s.kind === 'hint').map((s) => s.text);
+  // While streaming, notes stay hidden until the character's text is complete: that is,
+  // once a note starts after the text (or the reply ends). Learners read top to bottom.
+  const textDone = !streaming || (Boolean(body) && segs[segs.length - 1]?.kind === 'hint');
+  const hints = textDone ? segs.filter((s) => s.kind === 'hint').map((s) => s.text) : [];
 
   const groupRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -569,7 +575,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const empty = items.length === 0;
   const last = items[items.length - 1];
   const lastReplyIndex = items.map((x) => x.kind).lastIndexOf('assistant');
-  const lastIsEmptyReply = sending && last?.kind === 'assistant' && last.text === '';
+  const lastIsEmptyReply = sending && last?.kind === 'assistant' && !hasReplyText(last.text);
   const startDisabled = sending || trialUsedUp;
   // The invite reminder appears once the learner starts typing (or after the server says the trial ended)
   const showUsedUpCard = Boolean(trialEnded) || (trialUsedUp && input.trim().length > 0);
@@ -779,7 +785,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                     </div>
                   );
                 }
-                if (item.kind === 'assistant' && !item.text) return null;
+                // Until the character's text starts, the "Thinking…" bubble stands in (notes wait for the text)
+                if (item.kind === 'assistant' && (!item.text || (sending && i === items.length - 1 && !hasReplyText(item.text))))
+                  return null;
                 // Thumbs only on the newest tutor reply, once it has finished (same on desktop and phone)
                 const showThumbs = item.kind === 'assistant' && i === lastReplyIndex && !sending && Boolean(item.messageId);
                 return (
@@ -793,7 +801,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
                         {item.mode === '[RP]' ? 'Role-play' : 'Coach'}
                       </span>
                     )}
-                    {item.kind === 'assistant' ? <ReplyBody text={item.text} /> : item.text}
+                    {item.kind === 'assistant' ? <ReplyBody text={item.text} streaming={sending && i === items.length - 1} /> : item.text}
                   </div>
                   {showThumbs && item.kind === 'assistant' && (
                     <div className="fb" role="group" aria-label="Rate this reply">
