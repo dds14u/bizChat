@@ -4,7 +4,7 @@ import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
-import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, randomSpeakerFace, speakerFaceFor, type Scene, type SpeakerFace } from './scenes';
+import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, fixedSpeakerFace, randomSpeakerFace, speakerFaceForGender, type Gender, type Scene, type SpeakerFace } from './scenes';
 import Speaker, { type SpeakerPhase } from './Speaker';
 
 // "feedback" / "end" finish a scene: the tutor answers as a coach, so no character face
@@ -79,7 +79,25 @@ function formatReply(text: string): ReactNode {
 // text. Works on partial text, so a note appears live as it streams in.
 type Segment = { kind: 'text' | 'hint'; text: string };
 
-function splitHints(text: string): Segment[] {
+// Custom scenes: the tutor's first reply starts with a hidden line naming the character it plays,
+// e.g. <character name="Mike" gender="male"/>. The page reads it (for the face) and never shows it.
+const CHARACTER_TAG = /<character\b[^>]*>/gi;
+// A tag still streaming in at the end of the reply ("<chara", '<character name="Mi'): hide it too
+const PARTIAL_CHARACTER_TAG = /<(?:character(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?)?$/i;
+
+const stripCharacterTag = (text: string) => text.replace(CHARACTER_TAG, '').replace(PARTIAL_CHARACTER_TAG, '');
+
+function readCharacterTag(text: string): { name?: string; gender?: Gender } | null {
+  const tag = text.match(/<character\b([^>]*)>/i);
+  if (!tag) return null;
+  const attr = (key: string) => tag[1].match(new RegExp(`${key}\\s*=\\s*["']?([^"'\\s/>]+)`, 'i'))?.[1];
+  const g = attr('gender')?.toLowerCase() ?? '';
+  const gender: Gender | undefined = /^(f|female|woman|girl)$/.test(g) ? 'female' : /^(m|male|man|boy)$/.test(g) ? 'male' : undefined;
+  return { name: attr('name'), gender };
+}
+
+function splitHints(rawText: string): Segment[] {
+  const text = stripCharacterTag(rawText);
   // 1. Group lines into blocks: a bracket block runs from a line starting with [
   //    to the line where its brackets close; other lines are plain text.
   const segs: Segment[] = [];
@@ -437,19 +455,49 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     setItems((list) => [...list, shown, { kind: 'assistant', text: '', mode: sendMode }]);
     setSending(true);
 
-    // The character's face appears while they reply (Role-play only, not for feedback/end)
-    if (sendMode === '[RP]' && !WRAP_UP.test(query)) {
-      if (scene) sceneFace.current = speakerFaceFor(scene);
-      if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+    // The character's face appears while they reply (Role-play only, not for feedback/end).
+    // Built-in characters have a fixed face. For an invented character the face waits for the
+    // reply to start: the tutor's hidden <character … gender="…"/> line picks a woman or man,
+    // and without it the first words of the reply bring a random face.
+    const showFace = (f: SpeakerFace) => {
       speakerCount.current += 1;
-      setSpeaker({ ...sceneFace.current, phase: 'speaking', id: speakerCount.current });
+      setSpeaker({ ...f, phase: 'speaking', id: speakerCount.current });
+    };
+    let facePending = false;
+    let tagRead = false;
+    if (sendMode === '[RP]' && !WRAP_UP.test(query)) {
+      if (scene) sceneFace.current = fixedSpeakerFace(scene);
+      if (sceneFace.current) showFace(sceneFace.current);
+      else {
+        facePending = true;
+        setSpeaker(null);
+      }
     } else {
       setSpeaker(null);
     }
+    const watchForCharacter = (reply: string) => {
+      if (!tagRead) {
+        const tag = readCharacterTag(reply);
+        if (tag) {
+          tagRead = true;
+          if (tag.gender && sceneFace.current?.gender !== tag.gender) {
+            sceneFace.current = speakerFaceForGender(tag.gender);
+            // Arrives with the reply's first words, so the face is only just showing: swap it
+            if (!facePending) setSpeaker((s) => (s ? { ...s, ...sceneFace.current! } : s));
+          }
+        }
+      }
+      if (facePending && (tagRead || stripCharacterTag(reply).trim())) {
+        facePending = false;
+        if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+        showFace(sceneFace.current);
+      }
+    };
 
     const controller = new AbortController();
     abortRef.current = controller;
     let gotText = false;
+    let reply = '';
 
     try {
       await sendChat({
@@ -466,10 +514,14 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         onDelta: (t) => {
           gotText = true;
           appendToReply(t);
+          reply += t;
+          watchForCharacter(reply);
         },
         onReplace: (t) => {
           gotText = gotText || t.length > 0;
           replaceReply(t);
+          reply = t;
+          watchForCharacter(reply);
         },
         onConversationId: setConversationId,
         onMessageId: setReplyMessageId,
@@ -500,6 +552,11 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (abortRef.current === controller) abortRef.current = null;
       if (mountedRef.current) {
         setSending(false);
+        // A reply that ended before any words (only a tag, say): still show the character
+        if (facePending && gotText) {
+          if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+          showFace(sceneFace.current);
+        }
         // The character finished: the glow stops, and the face waits for the learner's next action
         setSpeaker((s) => (s && s.phase === 'speaking' ? { ...s, phase: 'done' } : s));
         inputRef.current?.focus();
@@ -534,7 +591,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     // The learner's next message describes their role, company and situation.
     leaveIntro();
     setError('');
-    sceneFace.current = speakerFaceFor(scene); // a random face for the character they describe
+    sceneFace.current = null; // the tutor invents the character: the face is picked when it replies
     setItems((list) => [...list, { kind: 'scene', scene }]);
     inputRef.current?.focus();
   };

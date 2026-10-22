@@ -26,8 +26,9 @@ export interface Scene {
   summary: string;
   avatar: string;
   avatarBg: string;
-  /** The character's face, shown large while they reply. Leave out to pick a random one. */
+  /** The character's face, shown large while they reply, and their gender. Leave out for invented characters. */
   face?: string;
+  gender?: 'female' | 'male';
   /**
    * Sent to the tutor (not shown as a chat bubble) to start the scene.
    * Each scene's behavior is defined in the system prompt (Part B), so this only
@@ -57,6 +58,7 @@ export const SCENES: Scene[] = [
     avatar: '👩‍💼',
     avatarBg: '#FCE7E3',
     face: '👩‍💼', // Sarah
+    gender: 'female',
     kickoff: 'Start the role-play scene "Start a meeting". Difficulty: Easy.',
   },
   {
@@ -68,30 +70,40 @@ export const SCENES: Scene[] = [
     avatar: '👨‍💻',
     avatarBg: '#EFE7F7',
     face: '👨‍💻', // Bob
+    gender: 'male',
     kickoff: 'Start the role-play scene "Disagree with a coworker". Difficulty: Medium.',
   },
 ];
 
-// Faces for characters the tutor invents ("Set your scene", or a scene typed in the box):
-// a random woman or man, picked once per scene.
-export const SPEAKER_FACES = {
+// Faces for characters the tutor invents ("Set your scene", or a scene typed in the box).
+// The tutor names the character's gender in a hidden <character … gender="…"/> line; without it,
+// a random woman or man is picked. One face per scene.
+export type Gender = 'female' | 'male';
+
+export const SPEAKER_FACES: Record<Gender, string[]> = {
   female: ['👩‍💼', '🙋🏼‍♀️'],
   male: ['🧔‍♂️', '👨‍💻'],
 };
 
+const FACE_BG: Record<Gender, string> = { female: '#FCE7E3', male: '#EFE7F7' };
+
 export interface SpeakerFace {
   face: string;
   bg: string;
+  gender: Gender;
 }
 
 const pick = <T,>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
 
-export function randomSpeakerFace(): SpeakerFace {
-  const group = Math.random() < 0.5 ? SPEAKER_FACES.female : SPEAKER_FACES.male;
-  return { face: pick(group), bg: '#FDEEDC' };
+export function speakerFaceForGender(gender: Gender): SpeakerFace {
+  return { face: pick(SPEAKER_FACES[gender]), bg: FACE_BG[gender], gender };
 }
 
-/** The fixed face for a built-in scene, or a random one for a scene without a set character */
-export function speakerFaceFor(scene: Scene): SpeakerFace {
-  return scene.face ? { face: scene.face, bg: scene.avatarBg } : randomSpeakerFace();
+export function randomSpeakerFace(): SpeakerFace {
+  return speakerFaceForGender(Math.random() < 0.5 ? 'female' : 'male');
+}
+
+/** The fixed face for a built-in character, or null when the tutor invents the character */
+export function fixedSpeakerFace(scene: Scene): SpeakerFace | null {
+  return scene.face && scene.gender ? { face: scene.face, bg: scene.avatarBg, gender: scene.gender } : null;
 }
