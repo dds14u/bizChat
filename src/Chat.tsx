@@ -1,10 +1,14 @@
-import { Fragment, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type ChangeEvent, type ReactNode } from 'react';
 import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
-import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, type Scene } from './scenes';
+import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, randomSpeakerFace, speakerFaceFor, type Scene, type SpeakerFace } from './scenes';
+import Speaker, { type SpeakerPhase } from './Speaker';
+
+// "feedback" / "end" finish a scene: the tutor answers as a coach, so no character face
+const WRAP_UP = /^(feedback|end)[.!。！]?$/i;
 
 // A chat thread holds messages plus two kinds of markers:
 // a scene header (a scene card was tapped) and a divider (mode switched mid-chat).
@@ -277,6 +281,17 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const [mode, setMode] = useState<ChatMode>('[RP]'); // the app opens in Role-play
   // About page: #about in the URL, so the phone's back gesture closes it
   const [showAbout, setShowAbout] = useState(() => window.location.hash === '#about');
+
+  // Role-play: the character's face floats at the top while they reply (see Speaker.tsx).
+  // One face per scene: fixed for built-in characters, random for invented ones.
+  const sceneFace = useRef<SpeakerFace | null>(null);
+  const speakerCount = useRef(0);
+  const [speaker, setSpeaker] = useState<(SpeakerFace & { phase: SpeakerPhase; id: number }) | null>(null);
+  const dismissSpeaker = useCallback(
+    () => setSpeaker((s) => (s && s.phase === 'done' ? { ...s, phase: 'leaving' } : s)),
+    []
+  );
+  const removeSpeaker = useCallback(() => setSpeaker((s) => (s && s.phase === 'leaving' ? null : s)), []);
   // Every visit or refresh starts on the home screen (the two-card intro)
   const [showIntro, setShowIntro] = useState(true);
 
@@ -422,6 +437,16 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     setItems((list) => [...list, shown, { kind: 'assistant', text: '', mode: sendMode }]);
     setSending(true);
 
+    // The character's face appears while they reply (Role-play only, not for feedback/end)
+    if (sendMode === '[RP]' && !WRAP_UP.test(query)) {
+      if (scene) sceneFace.current = speakerFaceFor(scene);
+      if (!sceneFace.current) sceneFace.current = randomSpeakerFace();
+      speakerCount.current += 1;
+      setSpeaker({ ...sceneFace.current, phase: 'speaking', id: speakerCount.current });
+    } else {
+      setSpeaker(null);
+    }
+
     const controller = new AbortController();
     abortRef.current = controller;
     let gotText = false;
@@ -458,8 +483,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (err.kind === 'aborted') return;
 
       if (!gotText) {
-        // Nothing arrived: remove the unanswered pair
+        // Nothing arrived: remove the unanswered pair (and the face waiting for it)
         setItems((list) => list.slice(0, -2));
+        setSpeaker(null);
       }
       // Keep the learner's own words in the box so retrying is one tap
       if (!scene) setInput((current) => current || query);
@@ -474,6 +500,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
       if (abortRef.current === controller) abortRef.current = null;
       if (mountedRef.current) {
         setSending(false);
+        // The character finished: the glow stops, and the face waits for the learner's next action
+        setSpeaker((s) => (s && s.phase === 'speaking' ? { ...s, phase: 'done' } : s));
         inputRef.current?.focus();
       }
     }
@@ -506,12 +534,15 @@ export default function Chat({ brand }: { brand: ReactNode }) {
     // The learner's next message describes their role, company and situation.
     leaveIntro();
     setError('');
+    sceneFace.current = speakerFaceFor(scene); // a random face for the character they describe
     setItems((list) => [...list, { kind: 'scene', scene }]);
     inputRef.current?.focus();
   };
 
   const newChat = () => {
     abortRef.current?.abort();
+    sceneFace.current = null;
+    setSpeaker(null);
     setItems([]);
     setConversationId('');
     setError('');
@@ -626,6 +657,16 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   return (
     <>
+      {speaker && !showAbout && (
+        <Speaker
+          key={speaker.id}
+          face={speaker.face}
+          bg={speaker.bg}
+          phase={speaker.phase}
+          onDismiss={dismissSpeaker}
+          onGone={removeSpeaker}
+        />
+      )}
       <header className={`site-header${empty && !showAbout ? '' : ' with-line'}`}>
         <button type="button" className="brand-home" onClick={goHome} aria-label="Real Business by Donald, home">
           <span className="brand-name">
