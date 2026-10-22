@@ -16,6 +16,9 @@
   --hl-soft: #fff6d3; /* highlighter wash */
   --hl-edge: #e4c04f; /* dashed highlighter edge */
 
+  --hint-bg: #f7f6f3; /* notes under a tutor reply */
+  --hint-line: #e7e3db; /* line between the reply text and its notes */
+
   --rp: #f59a3c; /* apricot dots and icon fill */
   --rp-ink: #8f4a0b; /* apricot text on light backgrounds */
   --rp-soft: #fdeedc; /* apricot wash */

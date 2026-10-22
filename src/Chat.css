@@ -770,12 +770,20 @@
   align-items: flex-start;
   gap: 8px;
   padding: 8px 16px 9px;
-  background: var(--hl-soft);
-  border-top: 1.5px dashed var(--hl-edge); /* divider above each note */
+  background: var(--hint-bg);
   font-size: 0.92rem;
   line-height: 1.35;
   color: var(--ink-soft);
   white-space: normal;
+}
+
+ /* One quiet line between the character's text and the notes; notes stack without dividers */
+.hint:first-child {
+  border-top: 1px solid var(--hint-line);
+}
+
+.hint + .hint {
+  padding-top: 2px;
 }
 
 .hints.first .hint:first-child {
@@ -795,7 +803,7 @@
   right: 0;
   bottom: 0;
   height: 9px;
-  background: var(--hl-soft);
+  background: var(--hint-bg);
 }
 
 /* "… See more" sits on the last visible line; "Hide" follows the last note's text */
@@ -815,7 +823,7 @@
   display: flex;
   align-items: center;
   padding-left: 2.2em;
-  background: linear-gradient(to right, transparent, var(--hl-soft) 1.6em);
+  background: linear-gradient(to right, transparent, var(--hint-bg) 1.6em);
 }
 
 .hint-toggle.hide {
@@ -837,6 +845,11 @@
   flex-shrink: 0;
   margin-top: 1px;
   color: #9a7600;
+}
+
+/* Only the glass of the bulb lights up, in the old note yellow */
+.hint-icon path {
+  fill: var(--hl-soft);
 }
 
 /* Clickable video links in tutor replies */
