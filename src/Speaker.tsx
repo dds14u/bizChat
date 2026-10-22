@@ -23,18 +23,29 @@ export default function Speaker({ face, bg, phase, onDismiss, onGone }: Props) {
 
   // Centered in the header's gap between the logo and the mode button (the page center on wide
   // screens), hanging down from the middle of the header.
+  // iPhone: with the keyboard open, Safari shifts the visible area down and anything pinned to the
+  // top of the page ends up above it. So the face follows the visible area (visualViewport): if the
+  // header has been pushed out of view, the face sits at the top of what the learner can see.
   useLayoutEffect(() => {
+    const vv = window.visualViewport;
     const place = () => {
       const header = document.querySelector('.site-header')?.getBoundingClientRect();
       const brand = document.querySelector('.brand-home')?.getBoundingClientRect();
       const mode = document.querySelector('.mode-switcher')?.getBoundingClientRect();
-      const left = brand && mode ? (brand.right + mode.left) / 2 : window.innerWidth / 2;
-      const top = header ? (header.top + header.bottom) / 2 - 20 : 12;
+      const visibleTop = vv ? vv.offsetTop : 0;
+      const left = (brand && mode ? (brand.right + mode.left) / 2 : window.innerWidth / 2) + (vv ? vv.offsetLeft : 0);
+      const top = Math.max(header ? (header.top + header.bottom) / 2 - 20 : 12, visibleTop + 8);
       setPos({ left, top });
     };
     place();
     window.addEventListener('resize', place);
-    return () => window.removeEventListener('resize', place);
+    vv?.addEventListener('resize', place);
+    vv?.addEventListener('scroll', place);
+    return () => {
+      window.removeEventListener('resize', place);
+      vv?.removeEventListener('resize', place);
+      vv?.removeEventListener('scroll', place);
+    };
   }, []);
 
   // After the reply: the learner's next action (scroll, tap, click, typing) dismisses the face.
@@ -48,11 +59,11 @@ export default function Speaker({ face, bg, phase, onDismiss, onGone }: Props) {
     return () => events.forEach((e) => window.removeEventListener(e, dismiss, opts));
   }, [phase, onDismiss]);
 
-  // Remove the face once it has shrunk away (instantly with Reduce motion)
+  // Remove the face once it has shrunk away. Same timing whatever the motion setting (beta: one
+  // behavior for everyone).
   useEffect(() => {
     if (phase !== 'leaving') return;
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    const t = window.setTimeout(onGone, reduce ? 0 : 280);
+    const t = window.setTimeout(onGone, 280);
     return () => window.clearTimeout(t);
   }, [phase, onGone]);
 
