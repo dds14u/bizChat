@@ -72,6 +72,9 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
               className={`switch${memoryOn ? ' on' : ''}`}
               onClick={() => onMemoryChange(!memoryOn)}
             >
+              <span className="switch-text" aria-hidden="true">
+                {memoryOn ? 'On' : 'Off'}
+              </span>
               <span className="switch-knob" aria-hidden="true" />
             </button>
           </div>
