@@ -1,21 +1,18 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-- **Saved profile:** the tutor remembers a learner's first name, role, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?" when a name is saved. The About page's Privacy section shows the profile between two rules (name · role · company · industry on one line, the goal on its own line), with an On/Off memory switch and a Clear link. Needs the Dify Start variable `learner_profile` and the system prompt lines (see "Settings and content").
-
-- **Profile guard:** a hidden line that mixes up the two tags (e.g. `<profile name="Klaus" gender="male"/>`, really the tutor's character) is never saved as the learner's profile, and the page uses it for the character's face instead. A character's name is never saved as the learner's name.
-
-- **Profile fields renamed:** the profile line now uses `learner_name`, `learner_role`, `learner_company`, `learner_industry`, `learner_industry_source` and `learner_goal`, so it never shares an attribute with `<character name="…" gender="…"/>`. The old unprefixed fields are still read.
-
-- **Memory Off now pauses instead of deleting:** the saved profile is kept (shown faded) and the tutor neither uses nor updates it until memory is back on; it's still deleted 30 days after its last update. "Delete now" (or Clear when on) deletes it. The home greeting hides while memory is off.
-
-- **Any hidden line is hidden:** every self-closing tag with attributes (`<name attr="…"/>`) is hidden wherever it appears, including while it streams in, so new hidden lines in the system prompt need no code change. Ordinary angle-bracket text stays visible ("Dear <client name>,", `<b>`, `<br/>`, "a < b"). `<character>` and `<profile>` are also hidden in any form.
-
-- **"Are you sure?" before deleting the profile:** Clear and Delete now turn the note line into an inline strip ("Delete your profile? This can't be undone. Delete · Cancel"). Cancel, Escape or the memory switch back out; focus starts on Cancel.
+*None right now.* `dev` and `main` are identical as of the Oct 23 merge.
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
+
+### Oct 23
+- **Saved profile:** the tutor remembers a learner's first name, role, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?". The About page's Privacy section shows the profile between two rules, with an On/Off memory switch. `7d39d46`, `70f0d4f`, `9a6f090`
+- **Profile line format:** `<profile learner_name="…" learner_role="…" learner_company="…" learner_industry="…" learner_industry_source="…" learner_goal="…"/>`, kept separate from `<character name="…" gender="…"/>`; a mislabeled character line is never saved as the learner. `caf3619`, `4be9f3e`
+- **Memory Off pauses instead of deleting;** Clear / Delete now show an inline "Delete your profile? This can't be undone." confirm. `23232ae`, `92ec034`
+- **Any hidden line is hidden:** every self-closing tag with attributes (`<name attr="…"/>`) is hidden, including while streaming; plain angle-bracket text stays visible. `4aca06e`
+- **Tried and reverted:** gray hint notes (`a95edd6` → `0ed3756`); empty-profile-line handling for a Dify Parameter Extractor (`bb38585` → `a68b483`).
 
 ### Oct 22
 - **Faster finish on slow networks:** a reply counts as done as soon as Dify signals the end, so buttons come back right away. `9420b14`
