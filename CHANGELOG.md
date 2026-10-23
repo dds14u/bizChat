@@ -1,7 +1,7 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-- **No greeting flash:** the home title no longer switches from "Practice your business English" to "Hi [name]…" after the page loads. The browser keeps a copy of the last saved profile, so the right title shows on the first paint, and the server check updates it quietly. Clear / Delete now removes the copy too.
+- **No greeting flash:** the home title no longer switches from "Practice your business English" to "Hi [name]…" after the page loads. The browser keeps a copy of the last saved profile, so the right title shows on the first paint, and the server check updates it quietly. Clear / Delete now removes the copy too. `9d53dd5`
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
