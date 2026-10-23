@@ -80,16 +80,26 @@ function formatReply(text: string): ReactNode {
 // text. Works on partial text, so a note appears live as it streams in.
 type Segment = { kind: 'text' | 'hint'; text: string };
 
-// Hidden lines the tutor writes for the page, never shown:
+// Hidden lines the tutor writes for the page, never shown. General rule: ANY self-closing tag with
+// attributes, <name attr="…"/>, is hidden wherever it appears, so a new hidden line in the system prompt
+// needs no code change. Today's tags:
 // - Custom scenes: the first reply names the character it plays, e.g. <character name="Mike" gender="male"/>
 //   (the page reads it for the face).
 // - Saved profile: <profile learner_name="Lee" learner_company="NIO" …/> when the tutor learns something new about the
 //   learner (the server saves it; the page refreshes the greeting and About page).
-// Quote-aware, so a ">" inside a value doesn't end the tag early
-const HIDDEN_TAG = /<(?:character|profile)\b(?:"[^"]*"|'[^']*'|[^>"'])*>/gi;
-// A tag still streaming in at the end of the reply ("<chara", '<profile learner_name="Le'): hide it too
-const PARTIAL_HIDDEN_TAG =
-  /<(?:character(?:\s[^>]*)?|profile(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?|p(?:r(?:o(?:f(?:i(?:l(?:e)?)?)?)?)?)?)?$/i;
+// Ordinary text in angle brackets stays visible: "Dear <client name>,", "<b>", "<br/>", "a < b".
+// Quote-aware, so a ">" inside a value doesn't end the tag early.
+const ATTR = String.raw`\s+[A-Za-z_][\w:.-]*\s*=\s*(?:"[^"]*"|'[^']*')`;
+const HIDDEN_TAG = new RegExp(
+  // any self-closing tag with at least one attribute
+  String.raw`<[A-Za-z][\w:.-]*(?:${ATTR})+\s*\/>` +
+    // and the two known tags in any form (the model sometimes drops the "/")
+    String.raw`|<(?:character|profile)\b(?:"[^"]*"|'[^']*'|[^>"'])*>`,
+  'gi'
+);
+// A tag still streaming in at the end of the reply ("<chara", '<profile learner_name="Le', '<scene id="a" ') is
+// hidden until it's complete. Once complete, only the shapes above stay hidden; anything else reappears.
+const PARTIAL_HIDDEN_TAG = /<(?:[A-Za-z][\w:.-]*(?:\s+[A-Za-z_][\w:.-]*(?:\s*=\s*(?:"[^"]*"?|'[^']*'?)?)?)*\s*\/?)?$/;
 
 const stripCharacterTag = (text: string) => text.replace(HIDDEN_TAG, '').replace(PARTIAL_HIDDEN_TAG, '');
 

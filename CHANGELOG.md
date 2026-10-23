@@ -9,6 +9,8 @@
 
 - **Memory Off now pauses instead of deleting:** the saved profile is kept (shown faded) and the tutor neither uses nor updates it until memory is back on; it's still deleted 30 days after its last update. "Delete now" (or Clear when on) deletes it. The home greeting hides while memory is off.
 
+- **Any hidden line is hidden:** every self-closing tag with attributes (`<name attr="…"/>`) is hidden wherever it appears, including while it streams in, so new hidden lines in the system prompt need no code change. Ordinary angle-bracket text stays visible ("Dear <client name>,", `<b>`, `<br/>`, "a < b"). `<character>` and `<profile>` are also hidden in any form.
+
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
