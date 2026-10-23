@@ -1,13 +1,16 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-*None right now.* `dev` and `main` are identical as of the Oct 23 merge.
+*None right now.* `dev` and `main` are identical as of the second Oct 23 merge.
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
 
 ### Oct 23
+- **About wording:** "the tutor" → "the app" in the Privacy and profile notes. `d78edad`
+- **Quieter memory switch:** no black outline. A phone-style switch (apricot when on, warm gray when off) with "On"/"Off" as plain text beside it, to match the About page. `254ad4d`
+- **Profile sent every turn:** Dify only fills `learner_profile` on the turn it's sent, so later turns (e.g. Coach follow-ups) saw an empty profile. The saved profile now goes with every message. `7ea80e1`
 - **Saved profile:** the tutor remembers a learner's first name, role, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?". The About page's Privacy section shows the profile between two rules, with an On/Off memory switch. `7d39d46`, `70f0d4f`, `9a6f090`
 - **Profile line format:** `<profile learner_name="…" learner_role="…" learner_company="…" learner_industry="…" learner_industry_source="…" learner_goal="…"/>`, kept separate from `<character name="…" gender="…"/>`; a mislabeled character line is never saved as the learner. `caf3619`, `4be9f3e`
 - **Memory Off pauses instead of deleting;** Clear / Delete now show an inline "Delete your profile? This can't be undone." confirm. `23232ae`, `92ec034`

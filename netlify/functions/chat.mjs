@@ -444,12 +444,14 @@ export default async (req, context) => {
   }
 
   // 3. Saved profile (memory on unless the learner turned it off on the About page).
-  // Read once, when a conversation starts: Dify keeps a conversation's inputs from its
-  // first message. A slow or missing profile never blocks the chat.
+  // Sent with EVERY message: a Chatflow's Start inputs only reach the prompt on the turn
+  // they're sent (later turns render learner_profile empty), so sending it each time keeps
+  // Coach follow-ups and long chats tailored, and picks up mid-chat updates.
+  // A slow or missing profile never blocks the chat.
   const conversationId = String(body?.conversationId ?? "").slice(0, 100);
   const memoryOn = body?.memory !== false && canStoreProfile(browserId) && upstashConfigured();
   let inputs = {};
-  if (memoryOn && !conversationId) {
+  if (memoryOn) {
     try {
       const summary = profileSummary(await loadProfile(redisCommand, browserId));
       if (summary) inputs = { learner_profile: summary };

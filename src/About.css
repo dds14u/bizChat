@@ -150,58 +150,61 @@
   opacity: 0.45;
 }
 
-/* On/off switch: apricot when on, with "On"/"Off" written in the track (fixed width, so nothing shifts) */
+/* On/off switch: a quiet phone-style switch (no outline), apricot when on, warm gray when off.
+   "On"/"Off" sits beside it as plain text; the whole button (text + track) is the tap target. */
 .switch {
   flex: none;
-  position: relative;
-  width: 66px;
-  height: 30px;
-  padding: 0;
-  border: 2px solid var(--line);
-  border-radius: 999px;
-  background: #e2ddd3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 4px 6px;
+  border: 0;
+  border-radius: 999px; /* rounds the keyboard focus outline */
+  background: none;
   font: inherit;
   cursor: pointer;
 }
 
-.switch.on {
-  background: var(--rp);
-}
-
 .switch-text {
-  position: absolute;
-  top: 50%;
-  right: 9px;
-  transform: translateY(-50%);
-  font-size: 0.8rem;
-  font-weight: 800;
+  min-width: 1.6em; /* "On" and "Off" take the same space, so the track never shifts */
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 700;
   line-height: 1;
   color: var(--ink-soft);
 }
 
-.switch.on .switch-text {
-  right: auto;
-  left: 10px;
-  color: var(--ink);
+.switch-track {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: 999px;
+  background: #ddd7cc;
+  transition: background-color 0.15s ease;
+}
+
+.switch.on .switch-track {
+  background: var(--rp);
 }
 
 .switch-knob {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 22px;
-  height: 22px;
-  border: 2px solid var(--line);
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #fff;
+  box-shadow: 0 1px 3px rgba(29, 27, 24, 0.25);
   transition: left 0.15s ease;
 }
 
 .switch.on .switch-knob {
-  left: 38px;
+  left: 21px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .switch-track,
   .switch-knob {
     transition: none;
   }
