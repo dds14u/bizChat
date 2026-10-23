@@ -1,9 +1,9 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-*None right now.* `dev` and `main` are identical as of `b1d6043` (Oct 22).
+- **Saved profile:** the tutor remembers a learner's first name, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?" when a name is saved. The About page's Privacy section shows the profile between two rules, with a memory switch and a Clear link. Needs the Dify Start variable `learner_profile` and the system prompt lines (see "Settings and content").
 
-> **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify. The newest deploy waiting to be published is `main@b1d6043`.
+> **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
 
@@ -49,6 +49,7 @@
 - **Invite codes and rate limits;** the visitor bug fixed. `78828ec`, `24a374e`
 
 ## Settings and content (outside the repo)
+- **Oct 23: saved profile (needs setup).** Dify Start node: add `learner_profile` (Paragraph, optional, max length 600). System prompt: a "Learner profile" section that reads it and writes the hidden `<profile …/>` line. Optional Netlify setting: `PROFILE_TTL_DAYS` (default 30).
 - **Oct 22: trial limit raised to 12 messages a day** (`TRIAL_DAILY_LIMIT`). Takes effect with the `main@b1d6043` deploy.
 - **Oct 22: system prompt v3.1, ordering update.** The character's line comes first and brackets come after. Scene 1's lesson video now matches the knowledge base (`BV17j411b7Pg`).
 - **Oct 21–22: system prompt, Coach fixes.** Not-covered answers no longer mention the course, with a stricter rule for when a lesson counts as covered.

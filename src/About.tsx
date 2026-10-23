@@ -1,9 +1,20 @@
 import './About.css';
+import type { LearnerProfile } from './profile';
 
 const FEEDBACK_EMAIL = 'dds14u@live.com';
 
-// About page: opened from the bottom of the mode menu; the header shows "← Back" instead of the menu.
-export default function About() {
+interface Props {
+  profile: LearnerProfile | null;
+  memoryOn: boolean;
+  onMemoryChange: (on: boolean) => void;
+  onClear: () => void;
+}
+
+// About page: opened from the bottom of the mode menu; the header shows "Close" instead of the menu.
+export default function About({ profile, memoryOn, onMemoryChange, onClear }: Props) {
+  const summary = profile
+    ? [profile.name, profile.company, profile.industry].filter(Boolean)
+    : [];
   return (
     <main className="about-area">
       <article className="about">
@@ -43,9 +54,59 @@ export default function About() {
 
         <h2>Privacy</h2>
         <p>
-          There are no user accounts. Conversations are processed to generate replies and are not used to identify you.
-          Please don’t paste confidential company information.
+          There are no user accounts. To pick up where you left off, the tutor remembers a short profile (first name,
+          company, industry and learning goal), linked to this browser and deleted after 30 days without an update. You
+          can clear it or turn memory off below at any time. Conversations are processed to generate replies. Please don’t
+          paste confidential company information.
         </p>
+
+        {/* Saved profile: between two rules, with the memory switch in its heading */}
+        <section className="profile-box" aria-labelledby="profile-title">
+          <div className="profile-head">
+            <h3 id="profile-title">Your profile</h3>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={memoryOn}
+              aria-label="Remember my background"
+              className={`switch${memoryOn ? ' on' : ''}`}
+              onClick={() => onMemoryChange(!memoryOn)}
+            >
+              <span className="switch-knob" aria-hidden="true" />
+            </button>
+          </div>
+
+          {!memoryOn ? (
+            <p className="profile-note">Memory is off. The tutor won’t save anything about you on this browser.</p>
+          ) : profile ? (
+            <>
+              {summary.length > 0 && (
+                <p className="profile-line">
+                  {summary.map((part, i) => (
+                    <span key={i}>
+                      {i > 0 && ' · '}
+                      {part}
+                      {part === profile.industry && profile.industry_source === 'inferred' && (
+                        <span className="profile-guess"> (guessed)</span>
+                      )}
+                    </span>
+                  ))}
+                </p>
+              )}
+              {profile.goal && <p className="profile-line goal">Goal: {profile.goal}</p>}
+              <p className="profile-note">
+                The tutor uses this to set up scenes for you.{' '}
+                <button type="button" className="profile-clear" onClick={onClear}>
+                  Clear
+                </button>
+              </p>
+            </>
+          ) : (
+            <p className="profile-note">
+              Nothing saved yet. Share your first name, company and goal in a chat, and the tutor will remember them here.
+            </p>
+          )}
+        </section>
 
         <h2>Beta</h2>
         <p>

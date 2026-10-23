@@ -14,6 +14,7 @@
 // request is admitted, so rejected attempts never use up anyone's allowance.
 
 import { createHash } from "node:crypto";
+import { canStoreProfile, loadProfile, profileSummary, readProfileTags, saveProfile } from "../lib/profile.mjs";
 
 // ---------- Settings (all optional; defaults shown) ----------
 const env = process.env;
@@ -145,13 +146,13 @@ export function resolveAccess({ code, browserId, ip }) {
 }
 
 // ---------- Upstash Redis (REST API, no npm package needed) ----------
-const upstashConfigured = () => Boolean(env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN);
+export const upstashConfigured = () => Boolean(env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN);
 
 class QuotaStoreError extends Error {}
 
 // Sends one command and validates the response. Upstash reports command errors
 // as {"error": "..."} with or without an HTTP error status, so check both.
-async function redisCommand(command) {
+export async function redisCommand(command) {
   if (!upstashConfigured()) throw new QuotaStoreError("Upstash is not configured");
   let res;
   try {
@@ -306,6 +307,52 @@ function withIdleTimeout(body, ms) {
   });
 }
 
+// Saved profile: reads the reply as it streams past (without changing it) and saves any
+// hidden <profile …/> line once Dify signals the end of the message. The stream only
+// closes after the save, so the function stays alive for it.
+function withProfileSaving(stream, browserId) {
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let answer = "";
+  let saving = null;
+  const save = () => {
+    if (saving) return saving;
+    const update = readProfileTags(answer);
+    saving = update
+      ? saveProfile(redisCommand, browserId, update).catch((e) => console.error("Profile save failed:", e.message))
+      : Promise.resolve();
+    return saving;
+  };
+  const readLine = (line) => {
+    if (!line.startsWith("data:")) return;
+    let data;
+    try {
+      data = JSON.parse(line.slice(5).trim());
+    } catch {
+      return;
+    }
+    if (data.event === "message" || data.event === "agent_message") answer += data.answer || "";
+    else if (data.event === "message_replace") answer = data.answer || "";
+    else if (data.event === "message_end") save();
+  };
+  return stream.pipeThrough(
+    new TransformStream({
+      transform(chunk, controller) {
+        controller.enqueue(chunk);
+        buffer += decoder.decode(chunk, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop();
+        for (const line of lines) readLine(line.trim());
+      },
+      async flush() {
+        buffer += decoder.decode();
+        if (buffer) readLine(buffer.trim());
+        await save();
+      },
+    })
+  );
+}
+
 // ---------- Main handler ----------
 export default async (req, context) => {
   // GET: public settings for the page (no secrets here)
@@ -396,17 +443,30 @@ export default async (req, context) => {
     }
   }
 
-  // 3. Forward to Dify with a connection timeout
+  // 3. Saved profile (memory on unless the learner turned it off on the About page).
+  // Read once, when a conversation starts: Dify keeps a conversation's inputs from its
+  // first message. A slow or missing profile never blocks the chat.
   const conversationId = String(body?.conversationId ?? "").slice(0, 100);
+  const memoryOn = body?.memory !== false && canStoreProfile(browserId) && upstashConfigured();
+  let inputs = {};
+  if (memoryOn && !conversationId) {
+    try {
+      const summary = profileSummary(await loadProfile(redisCommand, browserId));
+      if (summary) inputs = { learner_profile: summary };
+    } catch (e) {
+      console.error("Profile read failed:", e.message);
+    }
+  }
+
+  // 4. Forward to Dify with a connection timeout
   const difyAbort = new AbortController();
   const connectTimer = setTimeout(() => difyAbort.abort(), DIFY_CONNECT_TIMEOUT_MS);
-  let upstream;
-  try {
-    upstream = await fetch(`${baseUrl}/chat-messages`, {
+  const askDify = (withInputs) =>
+    fetch(`${baseUrl}/chat-messages`, {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        inputs: {},
+        inputs: withInputs,
         query: taggedQuery,
         response_mode: "streaming",
         conversation_id: conversationId,
@@ -414,6 +474,15 @@ export default async (req, context) => {
       }),
       signal: difyAbort.signal,
     });
+  let upstream;
+  try {
+    upstream = await askDify(inputs);
+    // If the Chatflow rejects the profile (e.g. its Start node has no learner_profile
+    // field yet, or the field is too short), chat without it rather than fail.
+    if (upstream.status === 400 && Object.keys(inputs).length) {
+      console.error("Dify rejected learner_profile:", (await upstream.text().catch(() => "")).slice(0, 300));
+      upstream = await askDify({});
+    }
   } catch (e) {
     clearTimeout(connectTimer);
     if (admitted) await refund(access);
@@ -433,7 +502,8 @@ export default async (req, context) => {
     return json({ error: `The tutor returned an error (${upstream.status}). Please try again.` }, 502, headers);
   }
 
-  return new Response(withIdleTimeout(upstream.body, DIFY_IDLE_TIMEOUT_MS), {
+  const stream = withIdleTimeout(upstream.body, DIFY_IDLE_TIMEOUT_MS);
+  return new Response(memoryOn ? withProfileSaving(stream, browserId) : stream, {
     headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache", ...headers },
   });
 };

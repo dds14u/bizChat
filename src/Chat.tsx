@@ -3,6 +3,7 @@ import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
+import { deleteProfile, fetchProfile, readMemoryOn, saveMemoryOn, type LearnerProfile } from './profile';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
 import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, fixedSpeakerFace, randomSpeakerFace, speakerFaceForGender, type Gender, type Scene, type SpeakerFace } from './scenes';
 import Speaker, { type SpeakerPhase } from './Speaker';
@@ -79,13 +80,18 @@ function formatReply(text: string): ReactNode {
 // text. Works on partial text, so a note appears live as it streams in.
 type Segment = { kind: 'text' | 'hint'; text: string };
 
-// Custom scenes: the tutor's first reply starts with a hidden line naming the character it plays,
-// e.g. <character name="Mike" gender="male"/>. The page reads it (for the face) and never shows it.
-const CHARACTER_TAG = /<character\b[^>]*>/gi;
-// A tag still streaming in at the end of the reply ("<chara", '<character name="Mi'): hide it too
-const PARTIAL_CHARACTER_TAG = /<(?:character(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?)?$/i;
+// Hidden lines the tutor writes for the page, never shown:
+// - Custom scenes: the first reply names the character it plays, e.g. <character name="Mike" gender="male"/>
+//   (the page reads it for the face).
+// - Saved profile: <profile name="Lee" company="NIO" …/> when the tutor learns something new about the
+//   learner (the server saves it; the page refreshes the greeting and About page).
+// Quote-aware, so a ">" inside a value doesn't end the tag early
+const HIDDEN_TAG = /<(?:character|profile)\b(?:"[^"]*"|'[^']*'|[^>"'])*>/gi;
+// A tag still streaming in at the end of the reply ("<chara", '<profile name="Le'): hide it too
+const PARTIAL_HIDDEN_TAG =
+  /<(?:character(?:\s[^>]*)?|profile(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?|p(?:r(?:o(?:f(?:i(?:l(?:e)?)?)?)?)?)?)?$/i;
 
-const stripCharacterTag = (text: string) => text.replace(CHARACTER_TAG, '').replace(PARTIAL_CHARACTER_TAG, '');
+const stripCharacterTag = (text: string) => text.replace(HIDDEN_TAG, '').replace(PARTIAL_HIDDEN_TAG, '');
 
 function readCharacterTag(text: string): { name?: string; gender?: Gender } | null {
   const tag = text.match(/<character\b([^>]*)>/i);
@@ -316,6 +322,34 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const userId = useRef(getBrowserId());
   const inviteCode = useRef(getInviteCode());
 
+  // Saved profile (greeting + About page). Memory is on unless turned off on this browser.
+  const [memoryOn, setMemoryOn] = useState(readMemoryOn);
+  const [profile, setProfile] = useState<LearnerProfile | null>(null);
+  const refreshProfile = useCallback(() => {
+    if (!readMemoryOn()) return;
+    fetchProfile(userId.current).then((p) => {
+      if (mountedRef.current && readMemoryOn()) setProfile(p);
+    });
+  }, []);
+  useEffect(() => {
+    refreshProfile();
+  }, [refreshProfile]);
+
+  const changeMemory = (on: boolean) => {
+    saveMemoryOn(on);
+    setMemoryOn(on);
+    if (!on) {
+      // Off: forget what was saved, and the server stops reading and saving
+      setProfile(null);
+      deleteProfile(userId.current);
+    }
+  };
+
+  const clearSavedProfile = () => {
+    setProfile(null);
+    deleteProfile(userId.current);
+  };
+
   // Free trial and limits
   const [tier, setTier] = useState<string>(inviteCode.current ? '' : 'visitor');
   const [trialRemaining, setTrialRemaining] = useState<number | null>(null);
@@ -506,6 +540,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         conversationId,
         user: userId.current,
         code: inviteCode.current,
+        memory: memoryOn,
         signal: controller.signal,
         onMeta: ({ tier: t, trialRemaining: r }) => {
           if (t) setTier(t);
@@ -559,6 +594,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         }
         // The character finished: the glow stops, and the face waits for the learner's next action
         setSpeaker((s) => (s && s.phase === 'speaking' ? { ...s, phase: 'done' } : s));
+        // The tutor learned something new: the server saves it as the stream closes, so look shortly after
+        if (memoryOn && /<profile\b/i.test(reply)) setTimeout(refreshProfile, 1500);
         inputRef.current?.focus();
       }
     }
@@ -617,6 +654,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   const openAbout = () => {
     if (window.location.hash !== '#about') window.history.pushState({ about: true }, '', '#about');
     setShowAbout(true);
+    refreshProfile();
   };
 
   const closeAbout = () => {
@@ -752,7 +790,9 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         )}
       </header>
 
-      {showAbout && <About />}
+      {showAbout && (
+        <About profile={profile} memoryOn={memoryOn} onMemoryChange={changeMemory} onClear={clearSavedProfile} />
+      )}
 
       <main className="chat-area" hidden={showAbout}>
         <div className="chat-slot">
@@ -763,7 +803,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               {/* ---------- First visit: two mode cards (Proposal A1) ---------- */}
               {empty && showIntro && (
                 <div className="start intro">
-                  <h1>Practice your business English</h1>
+                  <h1>{profile?.name ? `Hi ${profile.name}, ready to practice business English?` : 'Practice your business English'}</h1>
                   <p className="start-sub">How would you like to practice today? <br />You can write in English or Chinese.</p>
                   {trialNote}
 

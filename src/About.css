@@ -37,6 +37,106 @@
   text-underline-offset: 3px;
 }
 
+/* Saved profile in the Privacy section: set apart by a rule above and below */
+.profile-box {
+  margin: 16px 0 14px;
+  padding: 12px 0 10px;
+  border-top: 1.5px solid var(--line-soft);
+  border-bottom: 1.5px solid var(--line-soft);
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.about .profile-head h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.about .profile-line {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.about .profile-line.goal {
+  font-weight: 400;
+}
+
+.profile-guess {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.about .profile-note {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.profile-clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  color: #a3361f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.profile-clear:focus-visible,
+.switch:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* On/off switch: apricot when on */
+.switch {
+  flex: none;
+  position: relative;
+  width: 46px;
+  height: 28px;
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #e2ddd3;
+  cursor: pointer;
+}
+
+.switch.on {
+  background: var(--rp);
+}
+
+.switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.15s ease;
+}
+
+.switch.on .switch-knob {
+  left: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch-knob {
+    transition: none;
+  }
+}
+
 /* "Close ✕" in the header, where the mode menu usually sits (sheet-style close) */
 .close-link {
   flex: none;
