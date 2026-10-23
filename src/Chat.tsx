@@ -3,7 +3,7 @@ import './Chat.css';
 import { getBrowserId, getInviteCode } from './invite';
 import { ChatError, DEFAULT_MAX_MESSAGE_CHARS, fetchConfig, sendChat, sendFeedback, type ChatMode, type Rating } from './chatApi';
 import About from './About';
-import { deleteProfile, fetchProfile, readMemoryOn, saveMemoryOn, type LearnerProfile } from './profile';
+import { deleteProfile, fetchProfile, readCachedProfile, readMemoryOn, saveMemoryOn, type LearnerProfile } from './profile';
 import ModeSwitcher, { CoachIcon, RoleplayIcon, modeLabel } from './ModeSwitcher';
 import { COACH_EXAMPLE, COACH_STARTERS, DIFFICULTY_SHORT, SCENES, fixedSpeakerFace, randomSpeakerFace, speakerFaceForGender, type Gender, type Scene, type SpeakerFace } from './scenes';
 import Speaker, { type SpeakerPhase } from './Speaker';
@@ -335,11 +335,12 @@ export default function Chat({ brand }: { brand: ReactNode }) {
 
   // Saved profile (greeting + About page). Memory is on unless turned off on this browser.
   const [memoryOn, setMemoryOn] = useState(readMemoryOn);
-  const [profile, setProfile] = useState<LearnerProfile | null>(null);
+  // Starts from this browser's last-known copy so the greeting doesn't flash, then the server confirms it
+  const [profile, setProfile] = useState<LearnerProfile | null>(readCachedProfile);
   // Loaded even while memory is paused, so the About page can show what's kept (faded)
   const refreshProfile = useCallback(() => {
     fetchProfile(userId.current).then((p) => {
-      if (mountedRef.current) setProfile(p);
+      if (mountedRef.current && p !== undefined) setProfile(p); // undefined = server unreachable: keep what's shown
     });
   }, []);
   useEffect(() => {

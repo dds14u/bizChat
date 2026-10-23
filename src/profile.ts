@@ -31,19 +31,49 @@ export function saveMemoryOn(on: boolean) {
   }
 }
 
-export async function fetchProfile(user: string): Promise<LearnerProfile | null> {
+// Last profile the server returned, kept on this browser so the home greeting is right on the
+// first paint (no "Practice your…" → "Hi D…" flash). The browser ID the profile is linked to lives in
+// the same storage, so the two are cleared together. The server stays the source of truth: each load
+// re-checks it and updates or removes this copy.
+const PROFILE_CACHE_KEY = 'td-profile';
+
+export function readCachedProfile(): LearnerProfile | null {
   try {
-    const res = await fetch(`/api/profile?user=${encodeURIComponent(user)}`, { signal: AbortSignal.timeout(6000) });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const p = data?.profile;
-    return p && typeof p === 'object' && (p.name || p.role || p.company || p.industry || p.goal) ? (p as LearnerProfile) : null;
+    const raw = localStorage.getItem(PROFILE_CACHE_KEY);
+    const p = raw ? JSON.parse(raw) : null;
+    return p && typeof p === 'object' ? (p as LearnerProfile) : null;
   } catch {
     return null;
   }
 }
 
+function cacheProfile(p: LearnerProfile | null) {
+  try {
+    if (p) localStorage.setItem(PROFILE_CACHE_KEY, JSON.stringify(p));
+    else localStorage.removeItem(PROFILE_CACHE_KEY);
+  } catch {
+    // Storage blocked: the greeting just waits for the server, as before
+  }
+}
+
+/** The saved profile, or null if there is none. Undefined means the server couldn't be reached (keep what's shown). */
+export async function fetchProfile(user: string): Promise<LearnerProfile | null | undefined> {
+  try {
+    const res = await fetch(`/api/profile?user=${encodeURIComponent(user)}`, { signal: AbortSignal.timeout(6000) });
+    if (!res.ok) return undefined;
+    const data = await res.json();
+    const p = data?.profile;
+    const profile =
+      p && typeof p === 'object' && (p.name || p.role || p.company || p.industry || p.goal) ? (p as LearnerProfile) : null;
+    cacheProfile(profile);
+    return profile;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function deleteProfile(user: string): Promise<boolean> {
+  cacheProfile(null);
   try {
     const res = await fetch(`/api/profile?user=${encodeURIComponent(user)}`, {
       method: 'DELETE',
