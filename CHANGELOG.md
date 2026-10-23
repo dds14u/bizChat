@@ -1,7 +1,7 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-- **Saved profile:** the tutor remembers a learner's first name, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?" when a name is saved. The About page's Privacy section shows the profile between two rules, with a memory switch and a Clear link. Needs the Dify Start variable `learner_profile` and the system prompt lines (see "Settings and content").
+- **Saved profile:** the tutor remembers a learner's first name, role, company, industry and learning goal for 30 days after the last update, linked to the anonymous browser ID. The home screen says "Hi [name], ready to practice business English?" when a name is saved. The About page's Privacy section shows the profile between two rules (name · role · company · industry on one line, the goal on its own line), with an On/Off memory switch and a Clear link. Needs the Dify Start variable `learner_profile` and the system prompt lines (see "Settings and content").
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 

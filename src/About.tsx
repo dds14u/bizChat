@@ -12,8 +12,9 @@ interface Props {
 
 // About page: opened from the bottom of the mode menu; the header shows "Close" instead of the menu.
 export default function About({ profile, memoryOn, onMemoryChange, onClear }: Props) {
+  // One line in this order: name · role · company · industry; the goal gets its own line
   const summary = profile
-    ? [profile.name, profile.company, profile.industry].filter(Boolean)
+    ? (['name', 'role', 'company', 'industry'] as const).filter((key) => profile[key]).map((key) => ({ key, text: profile[key]! }))
     : [];
   return (
     <main className="about-area">
@@ -55,7 +56,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
         <h2>Privacy</h2>
         <p>
           There are no user accounts. To pick up where you left off, the tutor remembers a short profile (first name,
-          company, industry and learning goal), linked to this browser and deleted after 30 days without an update. You
+          role, company, industry and learning goal), linked to this browser and deleted after 30 days without an update. You
           can clear it or turn memory off below at any time. Conversations are processed to generate replies. Please don’t
           paste confidential company information.
         </p>
@@ -86,10 +87,10 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
               {summary.length > 0 && (
                 <p className="profile-line">
                   {summary.map((part, i) => (
-                    <span key={i}>
+                    <span key={part.key}>
                       {i > 0 && ' · '}
-                      {part}
-                      {part === profile.industry && profile.industry_source === 'inferred' && (
+                      {part.text}
+                      {part.key === 'industry' && profile.industry_source === 'inferred' && (
                         <span className="profile-guess"> (guessed)</span>
                       )}
                     </span>
@@ -106,7 +107,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
             </>
           ) : (
             <p className="profile-note">
-              Nothing saved yet. Share your first name, company and goal in a chat, and the tutor will remember them here.
+              Nothing saved yet. Share your first name, role, company and goal in a chat, and the tutor will remember them here.
             </p>
           )}
         </section>

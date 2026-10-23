@@ -1,7 +1,7 @@
-// Saved learner profile: first name, company, industry and learning goal.
+// Saved learner profile: first name, role, company, industry and learning goal.
 //
 // The tutor writes a hidden line when it learns something new, e.g.
-//   <profile name="Lee" company="NIO" industry="Electric vehicles" industry_source="inferred" goal="lead weekly meetings with German suppliers"/>
+//   <profile name="Lee" role="Product manager" company="NIO" industry="Electric vehicles" industry_source="inferred" goal="lead weekly meetings with German suppliers"/>
 // The chat function reads it from the reply stream and merges it into Redis under the
 // learner's anonymous browser ID. New values replace old ones field by field; an empty
 // value never erases a saved one. Only these fields are ever stored, each capped.
@@ -14,7 +14,7 @@ const days = Number(env.PROFILE_TTL_DAYS);
 /** Profiles are deleted this long after their last update (default 30 days). */
 export const PROFILE_TTL_SECONDS = Math.round((Number.isFinite(days) && days > 0 ? days : 30) * 86400);
 
-const LIMITS = { name: 40, company: 60, industry: 60, goal: 140 };
+const LIMITS = { name: 40, role: 60, company: 60, industry: 60, goal: 140 };
 const FIELDS = Object.keys(LIMITS);
 
 export const profileKey = (browserId) => `profile:${browserId}`;
@@ -46,7 +46,7 @@ export function readProfileTags(text) {
   return found;
 }
 
-/** Keeps only the four fields (plus where the industry came from), cleaned and capped. */
+/** Keeps only the five fields (plus where the industry came from), cleaned and capped. */
 export function sanitizeProfile(raw) {
   const out = {};
   if (!raw || typeof raw !== "object") return out;
@@ -76,6 +76,7 @@ export function profileSummary(p) {
   if (isEmptyProfile(p)) return "";
   const parts = [];
   if (p.name) parts.push(`First name: ${p.name}`);
+  if (p.role) parts.push(`Role: ${p.role}`);
   if (p.company) parts.push(`Company: ${p.company}`);
   if (p.industry) parts.push(`Industry: ${p.industry}${p.industry_source === "inferred" ? " (guessed from the company)" : ""}`);
   if (p.goal) parts.push(`Learning goal: ${p.goal}`);

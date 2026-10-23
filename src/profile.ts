@@ -1,9 +1,10 @@
-// Saved learner profile (first name, company, industry, learning goal).
+// Saved learner profile (first name, role, company, industry, learning goal).
 // The server saves it from the tutor's hidden <profile …/> line; the page only shows it,
 // clears it, and remembers whether the learner turned memory off on this browser.
 
 export interface LearnerProfile {
   name?: string;
+  role?: string;
   company?: string;
   industry?: string;
   industry_source?: 'stated' | 'inferred';
@@ -36,7 +37,7 @@ export async function fetchProfile(user: string): Promise<LearnerProfile | null>
     if (!res.ok) return null;
     const data = await res.json();
     const p = data?.profile;
-    return p && typeof p === 'object' && (p.name || p.company || p.industry || p.goal) ? (p as LearnerProfile) : null;
+    return p && typeof p === 'object' && (p.name || p.role || p.company || p.industry || p.goal) ? (p as LearnerProfile) : null;
   } catch {
     return null;
   }
