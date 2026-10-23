@@ -1,7 +1,7 @@
 // Saved learner profile: first name, role, company, industry and learning goal.
 //
 // The tutor writes a hidden line when it learns something new, e.g.
-//   <profile name="Lee" role="Product manager" company="NIO" industry="Electric vehicles" industry_source="inferred" goal="lead weekly meetings with German suppliers"/>
+//   <profile learner_name="Lee" learner_role="Product manager" learner_company="NIO" learner_industry="Electric vehicles" learner_industry_source="inferred" learner_goal="lead weekly meetings with German suppliers"/>
 // The chat function reads it from the reply stream and merges it into Redis under the
 // learner's anonymous browser ID. New values replace old ones field by field; an empty
 // value never erases a saved one. Only these fields are ever stored, each capped.
@@ -39,11 +39,18 @@ const readAttrs = (inner) => {
   return attrs;
 };
 
+// The profile line uses learner_-prefixed fields, so it never shares an attribute with the
+// <character name="…" gender="…"/> line (the person the tutor plays):
+//   <profile learner_name="Lee" learner_role="Product manager" learner_company="NIO"
+//            learner_industry="Electric vehicles" learner_industry_source="inferred" learner_goal="…"/>
+// Unprefixed fields (name="…") from the earlier format are still read, for older prompts.
+const PREFIX = "learner_";
+
 /**
  * Every <profile …/> tag in a reply, merged in order (later tags win). Null when there is none.
  * Guards against the model mixing up its two hidden lines: a "profile" tag with a gender is
- * really the <character …/> line for the person the tutor plays, so it's ignored; and a name
- * that matches the tutor's own character is never saved as the learner's name.
+ * really the <character …/> line, so it's ignored; and a name that matches the tutor's own
+ * character is never saved as the learner's name.
  */
 export function readProfileTags(text) {
   const reply = String(text);
@@ -55,8 +62,14 @@ export function readProfileTags(text) {
   let found = null;
   // Quote-aware, so a ">" inside a value doesn't end the tag early
   for (const tag of reply.matchAll(/<profile\b((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
-    const attrs = readAttrs(tag[1]);
-    if ("gender" in attrs) continue; // a mislabeled character line, not the learner
+    const raw = readAttrs(tag[1]);
+    if ("gender" in raw || `${PREFIX}gender` in raw) continue; // a mislabeled character line, not the learner
+    const attrs = {};
+    for (const [key, value] of Object.entries(raw)) {
+      const field = key.startsWith(PREFIX) ? key.slice(PREFIX.length) : key;
+      // The prefixed form wins if a tag has both
+      if (key.startsWith(PREFIX) || !(field in attrs)) attrs[field] = value;
+    }
     if (attrs.name && characterNames.has(attrs.name.trim().toLowerCase())) delete attrs.name;
     found = { ...found, ...attrs };
   }

@@ -5,6 +5,8 @@
 
 - **Profile guard:** a hidden line that mixes up the two tags (e.g. `<profile name="Klaus" gender="male"/>`, really the tutor's character) is never saved as the learner's profile, and the page uses it for the character's face instead. A character's name is never saved as the learner's name.
 
+- **Profile fields renamed:** the profile line now uses `learner_name`, `learner_role`, `learner_company`, `learner_industry`, `learner_industry_source` and `learner_goal`, so it never shares an attribute with `<character name="…" gender="…"/>`. The old unprefixed fields are still read.
+
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History

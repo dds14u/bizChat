@@ -83,11 +83,11 @@ type Segment = { kind: 'text' | 'hint'; text: string };
 // Hidden lines the tutor writes for the page, never shown:
 // - Custom scenes: the first reply names the character it plays, e.g. <character name="Mike" gender="male"/>
 //   (the page reads it for the face).
-// - Saved profile: <profile name="Lee" company="NIO" …/> when the tutor learns something new about the
+// - Saved profile: <profile learner_name="Lee" learner_company="NIO" …/> when the tutor learns something new about the
 //   learner (the server saves it; the page refreshes the greeting and About page).
 // Quote-aware, so a ">" inside a value doesn't end the tag early
 const HIDDEN_TAG = /<(?:character|profile)\b(?:"[^"]*"|'[^']*'|[^>"'])*>/gi;
-// A tag still streaming in at the end of the reply ("<chara", '<profile name="Le'): hide it too
+// A tag still streaming in at the end of the reply ("<chara", '<profile learner_name="Le'): hide it too
 const PARTIAL_HIDDEN_TAG =
   /<(?:character(?:\s[^>]*)?|profile(?:\s[^>]*)?|c(?:h(?:a(?:r(?:a(?:c(?:t(?:e)?)?)?)?)?)?)?|p(?:r(?:o(?:f(?:i(?:l(?:e)?)?)?)?)?)?)?$/i;
 
