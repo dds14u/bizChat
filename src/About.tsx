@@ -114,7 +114,9 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
               <span className="switch-text" aria-hidden="true">
                 {memoryOn ? 'On' : 'Off'}
               </span>
-              <span className="switch-knob" aria-hidden="true" />
+              <span className="switch-track" aria-hidden="true">
+                <span className="switch-knob" />
+              </span>
             </button>
           </div>
 

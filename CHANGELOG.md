@@ -1,7 +1,8 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-*None right now.* `dev` and `main` are identical as of the Oct 23 merge.
+- **About wording:** "the tutor" → "the app" in the Privacy and profile notes. `d78edad`
+- **Quieter memory switch:** no black outline. A phone-style switch (apricot when on, warm gray when off) with "On"/"Off" as plain text beside it, to match the About page. `SWITCH`
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
