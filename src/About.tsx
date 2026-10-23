@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import './About.css';
 import type { LearnerProfile } from './profile';
 
@@ -16,6 +17,43 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
   const summary = profile
     ? (['name', 'role', 'company', 'industry'] as const).filter((key) => profile[key]).map((key) => ({ key, text: profile[key]! }))
     : [];
+
+  // "Are you sure?" for Clear / Delete now: the note line turns into a confirm strip (no pop-up)
+  const [confirming, setConfirming] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (confirming) cancelRef.current?.focus(); // keyboard and screen-reader users land on the safe choice
+  }, [confirming]);
+  useEffect(() => {
+    setConfirming(false); // the switch or a new profile ends any pending confirm
+  }, [memoryOn, profile]);
+  const confirmStrip = (
+    <div
+      className="profile-confirm"
+      role="group"
+      aria-label="Confirm delete"
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') setConfirming(false);
+      }}
+    >
+      <span>Delete your profile? This can’t be undone.</span>
+      <span className="profile-confirm-actions">
+        <button
+          type="button"
+          className="profile-confirm-delete"
+          onClick={() => {
+            setConfirming(false);
+            onClear();
+          }}
+        >
+          Delete
+        </button>
+        <button type="button" className="profile-confirm-cancel" ref={cancelRef} onClick={() => setConfirming(false)}>
+          Cancel
+        </button>
+      </span>
+    </div>
+  );
   return (
     <main className="about-area">
       <article className="about">
@@ -101,10 +139,12 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
               )}
               {profile.goal && <p className="profile-line goal">Goal: {profile.goal}</p>}
               </div>
-              {memoryOn ? (
+              {confirming ? (
+                confirmStrip
+              ) : memoryOn ? (
                 <p className="profile-note">
                   The tutor uses this to set up scenes for you.{' '}
-                  <button type="button" className="profile-clear" onClick={onClear}>
+                  <button type="button" className="profile-clear" onClick={() => setConfirming(true)}>
                     Clear
                   </button>
                 </p>
@@ -112,7 +152,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
                 <p className="profile-note">
                   Memory is paused. The tutor won’t use or update this profile until you turn it back on. It’s still
                   deleted 30 days after the last update.{' '}
-                  <button type="button" className="profile-clear" onClick={onClear}>
+                  <button type="button" className="profile-clear" onClick={() => setConfirming(true)}>
                     Delete now
                   </button>
                 </p>

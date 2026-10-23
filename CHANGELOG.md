@@ -11,6 +11,8 @@
 
 - **Any hidden line is hidden:** every self-closing tag with attributes (`<name attr="…"/>`) is hidden wherever it appears, including while it streams in, so new hidden lines in the system prompt need no code change. Ordinary angle-bracket text stays visible ("Dear <client name>,", `<b>`, `<br/>`, "a < b"). `<character>` and `<profile>` are also hidden in any form.
 
+- **"Are you sure?" before deleting the profile:** Clear and Delete now turn the note line into an inline strip ("Delete your profile? This can't be undone. Delete · Cancel"). Cancel, Escape or the memory switch back out; focus starts on Cancel.
+
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
