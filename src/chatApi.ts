@@ -115,6 +115,8 @@ export interface SendOptions {
   conversationId: string;
   user: string;
   code: string;
+  /** False when the learner turned memory off: the server neither reads nor saves a profile */
+  memory?: boolean;
   signal: AbortSignal; // abort when the component unmounts
   onMeta?: (meta: { tier: string | null; trialRemaining: number | null }) => void;
   onDelta: (text: string) => void;
@@ -171,6 +173,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
           conversationId: opts.conversationId,
           user: opts.user,
           code: opts.code,
+          memory: opts.memory !== false,
         }),
         signal: controller.signal,
       });

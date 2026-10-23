@@ -37,6 +37,176 @@
   text-underline-offset: 3px;
 }
 
+/* Saved profile in the Privacy section: set apart by a rule above and below */
+.profile-box {
+  margin: 16px 0 14px;
+  padding: 12px 0 10px;
+  border-top: 1.5px solid var(--line-soft);
+  border-bottom: 1.5px solid var(--line-soft);
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.about .profile-head h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.about .profile-line {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.about .profile-line.goal {
+  font-weight: 400;
+}
+
+.profile-guess {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+.about .profile-note {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.profile-clear {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  color: #a3361f;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.profile-clear:focus-visible,
+.switch:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+/* "Are you sure?" strip that replaces the note line for Clear / Delete now */
+.profile-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 6px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: #fbe9e4;
+  color: #7a2716;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.profile-confirm-actions {
+  display: inline-flex;
+  gap: 14px;
+}
+
+.profile-confirm-delete,
+.profile-confirm-cancel {
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.profile-confirm-delete {
+  color: #a3361f;
+}
+
+.profile-confirm-cancel {
+  color: var(--ink);
+}
+
+.profile-confirm-delete:focus-visible,
+.profile-confirm-cancel:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Memory paused: the kept profile is shown faded */
+.profile-paused {
+  opacity: 0.45;
+}
+
+/* On/off switch: apricot when on, with "On"/"Off" written in the track (fixed width, so nothing shifts) */
+.switch {
+  flex: none;
+  position: relative;
+  width: 66px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: #e2ddd3;
+  font: inherit;
+  cursor: pointer;
+}
+
+.switch.on {
+  background: var(--rp);
+}
+
+.switch-text {
+  position: absolute;
+  top: 50%;
+  right: 9px;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink-soft);
+}
+
+.switch.on .switch-text {
+  right: auto;
+  left: 10px;
+  color: var(--ink);
+}
+
+.switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  transition: left 0.15s ease;
+}
+
+.switch.on .switch-knob {
+  left: 38px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch-knob {
+    transition: none;
+  }
+}
+
 /* "Close ✕" in the header, where the mode menu usually sits (sheet-style close) */
 .close-link {
   flex: none;
