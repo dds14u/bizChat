@@ -596,7 +596,8 @@ export default function Chat({ brand }: { brand: ReactNode }) {
         // The character finished: the glow stops, and the face waits for the learner's next action
         setSpeaker((s) => (s && s.phase === 'speaking' ? { ...s, phase: 'done' } : s));
         // The tutor learned something new: the server saves it as the stream closes, so look shortly after
-        if (memoryOn && /<profile\b/i.test(reply)) setTimeout(refreshProfile, 1500);
+        // (only when the line carries a value: an all-empty line means nothing new)
+        if (memoryOn && /<profile\b[^>]*=\s*["'][^"'\s]/i.test(reply)) setTimeout(refreshProfile, 1500);
         inputRef.current?.focus();
       }
     }

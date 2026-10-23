@@ -133,6 +133,8 @@ export async function saveProfile(redis, browserId, update) {
   const saved = await loadProfile(redis, browserId);
   const merged = mergeProfile(saved, update);
   if (isEmptyProfile(merged)) return saved;
+  // Nothing new (e.g. an all-empty line appended to every reply): no write, the 30-day clock keeps running
+  if (saved && JSON.stringify(merged) === JSON.stringify(sanitizeProfile(saved))) return saved;
   await redis(["SET", profileKey(browserId), JSON.stringify(merged), "EX", String(PROFILE_TTL_SECONDS)]);
   return merged;
 }
