@@ -98,6 +98,11 @@
   border-radius: 999px;
 }
 
+/* Memory paused: the kept profile is shown faded */
+.profile-paused {
+  opacity: 0.45;
+}
+
 /* On/off switch: apricot when on, with "On"/"Off" written in the track (fixed width, so nothing shifts) */
 .switch {
   flex: none;

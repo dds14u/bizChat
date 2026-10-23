@@ -7,6 +7,8 @@
 
 - **Profile fields renamed:** the profile line now uses `learner_name`, `learner_role`, `learner_company`, `learner_industry`, `learner_industry_source` and `learner_goal`, so it never shares an attribute with `<character name="…" gender="…"/>`. The old unprefixed fields are still read.
 
+- **Memory Off now pauses instead of deleting:** the saved profile is kept (shown faded) and the tutor neither uses nor updates it until memory is back on; it's still deleted 30 days after its last update. "Delete now" (or Clear when on) deletes it. The home greeting hides while memory is off.
+
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History

@@ -326,24 +326,21 @@ export default function Chat({ brand }: { brand: ReactNode }) {
   // Saved profile (greeting + About page). Memory is on unless turned off on this browser.
   const [memoryOn, setMemoryOn] = useState(readMemoryOn);
   const [profile, setProfile] = useState<LearnerProfile | null>(null);
+  // Loaded even while memory is paused, so the About page can show what's kept (faded)
   const refreshProfile = useCallback(() => {
-    if (!readMemoryOn()) return;
     fetchProfile(userId.current).then((p) => {
-      if (mountedRef.current && readMemoryOn()) setProfile(p);
+      if (mountedRef.current) setProfile(p);
     });
   }, []);
   useEffect(() => {
     refreshProfile();
   }, [refreshProfile]);
 
+  // Off pauses memory: the profile is kept (still deleted 30 days after its last update), but the
+  // server neither reads nor saves it until memory is back on. Only "Clear"/"Delete now" deletes it.
   const changeMemory = (on: boolean) => {
     saveMemoryOn(on);
     setMemoryOn(on);
-    if (!on) {
-      // Off: forget what was saved, and the server stops reading and saving
-      setProfile(null);
-      deleteProfile(userId.current);
-    }
   };
 
   const clearSavedProfile = () => {
@@ -804,7 +801,7 @@ export default function Chat({ brand }: { brand: ReactNode }) {
               {/* ---------- First visit: two mode cards (Proposal A1) ---------- */}
               {empty && showIntro && (
                 <div className="start intro">
-                  <h1>{profile?.name ? `Hi ${profile.name}, ready to practice business English?` : 'Practice your business English'}</h1>
+                  <h1>{memoryOn && profile?.name ? `Hi ${profile.name}, ready to practice business English?` : 'Practice your business English'}</h1>
                   <p className="start-sub">How would you like to practice today? <br />You can write in English or Chinese.</p>
                   {trialNote}
 
