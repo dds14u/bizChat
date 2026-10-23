@@ -93,7 +93,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
 
         <h2>Privacy</h2>
         <p>
-          There are no user accounts. To pick up where you left off, the tutor remembers a short profile (first name,
+          There are no user accounts. To pick up where you left off, the app remembers a short profile (first name,
           role, company, industry and learning goal), linked to this browser and deleted after 30 days without an update. You
           can pause memory or delete your profile below at any time. Conversations are processed to generate replies. Please don’t
           paste confidential company information.
@@ -119,7 +119,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
           </div>
 
           {!memoryOn && !profile ? (
-            <p className="profile-note">Memory is off. The tutor won’t save anything about you on this browser.</p>
+            <p className="profile-note">Memory is off. The app won’t save anything about you on this browser.</p>
           ) : profile ? (
             <>
               {/* Paused: the saved profile stays visible but faded */}
@@ -143,14 +143,14 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
                 confirmStrip
               ) : memoryOn ? (
                 <p className="profile-note">
-                  The tutor uses this to set up scenes for you.{' '}
+                  The app uses this to set up scenes for you.{' '}
                   <button type="button" className="profile-clear" onClick={() => setConfirming(true)}>
                     Clear
                   </button>
                 </p>
               ) : (
                 <p className="profile-note">
-                  Memory is paused. The tutor won’t use or update this profile until you turn it back on. It’s still
+                  Memory is paused. The app won’t use or update this profile until you turn it back on. It’s still
                   deleted 30 days after the last update.{' '}
                   <button type="button" className="profile-clear" onClick={() => setConfirming(true)}>
                     Delete now
@@ -160,7 +160,7 @@ export default function About({ profile, memoryOn, onMemoryChange, onClear }: Pr
             </>
           ) : (
             <p className="profile-note">
-              Nothing saved yet. Share your first name, role, company and goal in a chat, and the tutor will remember them here.
+              Nothing saved yet. Share your first name, role, company and goal in a chat, and the app will remember them here.
             </p>
           )}
         </section>
