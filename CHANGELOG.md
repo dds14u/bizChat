@@ -3,6 +3,7 @@
 ## Dev only (not yet on main)
 - **About wording:** "the tutor" → "the app" in the Privacy and profile notes. `d78edad`
 - **Quieter memory switch:** no black outline. A phone-style switch (apricot when on, warm gray when off) with "On"/"Off" as plain text beside it, to match the About page. `254ad4d`
+- **Profile sent every turn:** Dify only fills `learner_profile` on the turn it's sent, so later turns (e.g. Coach follow-ups) saw an empty profile. The saved profile now goes with every message. `PROFILE`
 
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
