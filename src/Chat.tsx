@@ -94,7 +94,8 @@ const PARTIAL_HIDDEN_TAG =
 const stripCharacterTag = (text: string) => text.replace(HIDDEN_TAG, '').replace(PARTIAL_HIDDEN_TAG, '');
 
 function readCharacterTag(text: string): { name?: string; gender?: Gender } | null {
-  const tag = text.match(/<character\b([^>]*)>/i);
+  // The model sometimes labels this line <profile … gender="…"/> by mistake: a gender means it's the character
+  const tag = text.match(/<character\b([^>]*)>/i) ?? text.match(/<profile\b([^>]*\bgender\s*=[^>]*)>/i);
   if (!tag) return null;
   const attr = (key: string) => tag[1].match(new RegExp(`${key}\\s*=\\s*["']?([^"'\\s/>]+)`, 'i'))?.[1];
   const g = attr('gender')?.toLowerCase() ?? '';

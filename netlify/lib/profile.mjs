@@ -32,15 +32,32 @@ const clean = (value, max) =>
     .slice(0, max)
     .trim();
 
-/** Every <profile …/> tag in a reply, merged in order (later tags win). Null when there is none. */
+const TAG_ATTRS = /([a-z_]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi;
+const readAttrs = (inner) => {
+  const attrs = {};
+  for (const m of inner.matchAll(TAG_ATTRS)) attrs[m[1].toLowerCase()] = m[2] ?? m[3] ?? "";
+  return attrs;
+};
+
+/**
+ * Every <profile …/> tag in a reply, merged in order (later tags win). Null when there is none.
+ * Guards against the model mixing up its two hidden lines: a "profile" tag with a gender is
+ * really the <character …/> line for the person the tutor plays, so it's ignored; and a name
+ * that matches the tutor's own character is never saved as the learner's name.
+ */
 export function readProfileTags(text) {
+  const reply = String(text);
+  const characterNames = new Set();
+  for (const tag of reply.matchAll(/<character\b((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
+    const name = readAttrs(tag[1]).name?.trim().toLowerCase();
+    if (name) characterNames.add(name);
+  }
   let found = null;
   // Quote-aware, so a ">" inside a value doesn't end the tag early
-  for (const tag of String(text).matchAll(/<profile\b((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
-    const attrs = {};
-    for (const m of tag[1].matchAll(/([a-z_]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi)) {
-      attrs[m[1].toLowerCase()] = m[2] ?? m[3] ?? "";
-    }
+  for (const tag of reply.matchAll(/<profile\b((?:"[^"]*"|'[^']*'|[^>"'])*)>/gi)) {
+    const attrs = readAttrs(tag[1]);
+    if ("gender" in attrs) continue; // a mislabeled character line, not the learner
+    if (attrs.name && characterNames.has(attrs.name.trim().toLowerCase())) delete attrs.name;
     found = { ...found, ...attrs };
   }
   return found;
