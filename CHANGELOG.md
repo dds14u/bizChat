@@ -7,8 +7,6 @@
 
 - **Profile fields renamed:** the profile line now uses `learner_name`, `learner_role`, `learner_company`, `learner_industry`, `learner_industry_source` and `learner_goal`, so it never shares an attribute with `<character name="…" gender="…"/>`. The old unprefixed fields are still read.
 
-- **Empty profile lines are ignored:** a `<profile …/>` line with only empty values (e.g. appended to every reply by a Dify Parameter Extractor) saves nothing and doesn't trigger a refetch; an unchanged profile isn't rewritten.
-
 > **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
 
 ## History
