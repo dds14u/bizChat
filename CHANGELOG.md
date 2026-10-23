@@ -1,9 +1,9 @@
 # Real Business: Changelog
 
 ## Dev only (not yet on main)
-- **Quieter notes:** hint notes sit on a light warm gray instead of yellow, with one thin line under the character's text and no dividers between notes. The bulb keeps its gold outline, and only its glass is filled with the old note yellow.
+*None right now.* `dev` and `main` are identical as of `b1d6043` (Oct 22).
 
-> **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify.
+> **"On main" isn't the same as "live."** Auto-publishing is locked, so a `main` deploy only goes live once it's published in Netlify. The newest deploy waiting to be published is `main@b1d6043`.
 
 ## History
 
