@@ -4,7 +4,7 @@
 //   DIFY_API_KEY=… node evals/run.mjs            all cases
 //   EVAL_CASES="C1 D2" node evals/run.mjs        only some cases
 // Optional: DIFY_API_URL (default https://api.dify.ai/v1), LESSON_VIDEO_IDS (comma-separated Bilibili BV IDs),
-// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 4).
+// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 2).
 // Writes evals/out/report.md and evals/out/results.json. Exit code 1 when any case FAILS.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { mergeProfile, profileSummary, readProfileTags, sanitizeProfile } from "../netlify/lib/profile.mjs";
@@ -14,7 +14,7 @@ const env = process.env;
 const apiKey = env.DIFY_API_KEY;
 const baseUrl = (env.DIFY_API_URL || "https://api.dify.ai/v1").replace(/\/$/, "");
 const lessonIds = new Set((env.LESSON_VIDEO_IDS || "").split(/[\s,]+/).filter(Boolean));
-const concurrency = Math.max(1, Number(env.EVAL_CONCURRENCY) || 4);
+const concurrency = Math.max(1, Number(env.EVAL_CONCURRENCY) || 2);
 const only = new Set((env.EVAL_CASES || "").split(/[\s,]+/).filter(Boolean).map((s) => s.toUpperCase()));
 const TURN_TIMEOUT_MS = 120000;
 const USER = "eval-runner";
@@ -58,7 +58,12 @@ async function ask({ query, inputs, conversationId }) {
     if (data.conversation_id) convo = data.conversation_id;
     if (data.event === "message" || data.event === "agent_message") answer += data.answer || "";
     else if (data.event === "message_replace") answer = data.answer || "";
-    else if (data.event === "error") error = data.message || "stream error";
+    else if (data.event === "error") error = data.message || data.code || "stream error";
+    // A failed workflow (e.g. the model provider's rate limit) can end the stream with no text and no "error" event
+    else if (data.event === "workflow_finished" && data.data?.status && data.data.status !== "succeeded")
+      error = `workflow ${data.data.status}: ${data.data.error || "no detail"}`;
+    else if (data.event === "node_finished" && data.data?.status === "failed" && !error)
+      error = `${data.data.title || data.data.node_type || "node"} failed: ${data.data.error || "no detail"}`;
   };
   for await (const chunk of res.body) {
     buffer += decoder.decode(chunk, { stream: true });
@@ -67,8 +72,23 @@ async function ask({ query, inputs, conversationId }) {
     for (const line of lines) readLine(line.trim());
   }
   if (buffer.trim()) readLine(buffer.trim());
-  if (error) throw new Error(`Dify stream error: ${error}`);
+  if (error) throw new Error(`Dify: ${String(error).slice(0, 300)}`);
+  if (!answer.trim()) throw new Error("Dify: empty reply (no text and no error in the stream)");
   return { answer, conversationId: convo, ms: Date.now() - started };
+}
+
+/** A Dify/provider hiccup isn't a test result: retry the same turn a couple of times with a pause. */
+async function askWithRetry(args) {
+  let last;
+  for (let i = 0; i < 3; i++) {
+    try {
+      return await ask(args);
+    } catch (e) {
+      last = e;
+      await new Promise((r) => setTimeout(r, (Number(process.env.EVAL_RETRY_MS) || 8000) * (i + 1)));
+    }
+  }
+  throw last;
 }
 
 /** One attempt at a case: all turns in one conversation, profile carried like the live app. */
@@ -81,7 +101,7 @@ async function attempt(c) {
     const inputs = summary ? { learner_profile: summary } : {};
     const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], review: [...(t.review || [])] };
     try {
-      const r = await ask({ query: `${t.mode} ${t.message}`, inputs, conversationId });
+      const r = await askWithRetry({ query: `${t.mode} ${t.message}`, inputs, conversationId });
       conversationId = r.conversationId;
       turn.reply = r.answer;
       turn.ms = r.ms;
@@ -95,19 +115,21 @@ async function attempt(c) {
       turn.reply = "";
       turn.checks.push({ ok: false, label: "reply received", detail: e.message });
       turns.push(turn);
-      break; // later turns depend on this one
+      return { failed: true, errored: true, turns }; // later turns depend on this one
     }
     turns.push(turn);
   }
-  const failed = turns.some((t) => t.checks.some((ch) => !ch.ok)) || turns.length < c.turns.length;
-  return { failed, turns };
+  const failed = turns.some((t) => t.checks.some((ch) => !ch.ok));
+  return { failed, errored: false, turns };
 }
 
+// ERROR = Dify or the model provider didn't return a reply (not a prompt result); it still blocks a green run
 async function runCase(c) {
   const first = await attempt(c);
   if (!first.failed) return { id: c.id, title: c.title, status: "PASS", attempts: [first] };
   const second = await attempt(c);
-  return { id: c.id, title: c.title, status: second.failed ? "FAIL" : "FLAKY", attempts: [first, second] };
+  const status = !second.failed ? "FLAKY" : second.errored ? "ERROR" : "FAIL";
+  return { id: c.id, title: c.title, status, attempts: [first, second] };
 }
 
 // Run cases a few at a time (turns within a case stay in order)
@@ -125,7 +147,7 @@ await Promise.all(
 
 // ---------- Report ----------
 const count = (s) => results.filter((r) => r.status === s).length;
-const green = count("FAIL") === 0;
+const green = count("FAIL") === 0 && count("ERROR") === 0;
 const quote = (text, max = 1500) => {
   const t = String(text || "").trim();
   const cut = t.length > max ? `${t.slice(0, max)}…` : t;
@@ -136,7 +158,7 @@ lines.push(`# Golden set: ${green ? "GREEN" : "RED"}`);
 lines.push("");
 lines.push(`App: ${env.EVAL_APP || "production"} · Spec: ${golden.spec} · ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC`);
 lines.push("");
-lines.push(`**PASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")}**`);
+lines.push(`**PASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}**`);
 lines.push("");
 lines.push("| Case | Result | Failed checks (last attempt) |");
 lines.push("|---|---|---|");
@@ -184,5 +206,5 @@ await writeFile(
   new URL("./out/results.json", import.meta.url),
   JSON.stringify({ spec: golden.spec, app: env.EVAL_APP || "production", at: new Date().toISOString(), green, results }, null, 2)
 );
-console.log(`\nPASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")}`);
+console.log(`\nPASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}`);
 process.exit(green ? 0 : 1);
