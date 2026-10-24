@@ -4,7 +4,7 @@
 //   DIFY_API_KEY=… node evals/run.mjs            all cases
 //   EVAL_CASES="C1 D2" node evals/run.mjs        only some cases
 // Optional: DIFY_API_URL (default https://api.dify.ai/v1), LESSON_VIDEO_IDS (comma-separated Bilibili BV IDs),
-// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 2).
+// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 1: the Dify plan limits knowledge-base requests per minute).
 // Writes evals/out/report.md and evals/out/results.json. Exit code 1 when any case FAILS.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { mergeProfile, profileSummary, readProfileTags, sanitizeProfile } from "../netlify/lib/profile.mjs";
@@ -14,7 +14,7 @@ const env = process.env;
 const apiKey = env.DIFY_API_KEY;
 const baseUrl = (env.DIFY_API_URL || "https://api.dify.ai/v1").replace(/\/$/, "");
 const lessonIds = new Set((env.LESSON_VIDEO_IDS || "").split(/[\s,]+/).filter(Boolean));
-const concurrency = Math.max(1, Number(env.EVAL_CONCURRENCY) || 2);
+const concurrency = Math.max(1, Number(env.EVAL_CONCURRENCY) || 1);
 const only = new Set((env.EVAL_CASES || "").split(/[\s,]+/).filter(Boolean).map((s) => s.toUpperCase()));
 const TURN_TIMEOUT_MS = 120000;
 const USER = "eval-runner";
