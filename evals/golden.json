@@ -1,0 +1,192 @@
+{
+  "spec": "z_Chat_Regression_Test_v1.6",
+  "cases": [
+    {
+      "id": "C1",
+      "title": "Out of scope (Coach)",
+      "turns": [
+        {
+          "mode": "[QA]",
+          "message": "What's for dinner?",
+          "auto": [
+            { "contains": "outside what I can help with" },
+            { "link": "none" },
+            { "profile": "none" },
+            { "maxWords": 60 }
+          ],
+          "review": ["Declines without giving any food or cooking advice."]
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Coach starter: first 90 days",
+      "turns": [
+        {
+          "mode": "[QA]",
+          "message": "What should I do in my first 90 days?",
+          "auto": [
+            { "startsWith": "This is covered in the course:" },
+            { "link": "lesson" },
+            { "minListItems": 2 }
+          ],
+          "review": ["The actions are concrete and come from the first-90-days lesson."]
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "title": "Scene card: Start a meeting, then a full ICE opening",
+      "turns": [
+        {
+          "mode": "[RP]",
+          "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+          "auto": [],
+          "review": ["The character's opening is short and supportive; the setup gives enough to practice ICE."]
+        },
+        {
+          "mode": "[RP]",
+          "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
+          "auto": [{ "feedbackMin": 4 }],
+          "review": ["Doesn't ask the learner to redo a step they already covered."]
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "title": "Menu path: greeting, then \"1\"",
+      "turns": [
+        {
+          "mode": "[RP]",
+          "message": "Hello",
+          "auto": [
+            { "contains": "Start a meeting" },
+            { "containsAny": ["describe", "your own"] },
+            { "characterLine": false },
+            { "noFeedback": true }
+          ]
+        },
+        {
+          "mode": "[RP]",
+          "message": "1",
+          "auto": [{ "notContainsAny": ["Reply with a number"] }],
+          "review": ["Starts the built-in meeting-opening scene with a character."]
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "title": "Custom scene with profile",
+      "turns": [
+        {
+          "mode": "[RP]",
+          "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
+          "auto": [
+            { "profileField": "name", "equals": "D" },
+            { "profileField": "role", "containsAny": ["pm", "product manager"] },
+            { "profileField": "company", "containsAny": ["apple"] },
+            { "characterLine": true },
+            { "notContainsAny": ["Start with your introduction"] },
+            { "noFeedback": true }
+          ],
+          "review": ["Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."]
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "title": "Profile save, then use (Coach)",
+      "turns": [
+        {
+          "mode": "[QA]",
+          "message": "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team.",
+          "auto": [
+            { "profileField": "name", "equals": "D" },
+            { "profileField": "role", "containsAny": ["pm", "product manager"] },
+            { "profileField": "company", "containsAny": ["google"] },
+            { "profileFieldsPresent": ["industry", "goal"] },
+            { "profileField": "goal", "containsAny": ["meeting", "confident", "lead"] }
+          ]
+        },
+        {
+          "mode": "[QA]",
+          "message": "How do I start a meeting with my team?",
+          "auto": [
+            { "startsWith": "This is covered in the course:" },
+            { "link": "lesson" },
+            { "profile": "none" },
+            { "notContainsAny": ["what is your role", "what's your role", "which company", "where do you work"] }
+          ],
+          "review": ["Fits the advice to the learner's background where it helps; invents no conflicting background."]
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "title": "Mode switch: Role-play → Coach → back",
+      "turns": [
+        {
+          "mode": "[RP]",
+          "message": "Start the role-play scene \"Disagree with a coworker\". Difficulty: Medium.",
+          "auto": [
+            { "notContainsAny": ["Reply with a number"] },
+            { "bracketLine": true },
+            { "noFeedback": true }
+          ],
+          "review": ["The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with."]
+        },
+        {
+          "mode": "[QA]",
+          "message": "How can I politely disagree with the idea?",
+          "auto": [],
+          "review": ["Coaching advice based on the character's actual proposal, not a line spoken as the character."]
+        },
+        {
+          "mode": "[RP]",
+          "message": "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?",
+          "auto": [
+            { "noFeedback": true },
+            { "notContainsAny": ["Reply with a number", "Switched to"] },
+            { "maxWords": 120 }
+          ],
+          "review": ["Replies as the character and continues the same discussion (no restart, recap or mode note)."]
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "title": "Background in passing, workplace change, and lessons applied only when they fit",
+      "startProfile": { "role": "PM", "industry": "Egg farming" },
+      "turns": [
+        {
+          "mode": "[QA]",
+          "message": "How do I start a meeting?",
+          "auto": [
+            { "startsWith": "This is covered in the course:" },
+            { "link": "lesson" }
+          ]
+        },
+        {
+          "mode": "[RP]",
+          "message": "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker.",
+          "auto": [
+            { "profileField": "company", "containsAny": ["google"] },
+            { "characterLine": true },
+            { "sandwichStepsBelow": 2 },
+            { "noFeedback": true }
+          ],
+          "review": ["A natural custom coworker discussion about washing eggs, not the built-in disagreement scene."]
+        },
+        {
+          "mode": "[QA]",
+          "message": "I'm now a PM at an egg farm and discussing ML models. How should I approach this?",
+          "auto": [
+            { "profileAnyField": ["industry", "company"], "containsAny": ["egg", "poultry", "farm", "agri"] },
+            { "sandwichStepsBelow": 2 }
+          ],
+          "review": ["Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker."]
+        }
+      ]
+    }
+  ]
+}

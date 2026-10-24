@@ -1,0 +1,70 @@
+# Golden set: runs the chat regression tests (evals/) against the Dify app.
+# Start it from the Actions tab (Run workflow), or it runs when evals/ changes on dev.
+# Results: this run's Summary page, and the eval-results branch (latest.md, plus runs/ for history).
+name: Golden set
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: Dify app to test
+        type: choice
+        options: [production, staging]
+        default: production
+      cases:
+        description: Case IDs to run, e.g. "C1 D2" (blank = all)
+        required: false
+        default: ""
+  push:
+    branches: [dev]
+    paths: ["evals/**", ".github/workflows/golden-set.yml"]
+
+permissions:
+  contents: write # to save the report on the eval-results branch
+
+concurrency:
+  group: golden-set
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run golden set
+        env:
+          DIFY_API_KEY: ${{ inputs.app == 'staging' && secrets.DIFY_API_KEY_STAGING || secrets.DIFY_API_KEY }}
+          DIFY_API_URL: ${{ vars.DIFY_API_URL }}
+          LESSON_VIDEO_IDS: ${{ vars.LESSON_VIDEO_IDS }}
+          EVAL_APP: ${{ inputs.app || 'production' }}
+          EVAL_CASES: ${{ inputs.cases }}
+        run: node evals/run.mjs
+
+      - name: Publish report
+        if: always()
+        run: |
+          [ -f evals/out/report.md ] || exit 0
+          cat evals/out/report.md >> "$GITHUB_STEP_SUMMARY"
+          cp -r evals/out /tmp/golden-out
+          git config user.name "golden-set"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q --depth=1 origin eval-results 2>/dev/null; then
+            git checkout -q -f -B eval-results FETCH_HEAD
+          else
+            git checkout -q --orphan eval-results
+            git rm -rq --cached . && git clean -fdq
+          fi
+          stamp="$(date -u +%Y-%m-%d_%H%M)_${GITHUB_RUN_ID}"
+          mkdir -p runs
+          cp /tmp/golden-out/report.md latest.md
+          cp /tmp/golden-out/results.json latest.json
+          cp /tmp/golden-out/report.md "runs/${stamp}.md"
+          git add latest.md latest.json runs
+          git commit -qm "Golden set run ${GITHUB_RUN_ID} [skip netlify]"
+          git push -q origin eval-results
