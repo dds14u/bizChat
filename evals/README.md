@@ -10,7 +10,9 @@ with replies checked by plain code. No model reads the cases or grades the repli
   app's own profile code; a failed case is rerun once (passes on rerun = FLAKY).
 
 ## Run it
-- GitHub: Actions → Golden set → Run workflow (choose production or staging, optionally some case IDs).
+- GitHub: Actions → Golden set → Run workflow. Choose the app (production, staging or both), runs per app (1–3),
+  and optionally some case IDs or group letters. With more than one run, the report starts with a side-by-side
+  table of first-try passes per case and app (`compare.mjs`).
 - It also runs when `evals/` changes on `dev`.
 - Locally: `DIFY_API_KEY=… npm run eval` (optional `EVAL_CASES="C1 D2"`, or a group letter: `EVAL_CASES="S"`).
 

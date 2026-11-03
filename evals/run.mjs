@@ -7,8 +7,10 @@
 //   EVAL_HELD_OUT=1 node evals/run.mjs           all cases, including held-out ones (H1–H3)
 // Optional: DIFY_API_URL (default https://api.dify.ai/v1), LESSON_VIDEO_IDS (comma-separated Bilibili BV IDs),
 // EVAL_APP (label for the report), EVAL_CONCURRENCY (default 1: the Dify plan limits knowledge-base requests per minute).
-// Writes evals/out/report.md and evals/out/results.json. Exit code 1 when any case FAILS.
+// Writes report.md and results.json to evals/out/ (or EVAL_OUT). Exit code 1 when any case FAILS.
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import { mergeProfile, profileSummary, readProfileTags, sanitizeProfile } from "../netlify/lib/profile.mjs";
 import { globalChecks, runCheck, visibleText } from "./checks.mjs";
 
@@ -213,10 +215,11 @@ for (const r of results) {
   }
 }
 
-await mkdir(new URL("./out/", import.meta.url), { recursive: true });
-await writeFile(new URL("./out/report.md", import.meta.url), lines.join("\n") + "\n");
+const outDir = env.EVAL_OUT ? pathToFileURL(`${resolve(env.EVAL_OUT)}/`) : new URL("./out/", import.meta.url);
+await mkdir(outDir, { recursive: true });
+await writeFile(new URL("report.md", outDir), lines.join("\n") + "\n");
 await writeFile(
-  new URL("./out/results.json", import.meta.url),
+  new URL("results.json", outDir),
   JSON.stringify({ spec: golden.spec, app: env.EVAL_APP || "production", at: new Date().toISOString(), green, results }, null, 2)
 );
 console.log(`\nPASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}`);

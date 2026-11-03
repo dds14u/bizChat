@@ -1,5 +1,7 @@
 # Golden set: runs the chat regression tests (evals/) against the Dify app.
 # Start it from the Actions tab (Run workflow), or it runs when evals/ changes on dev.
+# "both" runs the same cases on production and staging; "repeat" runs each app 1–3 times. With more than one run,
+# the report starts with a side-by-side table of how often each case passed on each app.
 # Results: this run's Summary page, and the eval-results branch (latest.md, plus runs/ for history).
 name: Golden set
 
@@ -9,8 +11,13 @@ on:
       app:
         description: Dify app to test
         type: choice
-        options: [production, staging]
+        options: [production, staging, both]
         default: production
+      repeat:
+        description: Runs per app (more runs show how much results vary)
+        type: choice
+        options: ["1", "2", "3"]
+        default: "1"
       cases:
         description: Case IDs or group letters to run, e.g. "C1 D2" or "S" (blank = all except held out)
         required: false
@@ -29,7 +36,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -39,12 +46,38 @@ jobs:
 
       - name: Run golden set
         env:
-          DIFY_API_KEY: ${{ inputs.app == 'staging' && secrets.DIFY_API_KEY_STAGING || secrets.DIFY_API_KEY }}
+          KEY_PRODUCTION: ${{ secrets.DIFY_API_KEY }}
+          KEY_STAGING: ${{ secrets.DIFY_API_KEY_STAGING }}
           DIFY_API_URL: ${{ vars.DIFY_API_URL }}
           LESSON_VIDEO_IDS: ${{ vars.LESSON_VIDEO_IDS }}
-          EVAL_APP: ${{ inputs.app || 'production' }}
+          APP: ${{ inputs.app || 'production' }}
+          REPEAT: ${{ inputs.repeat || '1' }}
           EVAL_CASES: ${{ inputs.cases }}
-        run: node evals/run.mjs
+        run: |
+          apps="$APP"; [ "$APP" = both ] && apps="production staging"
+          key_for() { if [ "$1" = staging ]; then echo "$KEY_STAGING"; else echo "$KEY_PRODUCTION"; fi; }
+          for a in $apps; do
+            if [ -z "$(key_for "$a")" ]; then
+              secret=DIFY_API_KEY; [ "$a" = staging ] && secret=DIFY_API_KEY_STAGING
+              echo "::error::No API key for $a. Add the repository secret $secret."; exit 2
+            fi
+          done
+          # One app, one run: same report as before
+          if [ "$APP" != both ] && [ "$REPEAT" = 1 ]; then
+            DIFY_API_KEY="$(key_for "$APP")" EVAL_APP="$APP" node evals/run.mjs
+            exit $?
+          fi
+          # Several runs: alternate apps within each round, then combine the results
+          status=0
+          for n in $(seq 1 "$REPEAT"); do
+            for a in $apps; do
+              echo "::group::$a, run $n"
+              DIFY_API_KEY="$(key_for "$a")" EVAL_APP="$a" EVAL_OUT="evals/out/runs/$a-$n" node evals/run.mjs || status=1
+              echo "::endgroup::"
+            done
+          done
+          node evals/compare.mjs evals/out/runs evals/out || status=1
+          exit $status
 
       - name: Publish report
         if: always()
