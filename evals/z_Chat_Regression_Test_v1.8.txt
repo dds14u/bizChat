@@ -1,4 +1,4 @@
-z_Chat_Regression_Test v1.8
+z_Chat_Regression_Test v1.8 (revised Nov 3: the character-line check now applies only to the first reply of a custom scene)
 Changes since v1.6: new S group (scene adherence, S1–S8) and H group (held out, H1–H3); choosing which cases run;
 feedback trigger in Role-play. C1–C6 and D1–D2 are unchanged.
 
@@ -8,6 +8,8 @@ feedback trigger in Role-play. C1–C6 and D1–D2 are unchanged.
 - Quotation marks enclosing a test message only delimit it; quotes inside a message are sent as normal characters.
 - Button and card taps are written as the exact text the app sends when they're tapped.
 - Feedback in Role-play is triggered the way the app's hint describes: the learner sends "feedback".
+- The hidden <character …/> line comes only with the first reply of a custom scene, so later turns in the same scene
+  never check for it. A turn that starts a new custom scene (e.g. S5 T2) does.
 
 Profile (same as the live app)
 - Each case has a Start profile (empty unless given). Before every turn the runner sends the current profile as
@@ -158,7 +160,7 @@ T1 [RP] "I want to practice giving a weekly status update to my project team. I'
   REVIEW: sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full
           Introductions, Context, Expectations exercise or Sarah's kickoff scene).
 T2 [RP] "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
-  AUTO: doesn't contain any of ["Start with your introduction"]; character line: present; no feedback.
+  AUTO: doesn't contain any of ["Start with your introduction"]; no feedback.
   REVIEW: the character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
 
 ----- S3 Production defects: business level, feedback fits the scene -----
@@ -180,7 +182,7 @@ T1 [RP] "We're already halfway through our weekly project meeting. Sam from the 
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: Sam picks up mid-meeting; no introductions or meeting opening.
 T2 [RP] "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
-  AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
+  AUTO: doesn't contain any of [INTRO]; no feedback.
   REVIEW: answers as Sam with a cause and a concrete ask; the meeting continues.
 
 ----- S5 Clear switch: meeting opener to a project delay -----
@@ -195,7 +197,7 @@ T2 [RP] "Let's stop the meeting practice. Instead, I want to practice telling my
   REVIEW: starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask
           the learner to finish it first.
 T3 [RP] "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-  AUTO: doesn't contain any of ["Start with your introduction"]; character line: present; no feedback.
+  AUTO: doesn't contain any of ["Start with your introduction"]; no feedback.
   REVIEW: the manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
 
 ----- S6 Ambiguous request: "Ask my boss for a proportion" -----
@@ -211,7 +213,7 @@ T1 [RP] "I have a 1:1 with my manager. I'm a data analyst, and I have three urge
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: acts as a manager in a 1:1, not someone running a meeting.
 T2 [RP] "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
-  AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
+  AUTO: doesn't contain any of [INTRO]; no feedback.
   REVIEW: engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
 T3 [RP] "feedback"
   AUTO: feedback score ≥ 1; doesn't contain any of [ICE FEEDBACK].
@@ -223,7 +225,7 @@ T1 [RP] "I'm a customer success manager at a software company. I'm meeting a new
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: plays the client and leaves the questions to the learner.
 T2 [RP] "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-  AUTO: character line: present; no feedback; words ≤ 120.
+  AUTO: no feedback; words ≤ 120.
   REVIEW: answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on
           the learner.
 
@@ -238,7 +240,7 @@ T1 [RP] "I'm in finance, and our audit software keeps exporting the wrong totals
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: plays the IT lead at business level.
 T2 [RP] "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-  AUTO: character line: present; no feedback; words ≤ 120.
+  AUTO: no feedback; words ≤ 120.
   REVIEW: discusses priorities and deadlines, not engineering detail.
 
 ----- H2 Held out: editor exploring AI proofreading with engineering -----
@@ -247,7 +249,7 @@ T1 [RP] "I'm an editor at a publishing company. I want to talk with an engineeri
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: plays the engineering lead in plain language.
 T2 [RP] "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-  AUTO: character line: present; no feedback; words ≤ 120.
+  AUTO: no feedback; words ≤ 120.
   REVIEW: discusses feasibility and tradeoffs without getting overly technical.
 
 ----- H3 Held out: PM and engineering disagree on launch scope -----
@@ -256,5 +258,5 @@ T1 [RP] "I'm a PM, and I disagree with the engineering lead about launch scope. 
   AUTO: doesn't contain any of [INTRO]; character line: present; no feedback.
   REVIEW: a custom scope disagreement, not the built-in "Disagree with a coworker" scene.
 T2 [RP] "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-  AUTO: character line: present; no feedback; words ≤ 120.
+  AUTO: no feedback; words ≤ 120.
   REVIEW: negotiates as the engineering lead (pushes back or proposes a middle ground).
