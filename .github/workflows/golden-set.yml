@@ -12,7 +12,7 @@ on:
         options: [production, staging]
         default: production
       cases:
-        description: Case IDs to run, e.g. "C1 D2" (blank = all)
+        description: Case IDs or group letters to run, e.g. "C1 D2" or "S" (blank = all except held out)
         required: false
         default: ""
   push:

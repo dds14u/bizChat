@@ -3,6 +3,7 @@
 //
 //   DIFY_API_KEY=… node evals/run.mjs            all cases
 //   EVAL_CASES="C1 D2" node evals/run.mjs        only some cases
+//   EVAL_CASES="S" node evals/run.mjs            a whole group (S1, S2, …)
 //   EVAL_HELD_OUT=1 node evals/run.mjs           all cases, including held-out ones (H1–H3)
 // Optional: DIFY_API_URL (default https://api.dify.ai/v1), LESSON_VIDEO_IDS (comma-separated Bilibili BV IDs),
 // EVAL_APP (label for the report), EVAL_CONCURRENCY (default 1: the Dify plan limits knowledge-base requests per minute).
@@ -26,11 +27,18 @@ if (!apiKey) {
 }
 
 const golden = JSON.parse(await readFile(new URL("./golden.json", import.meta.url), "utf8"));
+// EVAL_CASES takes case IDs ("S3") or group letters ("S" = S1, S2, …).
 // Held-out cases (heldOut: true) are skipped unless named in EVAL_CASES or EVAL_HELD_OUT=1
 const includeHeldOut = env.EVAL_HELD_OUT === "1";
-const cases = golden.cases.filter((c) =>
-  only.size ? only.has(c.id.toUpperCase()) : !c.heldOut || includeHeldOut
-);
+const picked = (id) => {
+  const ID = id.toUpperCase();
+  return only.has(ID) || [...only].some((t) => /^[A-Z]+$/.test(t) && new RegExp(`^${t}\\d+$`).test(ID));
+};
+const cases = golden.cases.filter((c) => (only.size ? picked(c.id) : !c.heldOut || includeHeldOut));
+if (!cases.length) {
+  console.error(`No cases match EVAL_CASES="${env.EVAL_CASES}".`);
+  process.exit(2);
+}
 
 /** One chat turn, streamed like the live app. Returns { answer, conversationId, ms }. */
 async function ask({ query, inputs, conversationId }) {

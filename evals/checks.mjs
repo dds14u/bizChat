@@ -1,5 +1,5 @@
 // Golden-set checks: each one is plain code, so the same reply always gets the same result.
-// Spec: z_Chat_Regression_Test (kept outside the repo). Cases live in golden.json.
+// Spec: z_Chat_Regression_Test_v1.8.txt (in this folder). Cases live in golden.json.
 import { readProfileTags, sanitizeProfile } from "../netlify/lib/profile.mjs";
 
 // Same rule as the page: any self-closing tag with attributes is hidden, plus <profile>/<character> in any form

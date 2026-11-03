@@ -3,7 +3,8 @@
 Fixed test conversations sent straight to the Dify app, the same way the live app sends them,
 with replies checked by plain code. No model reads the cases or grades the replies.
 
-- `golden.json`: the cases (translated from the z_Chat_Regression_Test spec, kept outside the repo).
+- `z_Chat_Regression_Test_v1.8.txt`: the spec (cases, checks and how tests run).
+- `golden.json`: the cases, translated from the spec.
 - `checks.mjs`: the AUTO checks and the global checks G1–G4.
 - `run.mjs`: the runner. Each case is a new chat; the saved profile is carried between turns with the
   app's own profile code; a failed case is rerun once (passes on rerun = FLAKY).
@@ -11,7 +12,7 @@ with replies checked by plain code. No model reads the cases or grades the repli
 ## Run it
 - GitHub: Actions → Golden set → Run workflow (choose production or staging, optionally some case IDs).
 - It also runs when `evals/` changes on `dev`.
-- Locally: `DIFY_API_KEY=… npm run eval` (optional `EVAL_CASES="C1 D2"`).
+- Locally: `DIFY_API_KEY=… npm run eval` (optional `EVAL_CASES="C1 D2"`, or a group letter: `EVAL_CASES="S"`).
 
 ## Case groups
 - **C** core and **D** drift: the original regression cases.
