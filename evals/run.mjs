@@ -184,34 +184,34 @@ for (const r of results) {
   lines.push(`| ${r.id} ${r.title} | ${r.status} | ${shown.replace(/\|/g, "\\|") || "–"} |`);
 }
 
-const failing = results.filter((r) => r.status !== "PASS");
-if (failing.length) {
-  lines.push("");
-  lines.push("## Failed replies");
-  for (const r of failing) {
-    for (const [ai, a] of r.attempts.entries()) {
-      for (const t of a.turns.filter((t) => t.checks.some((c) => !c.ok))) {
-        lines.push("");
-        lines.push(`### ${r.id} T${t.n} (attempt ${ai + 1}) ${t.mode} "${t.message.slice(0, 80)}${t.message.length > 80 ? "…" : ""}"`);
-        lines.push(`Profile sent: ${t.profileSent}`);
-        for (const c of t.checks.filter((c) => !c.ok)) lines.push(`- ✗ ${c.label}${c.detail ? `: ${c.detail}` : ""}`);
-        lines.push("");
-        lines.push(quote(t.reply));
-      }
-    }
-  }
-}
-
+// Every case, passed or not, with each turn's message, check results, review items and the full reply.
+// Hidden lines (<profile …/>, <character …/>) are shown as text so they can be inspected too.
+const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const isGlobal = (c) => /^G\d /.test(c.label);
 lines.push("");
-lines.push("## For review (advisory)");
+lines.push("## Every reply (passed and failed)");
+lines.push("Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.");
 for (const r of results) {
-  const a = r.attempts.at(-1);
-  for (const t of a.turns.filter((t) => t.review.length)) {
-    lines.push("");
-    lines.push(`### ${r.id} T${t.n} ${t.mode} "${t.message.slice(0, 80)}${t.message.length > 80 ? "…" : ""}"`);
-    for (const item of t.review) lines.push(`- [ ] ${item}`);
-    lines.push("");
-    lines.push(quote(visibleText(t.reply)));
+  lines.push("");
+  lines.push(`### ${r.id} ${r.title} · ${r.status}`);
+  for (const [ai, a] of r.attempts.entries()) {
+    if (r.attempts.length > 1) {
+      lines.push("");
+      lines.push(`**Attempt ${ai + 1}${ai === 0 && r.attempts.length > 1 ? " (failed, so it was rerun)" : ""}**`);
+    }
+    for (const t of a.turns) {
+      lines.push("");
+      lines.push(`**T${t.n} ${t.mode}** "${esc(t.message)}"`);
+      if (t.profileSent && t.profileSent !== "(empty)") lines.push(`Profile sent: ${esc(t.profileSent)}`);
+      const own = t.checks.filter((c) => !isGlobal(c));
+      const globals = t.checks.filter(isGlobal);
+      for (const c of own) lines.push(`- ${c.ok ? "✓" : "✗"} ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
+      const badGlobals = globals.filter((c) => !c.ok);
+      if (globals.length) lines.push(badGlobals.length ? badGlobals.map((c) => `- ✗ ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`).join("\n") : "- ✓ global checks G1–G4");
+      for (const item of t.review) lines.push(`- [ ] ${esc(item)}`);
+      lines.push("");
+      lines.push(quote(esc(t.reply)));
+    }
   }
 }
 

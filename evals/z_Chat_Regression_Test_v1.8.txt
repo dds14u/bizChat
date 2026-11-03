@@ -24,7 +24,8 @@ Two kinds of checks
 
 Results
 - Each case runs once. A FAIL is rerun once: fails twice = FAIL; passes on rerun = FLAKY (reported, not a failure).
-- Green run = every case PASS or FLAKY. The report shows PASS / FAIL / FLAKY counts, then the REVIEW list.
+- Green run = every case PASS or FLAKY. The report shows PASS / FAIL / FLAKY counts, then every case (passed or
+  failed) with each turn's message, its checks (✓ / ✗), REVIEW items, and the full reply, hidden lines included.
 
 Choosing which cases run
 - Default run: every case except held-out ones (C, D and S groups).
