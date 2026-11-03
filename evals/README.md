@@ -13,6 +13,13 @@ with replies checked by plain code. No model reads the cases or grades the repli
 - It also runs when `evals/` changes on `dev`.
 - Locally: `DIFY_API_KEY=… npm run eval` (optional `EVAL_CASES="C1 D2"`).
 
+## Case groups
+- **C** core and **D** drift: the original regression cases.
+- **S** scene adherence: custom scenes stay custom (no fixed menu, no meeting-opener hints, feedback that
+  fits the scene). S1–S8 come from failures in the Dify logs and the scenario review.
+- **H** held out: reworded S checks, skipped by default. Run them only after a prompt change, by naming
+  them (`EVAL_CASES="H1 H2 H3"`) or with `EVAL_HELD_OUT=1`. If they pass without tuning, the fix generalizes.
+
 ## Settings (GitHub → Settings → Secrets and variables → Actions)
 - Secret `DIFY_API_KEY`: production app key. Optional secret `DIFY_API_KEY_STAGING`.
 - Optional variables: `DIFY_API_URL` (if not api.dify.ai), `LESSON_VIDEO_IDS` (comma-separated Bilibili
