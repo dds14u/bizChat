@@ -1,30 +1,30 @@
 # Golden set comparison: RED
 
-Spec: z_Chat_Regression_Test_v1.8 · production vs staging · 2 runs each · 2026-11-03 14:59 UTC
+Spec: z_Chat_Regression_Test_v1.8 · production vs staging · 2 runs each · 2026-11-04 02:44 UTC
 
 Each cell = passed on the first try / runs. "Flaky" = failed, then passed on the automatic rerun.
 When the cell counts differ between apps for the same prompt, that difference is run-to-run variation.
 
 | Case | production | staging |
 |---|---|---|
-| C2 Coach starter: first 90 days | 2/2 | 2/2 |
-| C3 Scene card: Start a meeting, then a full ICE opening | 1/2 (1 flaky) | 1/2 |
+| C2 Coach starter: first 90 days | 1/2 (1 flaky) | 2/2 |
+| C3 Scene card: Start a meeting, then a full ICE opening | 2/2 | 0/2 (2 flaky) |
 | D1 Mode switch: Role-play → Coach → back | 2/2 | 2/2 |
-| D2 Background in passing, workplace change, and lessons applied only when they fit | 1/2 (1 flaky) | 1/2 |
+| D2 Background in passing, workplace change, and lessons applied only when they fit | 0/2 (1 flaky) | 0/2 |
 | S1 Custom scene: client meeting | 2/2 | 2/2 |
 | S2 Status update: a brief opening is fine, a kickoff isn't | 2/2 | 2/2 |
 | S3 Production defects: business level, feedback fits the scene | 2/2 | 2/2 |
 | S4 Mid-meeting: "We're already halfway through" | 2/2 | 2/2 |
-| S5 Clear switch: meeting opener to a project delay | 0/2 (1 flaky) | 2/2 |
+| S5 Clear switch: meeting opener to a project delay | 1/2 | 1/2 (1 flaky) |
 | S6 Ambiguous request: "Ask my boss for a proportion" | 2/2 | 2/2 |
 | S7 Manager 1:1: workload and priorities | 2/2 | 2/2 |
-| S8 Discovery: customer success exploring client needs | 2/2 | 0/2 (2 flaky) |
-| **Total (first try)** | **20/24** | **20/24** |
+| S8 Discovery: customer success exploring client needs | 2/2 | 2/2 |
+| **Total (first try)** | **20/24** | **19/24** |
 
 ## Runs
-- production-1: GREEN · PASS 10 · FAIL 0 · FLAKY 2 · ERROR 0
+- production-1: RED · PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0
 - production-2: RED · PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0
-- staging-1: RED · PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0
+- staging-1: RED · PASS 9 · FAIL 1 · FLAKY 2 · ERROR 0
 - staging-2: RED · PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0
 
 Full reports for each run, including failed replies and review items, follow below.
@@ -33,513 +33,9 @@ Full reports for each run, including failed replies and review items, follow bel
 
 <details><summary><b>production-1</b></summary>
 
-### Golden set: GREEN
-
-App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:43 UTC
-
-**PASS 10 · FAIL 0 · FLAKY 2 · ERROR 0**
-
-| Case | Result | Failed checks (last attempt) |
-|---|---|---|
-| C2 Coach starter: first 90 days | PASS | – |
-| C3 Scene card: Start a meeting, then a full ICE opening | FLAKY | passed on rerun; first try: T2: feedback score ≥ 4 |
-| D1 Mode switch: Role-play → Coach → back | PASS | – |
-| D2 Background in passing, workplace change, and lessons applied only when they fit | PASS | – |
-| S1 Custom scene: client meeting | PASS | – |
-| S2 Status update: a brief opening is fine, a kickoff isn't | PASS | – |
-| S3 Production defects: business level, feedback fits the scene | PASS | – |
-| S4 Mid-meeting: "We're already halfway through" | PASS | – |
-| S5 Clear switch: meeting opener to a project delay | FLAKY | passed on rerun; first try: T2: character line: present |
-| S6 Ambiguous request: "Ask my boss for a proportion" | PASS | – |
-| S7 Manager 1:1: workload and priorities | PASS | – |
-| S8 Discovery: customer success exploring client needs | PASS | – |
-
-## Every reply (passed and failed)
-Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
-
-### C2 Coach starter: first 90 days · PASS
-
-**T1 [QA]** "What should I do in my first 90 days?"
-- ✓ starts with "This is covered in the course:"
-- ✓ link: lesson link
-- ✓ list items ≥ 2: 5 items
-- ✓ global checks G1–G4
-- [ ] The actions are concrete and come from the first-90-days lesson.
-- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
-
-> This is covered in the course:
-> 
-> Use your first 90 days to learn, ask questions, and understand your new environment.
-> 
-> • **Map your place in the organization.** Understand your role in the team, the team's role in the department, the department's role in the company, and the company's place in its market.
-> 
-> • **Decide your career direction.** Let that direction guide what you learn and the opportunities you pursue, even if your long-term goal is outside the company.
-> 
-> • **Start with humility.** Your previous success does not automatically mean success here. Be flexible, listen, and avoid being overly aggressive.
-> 
-> • **Learn proactively.** Ask questions boldly while you are new, and learn from both coworkers and internal documents.
-> 
-> • **Focus on learning first.** Make a specific plan for what you need to learn rather than worrying about performance ratings.
-> 
-> Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
-
-### C3 Scene card: Start a meeting, then a full ICE opening · FLAKY
-
-**Attempt 1 (failed, so it was rerun)**
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-- ✓ global checks G1–G4
-- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
-
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Thanks for setting this up. I'm looking forward to hearing what you have in mind for the project.
-> 
-> [You're the lead project manager at Apple, kicking off a new mobile app launch. Over the past two weeks, your team and the design team have exchanged several emails about requirements and timelines. Today's goal is to align everyone on the schedule and key features before development begins. The next step will be to share a timeline with leadership for sign-off by next Friday.]
-> 
-> [Start with your introduction.]
-
-**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✗ feedback score ≥ 4: no score
-- ✓ global checks G1–G4
-- [ ] Doesn't ask the learner to redo a step they already covered.
-
-> Thanks, Lee. That all sounds clear, and it's helpful to know we can jump in with questions.
-> 
-> [Start with your introduction.]
-
-**Attempt 2**
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-- ✓ global checks G1–G4
-- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
-
-> Thanks for joining today. We're looking forward to hearing how the website redesign is going to come together.
-> 
-> [You are the lead PM for a website redesign at Apple. The team has exchanged several emails about the project scope over the past two weeks. Today's goal is to align on the schedule and key features before development begins. The next step is to share a timeline with leadership by next Friday.]
-> 
-> [Start with your introduction.]
-
-**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✓ feedback score ≥ 4: score 4
-- ✓ global checks G1–G4
-- [ ] Doesn't ask the learner to redo a step they already covered.
-
-> Thanks, Lee. Sounds like a clear plan — looking forward to the detailed walkthrough.
-> 
-> **Course score: 4/5**: You covered all three ICE steps, with strong context and expectations.
-> 
-> **How it went:** Great job! You introduced yourself, gave the full past-present-future context, and set both interaction and detail expectations in one go.
-> 
-> **What worked:**
-> - "Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday." — This shows **Context: past, present, and future** with a clear deadline, exactly as the method teaches.
-> 
-> **What to improve:**
-> - Your introduction blended the topic and self-introduction smoothly, but it could be even clearer if you separate them: first one or two statements about the meeting topic, then your name, role, and contribution. Here the topic ("the new app launch") and your role came in one sentence, which is fine but slightly compressed.
-> - You said "Please ask questions anytime" for interaction level, which is good. For detail level, you added "this will be a detailed discussion" — clear and direct.
-> 
-> **Also worth noting:** "Agree on the schedule" is slightly softer than "align on the schedule"; both work, but "align" is more common in global teams when the goal is shared understanding rather than formal approval.
-> 
-> **Try this instead:**
-> "Hi everyone, today we're kicking off the new app launch. I'm Lee, the lead PM, and I'll be m…
-
-### D1 Mode switch: Role-play → Coach → back · PASS
-
-**T1 [RP]** "Start the role-play scene "Disagree with a coworker". Difficulty: Medium."
-- ✓ doesn't contain any of ["Reply with a number"]
-- ✓ bracket line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
-
-> &lt;character name="Bob" gender="male"/&gt;
-> 
-> I think we should list the traditional coffee first on the new store menu. It stays true to our brand, and customers expect to see it right away when they walk in.
-> 
-> [You and Bob are both product associates at Starbucks headquarters in Seattle. The team is redesigning the in-store menu board for the summer launch. Bob wants traditional hot coffee listed first. You believe a different order would work better.]
-> [Hint: you could partly agree with Bob about brand identity or customer expectations.]
-
-**T2 [QA]** "How can I politely disagree with the idea?"
-- ✓ global checks G1–G4
-- [ ] Coaching advice based on the character's actual proposal, not a line spoken as the character.
-- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
-
-> This is covered in the course:
-> 
-> Use the feedback sandwich to disagree politely:
-> 
-> 1. Start positive by partially agreeing with the other side. Show you understand their perspective with phrases like "I understand," "I can see," or "it makes sense that."
-> 2. State your own opinion and why you disagree, using a specific reason or data if possible.
-> 3. Keep the discussion open by asking a question about alternatives.
-> 
-> Example:
-> "I understand that we want to stay true to our traditional coffee brand, but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales. Are there other alternatives?"
-> 
-> A discussion like this often leads to a better solution, and once the team makes a decision, everyone moves forward together.
-> 
-> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
-
-**T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
-- ✓ no feedback
-- ✓ doesn't contain any of ["Reply with a number","Switched to"]
-- ✓ words ≤ 120: 52 words
-- ✓ global checks G1–G4
-- [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
-
-> I see your point about testing first, but a smaller trial might not give us real sales data. The summer season is short, and we need the full menu live by June 1st to hit peak traffic. What kind of trial did you have in mind, and how long would it run?
-
-### D2 Background in passing, workplace change, and lessons applied only when they fit · PASS
-
-**T1 [QA]** "How do I start a meeting?"
-Profile sent: Role: PM. Industry: Egg farming.
-- ✓ starts with "This is covered in the course:"
-- ✓ link: lesson link
-- ✓ global checks G1–G4
-- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
-
-> This is covered in the course:
-> 
-> Use the ICE template in this order:
-> 
-> 1. **Introductions** – one or two statements about the meeting topic, then your name, role, and how you will contribute.
-> 2. **Context** – why you're meeting and the goal, in three parts:
->    - *Past:* how you got here (earlier emails, threads, or work done)
->    - *Present:* today's topics and goal
->    - *Future:* next steps with a sense of time ("by next Monday")
-> 3. **Expectations** – how people should take part:
->    - *Interaction:* "please hold questions for the end" or "feel free to interrupt"
->    - *Detail:* "this will get very technical" or "we'll stay high level"
-> 
-> Example opening:
-> &gt; "Hi everyone, today we're kicking off the new app launch. I'm Danny, the lead PM, and I'll manage the schedule and be the main point of contact for requirements. We've had quite a few emails going back and forth about this kickoff. Today we'll walk through requirements, confirm the schedule, and call out risks, so everyone is aligned before we start. We hope to get written sign-off from the US team by next Monday. We have a lot of content and not much time, so please hold questions for the end."
-> 
-> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
-
-**T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
-Profile sent: Role: PM. Industry: Egg farming.
-- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","industry_source":"inferred"}
-- ✓ character line: present
-- ✓ sandwich steps &lt; 2: found partly agree
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
-
-> &lt;profile learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="inferred" learner_goal=""/&gt;
-> &lt;character name="Bob" gender="male"/&gt;
-> 
-> I hear you, but keeping the natural coating intact is what keeps our eggs shelf-stable and on brand for quality. If we wash them, we need refrigeration the whole way, and that changes our distribution costs and partner setup.
-> 
-> [You are a PM at Google. Bob is a supply chain analyst on your team. You are in a meeting room in Mountain View. The goal is to decide whether to change the egg-handling process for a new farming-data tool you are launching together.]
-> 
-> [Hint: you could partly agree with Bob's point about brand quality or distribution complexity, then share your concern.]
-
-**T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
-Profile sent: Role: PM. Company: Google. Industry: Egg farming (guessed from the company).
-- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"an egg farm","industry":"Egg farming","industry_source":"stated"}
-- ✓ sandwich steps &lt; 2
-- ✓ global checks G1–G4
-- [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
-
-> &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
-> 
-> As a PM at an egg farm, you'll want to align the ML discussion with business outcomes your team cares about: flock health, feed efficiency, grading accuracy, or supply forecasting.
-> 
-> Here's how to approach it:
-> 
-> 1. **Start with the problem, not the model.** Ask what decision the model will improve and how you'll measure success.
-> 2. **Translate technical tradeoffs into business terms.** For example, a more complex model might improve accuracy by 2% but need daily retraining—explain that as engineering time and downtime risk.
-> 3. **Set clear stages.** Agree on a pilot with a small dataset or one barn first, then define what "good enough" looks like before scaling.
-> 4. **Name your stakeholders early.** Operations, veterinarians, and sales may all have different data needs. Get them involved before the model is built.
-> 
-> Example:
-> &gt; "Before we choose the model, let's confirm the business goal. Is this about predicting laying rates or detecting early signs of illness? Once we're aligned, we can compare accuracy against how often we can retrain given our data pipeline."
-> 
-> [I’ve saved your details to your profile (if enabled). See more: top-right menu → About.]
-
-### S1 Custom scene: client meeting · PASS
-
-**T1 [RP]** "I'd like to practice a client meeting. I'm an account manager at a logistics company, and the client is unhappy about late deliveries."
-- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker","Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up. No fixed scene menu.
-
-> &lt;character name="Karen" gender="female"/&gt;
-> 
-> Thanks for making time today. I'm Karen, the operations director at Westfield Retail. We've been seeing consistent delays on our east coast shipments—three of the last four deliveries arrived two to three days late, and it's starting to affect our store stocking. I need to understand what's happening and what your team is going to do about it.
-> 
-> [You are an account manager at a logistics company. Your client, Karen at Westfield Retail, is upset about repeated late deliveries and wants answers and a fix.]
-> 
-> [You can describe a different situation anytime.]
-
-### S2 Status update: a brief opening is fine, a kickoff isn't · PASS
-
-**T1 [RP]** "I want to practice giving a weekly status update to my project team. I'm a PM on a mobile app launch."
-- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker"]
-- ✓ global checks G1–G4
-- [ ] Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene).
-
-> &lt;character name="Linda" gender="female"/&gt;
-> 
-> Thanks for joining, everyone. Before we dive in, I wanted to check in on the mobile app launch timeline. Marketing mentioned the app store submission is still set for next Friday, but QA flagged three open bugs yesterday. How are we looking from your side?
-> 
-> [Your team is at Apple. You are the lead PM for a new fitness app launch. Your manager Linda runs the weekly status meeting. She wants a clear picture of where things stand before she reports to leadership.]
-> 
-> [You can describe a different situation anytime.]
-
-**T2 [RP]** "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
-
-> Linda: Thanks for the clear picture. Moving the beta or launching without payments are both big decisions, and leadership will want to know we've looked at all the angles. What are you leaning toward, and what would each option mean for the app store submission date?
-> 
-> [Your team is at Apple. You are the lead PM for a new fitness app launch. Your manager Linda runs the weekly status meeting. She wants a clear picture of where things stand before she reports to leadership.]
-
-### S3 Production defects: business level, feedback fits the scene · PASS
-
-**T1 [RP]** "I'm a quality engineer at an EV battery supplier. I need to talk with the production manager about a jump in defective cells on Line 2 this week."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a production manager in plain business language (impact, schedule, staffing, next steps).
-
-> &lt;character name="Marcus" gender="male"/&gt;
-> 
-> Marcus: "Thanks for flagging this so quickly. Line 2's been running the new cathode recipe since Monday, and I'm seeing the defect rate climb from two percent to almost six. What do you need from me right now?"
-> 
-> [You are a quality engineer at an EV battery supplier. Marcus is the production manager. The conversation is in his office on Thursday afternoon. Goal: agree on immediate containment and a root-cause plan with clear owners and deadlines.]
-
-**T2 [RP]** "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
-- ✓ no feedback
-- ✓ words ≤ 120: 77 words
-- ✓ global checks G1–G4
-- [ ] Stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
-
-> Marcus: "Four percent — that's a big jump, and I appreciate you catching it early. Holding the batches makes sense, but full inspection on every cell is going to slow us down a lot. We're already behind on the Q3 customer samples. How long do you think we'd need to run at one hundred percent?"
-> 
-> [Hint: you could say "I estimate three to five days" or "Until we complete the root-cause analysis, which I expect by [day]."]
-
-**T3 [RP]** "feedback"
-- ✓ feedback score ≥ 1: score 3
-- ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
-- ✓ global checks G1–G4
-- [ ] Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria.
-
-> **Course score: 3/5**: You stated the problem clearly and proposed a specific action, but you did not partially agree with Marcus's concern or keep the discussion open with a question about alternatives.
-> 
-> **How it went:** You came in with facts and a clear ask, which is good. The conversation stayed professional, but it felt more like a directive than a collaborative discussion.
-> 
-> **What worked:**
-> - "I'd like to hold the affected batches and inspect one hundred percent of the cells until we confirm the cause" — this shows a specific reason and a clear solution, which matches the small-issue feedback method of giving a reason and a specific fix.
-> 
-> **What to improve:**
-> - You did not acknowledge Marcus's pressure on Q3 samples before pushing your plan. In disagreements or pushback, start by partially agreeing with the other person's concern.
-> - You closed with "Can your team support that?" rather than inviting discussion. End on a friendly tone and ask about alternatives or his view.
-> 
-> **Also worth noting:** "I'd like to hold" is polite, but "I recommend we hold" sounds more decisive in a quality issue where you own the technical decision.
-> 
-> **Try this instead:** "I understand the Q3 samples are tight, but the defect rate jumped from one percent to four percent after the supplier change. I recommend we hold the affected batches and inspect one hundred percent until we confirm the cause, which I expect will take three to five days. If that timeline is too long, what other options do y…
-
-### S4 Mid-meeting: "We're already halfway through" · PASS
-
-**T1 [RP]** "We're already halfway through our weekly project meeting. Sam from the vendor just said they might miss next month's deadline. Please play Sam."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Sam picks up mid-meeting; no introductions or meeting opening.
-
-> &lt;character name="Sam" gender="male"/&gt;
-> 
-> I know this isn't what anyone wants to hear, but our engineering team just flagged a risk with the API integration. We're looking at a potential two-week delay, which would push us past the November deadline.
-> 
-> [Setting: You're the project lead at your company, meeting with Sam, a senior account manager from a software vendor. The conversation is about a product launch your teams are working on together. Sam has just dropped news about a possible delay.]
-
-**T2 [RP]** "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Answers as Sam with a cause and a concrete ask; the meeting continues.
-
-> It's the third-party payment API — it's more complex than their documentation suggested. We've had to build custom middleware, and that's eating up time.
-> 
-> To stay on schedule, we'd need two more backend engineers for about three weeks. Your team has people with that exact experience. Would your company be open to lending us one or two engineers?
-
-### S5 Clear switch: meeting opener to a project delay · FLAKY
-
-**Attempt 1 (failed, so it was rerun)**
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-- ✓ bracket line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Control: the built-in opener starts as usual.
-
-> Thanks for joining us today. We're looking forward to hearing how the new mobile app project is shaping up.
-> 
-> [You are the lead PM for a new mobile app launch at Google. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and key features before development begins. The next step is to get written sign-off from the US leadership team by next Friday.]
-> 
-> [Start with your introduction.]
-
-**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✗ character line: present
-- ✓ global checks G1–G4
-- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
-
-> To go back to coaching, tap the mode menu at the top right and choose Coach.
-
-**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
-
-> I appreciate you flagging this early. Two weeks is a real concern — we have the integration testing deadline with the client at the end of the month. Walk me through what you're seeing and what recovery looks like.
-> 
-> [You are a senior PM at Microsoft reporting to Linda, your engineering director. Your team is building a cloud migration tool for a major retail client. Integration testing was scheduled to start in three weeks. The client has a hard go-live date tied to their holiday season.]
-> 
-> [Hint: you could say "We found 47 critical bugs in the authentication module, which is more than we estimated for the whole system."]
-
-**Attempt 2**
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-- ✓ bracket line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Control: the built-in opener starts as usual.
-
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Hi everyone, thanks for joining. We're all set on our side.
-> 
-> [You're the lead PM kicking off the launch of a new mobile app for customer orders at Starbucks. Over the past two weeks, the team has exchanged several emails about requirements and timelines. Today's goal is to align on the project schedule and key features. The next step is to get leadership sign-off by next Friday so development can begin.]
-> 
-> [Start with your introduction.]
-
-**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ character line: present
-- ✓ global checks G1–G4
-- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
-
-> &lt;character name="David" gender="male"/&gt;
-> 
-> Hey, do you have a minute? I wanted to check in on the GPS accuracy project before the weekend.
-> 
-> [You are a senior engineer at Apple reporting to David, your engineering manager. The team is three weeks away from integration testing for a new location algorithm. David has just heard from another manager that your team may miss the deadline. He wants to understand the situation and what it means for the launch.]
-> 
-> [You can describe a different situation anytime.]
-
-**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
-
-> I appreciate you flagging this early. Two weeks is a significant slip with integration testing so close. Walk me through what you're seeing and how much of that time you think you can recover.
-> 
-> [Hint: you could say "We originally planned for a 2% error rate, but we're seeing closer to 5% in the latest tests."]
-
-### S6 Ambiguous request: "Ask my boss for a proportion" · PASS
-
-**T1 [RP]** "Ask my boss for a proportion"
-- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker","Start a meeting"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Asks one clarifying question (proposal, raise, share of the budget?) or makes a reasonable guess and starts that scene. No fixed scene menu.
-
-> &lt;character name="David" gender="male"/&gt;
-> 
-> Hi, do you have a minute? I wanted to check in about the Q3 budget. I've been looking at the numbers, and I think we should allocate a larger proportion to the marketing campaign. The current split feels tight given the targets we agreed on.
-> 
-> [You are a senior manager at a mid-sized tech company. Your boss David has just called you over to discuss budget planning for next quarter. He wants to shift more funds toward marketing, but you believe the engineering team needs a bigger share to hit the product roadmap. Goal: negotiate a fair proportion without damaging the relationship.]
-> 
-> [Hint: you could say "I see why marketing needs more support, but..." or "Can we look at the data on where we actually spent last quarter?"]
-
-### S7 Manager 1:1: workload and priorities · PASS
-
-**T1 [RP]** "I have a 1:1 with my manager. I'm a data analyst, and I have three urgent projects at once. I want to ask for help prioritizing without sounding like I can't handle it. Please play my manager."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Acts as a manager in a 1:1, not someone running a meeting.
-
-> &lt;character name="Marcus" gender="male"/&gt;
-> 
-> "Thanks for setting this up. I wanted to check in on your bandwidth — I know you've got a lot on your plate right now. How are things going with the three projects you're juggling?"
-> 
-> [You're a data analyst at a tech company. Marcus is your manager. The goal of this conversation is to ask for help prioritizing three urgent projects without appearing overwhelmed.]
-> [You can describe a different situation anytime.]
-
-**T2 [RP]** "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
-
-> "I appreciate you flagging this early. The Q4 forecast is locked in with leadership — that one can't slip. Between the dashboard migration and the pricing analysis, which one do you think has more risk if we push it out?"
-
-**T3 [RP]** "feedback"
-- ✓ feedback score ≥ 1: score 4
-- ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
-- ✓ global checks G1–G4
-- [ ] Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
-
-> **Course score: 4/5**: You clearly stated the problem, proposed a tradeoff, and invited collaboration — strong use of the rejecting/negotiating a request method.
-> 
-> **How it went:** Great job staying solution-focused and confident. You didn't sound overwhelmed; you sounded like someone managing scope carefully.
-> 
-> **What worked:**
-> - "I can finish two well. Could we decide together which one can move to next month?" — This is excellent. You restated your capacity honestly (the original agreement with your time), named a tradeoff (time: one project moves), and offered a collaborative path forward. It shows you own the work while asking for input.
-> 
-> **What to improve:**
-> - You skipped one helpful step: briefly showing you understand the business impact before proposing the tradeoff. For example, acknowledging why all three matter would strengthen your position and show strategic thinking.
-> - Also, you didn't ask for time to assess if needed — though here your assessment was clear, so that's minor.
-> 
-> **Also worth noting:** "I can finish two well" is clear and confident. A slightly softer version might be "I want to make sure I deliver quality on all three, and realistically two this month is the right pace."
-> 
-> **Try this instead:**
-> "I've looked at the timeline for all three. The Q4 forecast, dashboard migration, and pricing analysis are all important, and I want to deliver quality on each. Realistically, I can do two well this month. Could we look at which one has the most flexibility on …
-
-### S8 Discovery: customer success exploring client needs · PASS
-
-**T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the client and leaves the questions to the learner.
-
-> &lt;character name="Michael" gender="male"/&gt;
-> 
-> Thanks for making the time today. We're about six weeks away from our planned launch, and to be honest, we're not sure if the current setup is going to support the volume we're expecting. I'd rather flag this now than scramble later.
-> 
-> [You are a customer success manager at a software company. Michael is the operations director at a mid-sized logistics firm in Chicago. This is your first meeting with him. His team is preparing to go live with your platform next month, and he wants to make sure the system can handle their peak shipping season.]
-> 
-> [You can describe a different situation anytime.]
-
-**T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-- ✓ no feedback
-- ✓ words ≤ 120: 56 words
-- ✓ global checks G1–G4
-- [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
-
-> Right now we're running everything through spreadsheets and a legacy system that crashes when we hit about ten thousand transactions a day. During peak season we process closer to thirty thousand. My team is doing manual workarounds at 2 AM to keep things moving. We need your platform to handle that volume without us babysitting it.
-
-</details>
-
----
-
-<details><summary><b>production-2</b></summary>
-
 ### Golden set: RED
 
-App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:55 UTC
+App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-04 02:31 UTC
 
 **PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0**
 
@@ -548,7 +44,7 @@ App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:55 UTC
 | C2 Coach starter: first 90 days | PASS | – |
 | C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
 | D1 Mode switch: Role-play → Coach → back | PASS | – |
-| D2 Background in passing, workplace change, and lessons applied only when they fit | FLAKY | passed on rerun; first try: T3: sandwich steps < 2 |
+| D2 Background in passing, workplace change, and lessons applied only when they fit | FLAKY | passed on rerun; first try: T2: profile: company contains any of ["google"]; T3: sandwich steps < 2 |
 | S1 Custom scene: client meeting | PASS | – |
 | S2 Status update: a brief opening is fine, a kickoff isn't | PASS | – |
 | S3 Production defects: business level, feedback fits the scene | PASS | – |
@@ -573,15 +69,17 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > This is covered in the course:
 > 
-> 1. **Learn and observe.** Use your first 90 days to understand your new environment: your role in the team, your team's role in the department, the department's role in the company, and the company's place in its market.
+> Use the first 90 days to learn, ask questions, and understand your new environment.
 > 
-> 2. **Stay humble and proactive.** Your past success does not guarantee success here. Listen more than you push, ask questions boldly while you are new, and study both coworkers and internal documents.
+> • Map your place in the bigger picture: understand your role in the team, the team's role in the department, the department's role in the company, and the company's place in its market.
 > 
-> 3. **Turn problems into goals.** If a skill like networking feels difficult, make improving it a specific goal and practice consistently.
+> • Decide where you want your career to go. Let that direction guide what you learn and the opportunities you pursue, even if your long-term goal is outside the company.
 > 
-> 4. **Set SMART goals.** Make them Specific, Measurable, Achievable, Relevant, and Time-bound. Replace vague intentions with concrete outcomes, quantities, and deadlines.
+> • Be humble and listen. Previous success does not automatically mean success in a new company. Avoid being overly aggressive.
 > 
-> 5. **Plan your own work.** Estimate time realistically, including meetings and other responsibilities. This prepares you to plan other people's work later.
+> • Ask questions boldly while you are new, and learn from both coworkers and internal documents.
+> 
+> • Focus first on learning and making a specific plan rather than worrying about performance ratings.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
 
@@ -591,32 +89,33 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 - ✓ global checks G1–G4
 - [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> Thanks for joining us today, everyone. We're looking forward to hearing how the new mobile app project is shaping up.
+> Hi everyone, thanks for joining. We're all set on our end and looking forward to hearing how the website refresh is going to work.
 > 
-> [Setting: You're a project manager at Google, leading a kickoff meeting with your team and a few stakeholders from the Search team. Over the past week, there have been several email threads about requirements and timeline. Today's goal is to align on the schedule and main features before development begins next month. The next step will be to share a timeline with leadership by next Friday.]
+> [Setting: You're the lead PM at Google. The team has exchanged emails about redesigning the internal tools website. Today's goal is to kick off the project and align on the schedule. The next step is to share a timeline with leadership by next Friday.]
 > 
 > [Start with your introduction.]
 
 **T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✓ feedback score ≥ 4: score 5
+- ✓ feedback score ≥ 4: score 4
 - ✓ global checks G1–G4
 - [ ] Doesn't ask the learner to redo a step they already covered.
 
-> Thanks, Lee. That all sounds clear, and the timeline for leadership makes sense.
+> Thanks, Lee. That all sounds clear — looking forward to working with you on this.
 > 
-> **Course score: 5/5**: You covered all three ICE steps smoothly and in order.
+> **Course score: 4/5** — You covered all three ICE steps with good detail.
 > 
-> **How it went:** Great job! You introduced yourself and your role, gave full context with past, present, and future, and set both expectations in one go.
+> **How it went:** Great job! You introduced yourself, gave the full context, and set expectations in one go.
 > 
 > **What worked:**
-> - "Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday" — this shows **Context: past, present, and future** with a clear deadline, exactly what the method calls for.
+> - "Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday." — This shows **Context: past, present, and future** with a clear deadline, so the team knows exactly why we're here and what happens next.
 > 
 > **What to improve:**
-> - Nothing major. Your line "Please ask questions anytime, and this will be a detailed discussion" covers both **Expectations** well. If you wanted to be even clearer, you could separate them: "Please feel free to interrupt with questions" and "We'll be getting into the details today."
+> - Your introduction was brief: you gave your name, role, and contribution, but adding how long you've been with the team or your relevant experience would strengthen **Introductions** and build more credibility at kickoff.
 > 
-> **Also worth noting:** "Hi everyone, I'm Lee" is friendly and natural. In a larger meeting with senior people, you might add how long you've been on the team or your relevant experience for this project.
+> **Try this instead:**
+> "Hi everyone, I'm Lee. I've been with the team for two years and I'm the lead PM for this app launch. I'll be managing the schedule and also the main point of contact for requirements."
 > 
-> **Try this instead:** "Hi everyone, I'm Lee, the lead PM for this app launch. I've been with the Search team for two years and I'll be managing the schedule and requirements. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next…
+> Want to try again, or pick a new scene?
 
 ### D1 Mode switch: Role-play → Coach → back · PASS
 
@@ -629,10 +128,11 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > &lt;character name="Bob" gender="male"/&gt;
 > 
-> I think we should list traditional coffee first on the new store menu. It keeps us true to our brand identity, and customers expect that classic experience when they walk in.
+> I think we should list traditional coffee first on the store menu. It stays true to our brand identity, and customers expect to see our classic roasts at the top.
 > 
-> [You and Bob are both product managers at Starbucks headquarters in Seattle. The team is redesigning the store menu for the summer rollout. Bob wants traditional coffee listed first. You believe another approach would work better.]
-> [Hint: Bob does care about brand identity. Is there a bigger goal or data point you can partly agree with?]
+> [Scene: Starbucks headquarters, Seattle. You are a product manager on the store experience team. Bob is your teammate. The goal is to agree on the menu layout for the summer rollout. Bob's key point: staying true to the brand.]
+> 
+> [Hint: you could partly agree that brand consistency matters, or note that summer sales are a team goal too.]
 
 **T2 [QA]** "How can I politely disagree with the idea?"
 - ✓ global checks G1–G4
@@ -641,28 +141,29 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > This is covered in the course:
 > 
-> Use the feedback sandwich method. Start by partially agreeing with something in Bob's idea, then state your own view with a specific reason, and keep the discussion open with a question.
+> Use the feedback sandwich to disagree while keeping the discussion open:
+> 
+> 1. **Start positive** — partially agree with the other side to show you understand their view
+> 2. **State your opinion** — explain why you disagree, with a specific reason or data
+> 3. **Keep it open** — ask a question about alternatives so the conversation continues
 > 
 > Example:
 > - "I understand that we want to stay true to our traditional coffee brand, but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales. Are there other alternatives?"
 > 
-> Key steps:
-> 1. **Partially agree** — show you see their perspective ("I understand", "I can see", "it makes sense that")
-> 2. **State your opinion and why** — use facts or data if you have them
-> 3. **Keep it open** — ask about alternatives or suggest a compromise
-> 
-> Once the team decides, move forward together even if it wasn't your idea.
+> This method works in emails and meetings. It often leads to a better solution because it encourages discussion instead of shutting it down.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
 **T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
 - ✓ no feedback
 - ✓ doesn't contain any of ["Reply with a number","Switched to"]
-- ✓ words ≤ 120: 62 words
+- ✓ words ≤ 120: 71 words
 - ✓ global checks G1–G4
 - [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
 
-> I hear you on the timing concern, but a smaller trial still keeps traditional coffee first. Our summer sales data shows iced frappuccinos outsell hot drinks three to one in July and August. If we lead with those, we capture that demand right when customers walk in. What if we used a digital display so we could adjust the order by season?
+> I see your point about testing first, but a smaller trial still means design, printing, and staff training for two menu versions instead of one. That's more work for the team, not less. What would you cut to make time for that?
+> 
+> [Hint: you could say "I understand that a trial feels safer, but our iced drinks drive summer revenue. Could we test a digital display that lets us switch easily?"]
 
 ### D2 Background in passing, workplace change, and lessons applied only when they fit · FLAKY
 
@@ -677,63 +178,55 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > This is covered in the course:
 > 
-> Open meetings with the ICE template — three steps in this order:
+> Start your meeting with the **ICE template** — three steps in this order:
 > 
-> 1. **Introductions** — one or two statements about the meeting topic, then your name, role, and how you will contribute.
-> 2. **Context** — cover past (how you got here), present (today's topics and goal), and future (next steps with a deadline).
-> 3. **Expectations** — set the level of interaction and the level of detail.
+> 1. **Introductions** — one or two statements about the topic, then your name, role, and how you'll contribute.
+> 2. **Context** — past (how you got here), present (today's topics and goal), future (next steps with a deadline).
+> 3. **Expectations** — level of interaction (when to ask questions) and level of detail (high-level or deep dive).
 > 
 > Example:
-> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, the lead PM, and I'll manage the schedule and be the main point of contact for requirements. We've had quite a few emails going back and forth. Today we'll walk through requirements, confirm the schedule, and call out risks so everyone is aligned. We hope to get sign-off by next Monday. We have a lot to cover, so please hold questions for the end."
+> &gt; "Hi everyone, today we're kicking off the new packaging line. I'm Alex, the lead PM, and I'll manage the schedule and be your main point of contact. We've had emails going back and forth for two weeks. Today we'll walk through requirements, confirm the timeline, and call out risks, so we're aligned before we start. We hope to get sign-off from the operations team by next Monday. We have a lot to cover, so please hold questions until the end."
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
-> 
-> As a PM in egg farming, you might say you're "the main point of contact for production planning and supply chain coordination." Want to practice this in a role-play?
 
 **T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
 Profile sent: Role: PM. Industry: Egg farming.
-- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","industry_source":"stated"}
+- ✗ profile: company contains any of ["google"]: no profile line
 - ✓ character line: present
 - ✓ sandwich steps &lt; 2
 - ✓ no feedback
 - ✓ global checks G1–G4
 - [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
 
-> &lt;profile learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
+> &lt;character name="Jordan" gender="male"/&gt;
 > 
-> &lt;character name="Chris" gender="male"/&gt;
+> I hear you on food safety, but washing eggs removes the natural protective coating. That means they spoil faster and we risk more returns from our retail partners. What's your take on that?
 > 
-> "I see your point about food safety standards, but washing eggs removes the natural protective coating. That coating is what keeps bacteria out. If we wash them, we have to refrigerate them immediately, and that changes our entire supply chain."
-> 
-> [You and Chris are both PMs at Google. The team is deciding whether to require washed eggs for a new meal program. Chris thinks unwashed eggs are safer and simpler. Your goal is to reach a decision together.]
-> 
-> [Hint: you could say "I understand that keeping the natural coating makes storage easier, but..."]
+> [Setting: Google, Mountain View. You are a PM on the food supply team. Jordan is your colleague in operations. The goal: decide whether to add an egg-washing step before packaging for a new farm-to-table pilot.]
 
 **T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
-Profile sent: Role: PM. Company: Google. Industry: Egg farming.
-- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"an egg farm","industry":"Egg farming","industry_source":"stated"}
-- ✗ sandwich steps &lt; 2: found partially agree, keep it open, move forward together
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"egg farm","industry":"Egg farming","goal":"discuss ML models as a PM at an egg farm","industry_source":"stated"}
+- ✗ sandwich steps &lt; 2: found partially agree, keep it open
 - ✓ global checks G1–G4
 - [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
+> &lt;profile learner_role="PM" learner_company="egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal="discuss ML models as a PM at an egg farm"/&gt;
+> [I've saved your details to your profile (if enabled). See more: top-right menu → About.]
 > 
 > This is covered in the course:
 > 
-> Use the feedback sandwich when you disagree with a coworker:
+> Use the **feedback sandwich** when you disagree with a coworker — even on technical topics like ML models:
 > 
-> 1. **Start positive** — partially agree with their view honestly ("I understand that…", "I can see why…").
-> 2. **State your opinion with a specific reason** — use facts or data where possible.
-> 3. **Keep it open** — end on a friendly tone and ask about alternatives.
-> 4. **Move forward together** — once a decision is made, commit to it.
+> 1. **Start positive** — partially agree with their view.
+> 2. **State your opinion and why** — give a specific reason with facts or data.
+> 3. **Keep it open** — end friendly and ask about alternatives.
 > 
 > Example:
-> &gt; "I understand that keeping the natural coating makes storage simpler and cuts refrigeration costs. But our data shows washed eggs have 40% fewer customer complaints about dirt and stains, and that affects our retail partnerships. Could we test both approaches with two distributors and compare results?"
+> &gt; "I can see why an ML model would help us predict egg quality faster. But our current grading line already hits 98% accuracy with manual checks, and building the model would pull two engineers off the packaging automation for six weeks. Are there lighter ways to test this, like a two-week pilot on one barn?"
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
-> 
-> [I've saved your details to your profile (if enabled). See more: top-right menu → About.]
 
 **Attempt 2**
 
@@ -746,73 +239,65 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > This is covered in the course:
 > 
-> Start your meeting with the ICE template: Introductions, Context, Expectations.
+> Use the **ICE template** in this order:
 > 
-> **1. Introductions**
-> - Say one or two sentences about the meeting topic.
-> - Introduce yourself: name, role, and how you will contribute.
-> 
-> **2. Context (Past, Present, Future)**
-> - **Past:** how you got to this meeting (emails, earlier discussions).
-> - **Present:** today's topics and goal.
-> - **Future:** next steps, with a deadline.
-> 
-> **3. Expectations**
-> - **Interaction:** "Please hold questions until the end" or "Feel free to interrupt."
-> - **Detail:** "We'll stay high level" or "We'll go into technical details."
+> 1. **Introductions** — one or two statements about the meeting topic, then your name, role, and how you will contribute.
+> 2. **Context** — why you're meeting and what you want to achieve:
+>    - *Past:* how you got here (emails, earlier discussions)
+>    - *Present:* today's topics and goal
+>    - *Future:* next steps, with a deadline ("by next Monday")
+> 3. **Expectations** — how people should participate and how detailed the discussion will be.
 > 
 > Example:
-> &gt; "Hi everyone, today we're kicking off the new feed system rollout. I'm Jamie, lead PM, and I'll manage the schedule and be your main contact. We've had emails going back and forth for two weeks. Today we'll confirm requirements and flag risks, so we're aligned before development starts. We'd like sign-off from the US team by next Monday. There's a lot to cover, so please hold questions until the end."
+> &gt; "Hi everyone, today we're kicking off the new packaging line. I'm Alex, lead PM, and I'll manage the schedule and be your main contact. We've had emails back and forth for two weeks. Today we'll walk through requirements, confirm the timeline, and flag risks, so we're aligned before work starts. We need sign-off from the US team by next Friday. There's a lot to cover, so please hold questions until the end."
+> 
+> As a PM in egg farming, you might kick off a project about barn upgrades, supply chain changes, or a new buyer contract — the same structure works for all of them.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
 **T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
 Profile sent: Role: PM. Industry: Egg farming.
-- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","industry_source":"stated"}
+- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"technology","goal":"discuss workplace proposals with colleagues","industry_source":"inferred"}
 - ✓ character line: present
 - ✓ sandwich steps &lt; 2
 - ✓ no feedback
 - ✓ global checks G1–G4
 - [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
 
-> &lt;profile learner_name="" learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
+> &lt;profile learner_role="PM" learner_company="Google" learner_industry="technology" learner_industry_source="inferred" learner_goal="discuss workplace proposals with colleagues"/&gt;
+> 
 > &lt;character name="Jordan" gender="male"/&gt;
 > 
-> I see your point about food safety standards, but washing eggs removes the natural protective coating. That means they spoil faster and we'd need refrigeration from farm to shelf. It could add real cost and complexity for our suppliers.
+> I hear you on food safety, but washing eggs actually removes the natural protective coating. That makes them more porous and can let bacteria in. Since we're looking at long-term supplier contracts, I think we should require unwashed eggs and let retailers handle any washing on their end. That keeps our quality standard higher and our liability lower.
 > 
-> [You are a PM at Google working on a food-tech partnership with an egg farming cooperative. Your teammate Jordan is proposing that all eggs in the program be washed and graded to meet retail packaging standards. The goal is to agree on a processing approach that balances shelf life, cost, and partner feasibility.]
+> [You are a PM at Google in Mountain View. Your character is Jordan, a supply-chain analyst on your team. You are discussing a supplier contract for a new food-service partner. Goal: decide whether Google should require washed or unwashed eggs from suppliers.]
+> 
+> [You can describe a different situation anytime.]
 
 **T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
-Profile sent: Role: PM. Company: Google. Industry: Egg farming.
-- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","industry":"Egg farming","industry_source":"stated"}
-- ✓ sandwich steps &lt; 2
+Profile sent: Role: PM. Company: Google. Industry: technology (guessed from the company). Learning goal: discuss workplace proposals with colleagues.
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"egg farm","industry":"agriculture","goal":"discuss workplace proposals with colleagues","industry_source":"stated"}
+- ✓ sandwich steps &lt; 2: found keep it open
 - ✓ global checks G1–G4
 - [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
-- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> &lt;profile learner_name="" learner_role="PM" learner_company="" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
+> &lt;profile learner_role="PM" learner_company="egg farm" learner_industry="agriculture" learner_industry_source="stated" learner_goal="discuss workplace proposals with colleagues"/&gt;
 > 
 > This is covered in the course:
 > 
-> Start your meeting with the ICE template: Introductions, Context, Expectations.
+> Use the **feedback sandwich** when you disagree with a coworker's idea:
 > 
-> **1. Introductions**
-> - Say one or two sentences about the meeting topic.
-> - Introduce yourself: name, role, and how you will contribute.
+> 1. **Start positive** — honestly agree with part of their view ("I understand...", "It makes sense that...").
+> 2. **State your opinion and why** — give a specific reason, with facts or data if you have them.
+> 3. **Keep it open** — end friendly and ask about alternatives.
 > 
-> **2. Context (Past, Present, Future)**
-> - **Past:** how you got to this meeting (emails, earlier discussions).
-> - **Present:** today's topics and goal.
-> - **Future:** next steps, with a deadline.
+> Example:
+> &gt; "I understand that we want to stay true to our traditional coffee brand, but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales. Are there other alternatives?"
 > 
-> **3. Expectations**
-> - **Interaction:** "Please hold questions until the end" or "Feel free to interrupt."
-> - **Detail:** "We'll stay high level" or "We'll go into technical details."
+> As a PM at an egg farm discussing ML models, you might say:
+> &gt; "I see why an ML model could help predict laying cycles, but we don't have clean historical data yet. Without two years of consistent records, the predictions could mislead operations. Could we start with a simpler dashboard and add ML once the data is reliable?"
 > 
-> Example for your ML model discussion:
-> &gt; "Hi everyone, today we're reviewing the yield prediction ML model for our grading line. I'm the lead PM, and I'll coordinate between our data team and farm operations. We've had two weeks of back-and-forth on data quality. Today we'll review the model's accuracy on dirty eggs and decide whether to proceed to a live trial. We need a go or no-go decision by Thursday so we can brief the operations lead on Friday. This will get technical, so feel free to jump in with questions."
-> 
-> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+> [I saved your details to your profile (if enabled). See more: top-right menu → About.]
 
 ### S1 Custom scene: client meeting · PASS
 
@@ -824,9 +309,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Rachel" gender="female"/&gt;
 > 
-> Thanks for making time today. I'm Rachel, the operations director at Westfield Retail. We've been seeing consistent delays on our shipments over the past three weeks — three of our last five deliveries arrived a day or more late, and it's starting to affect our store replenishment. I need to understand what's happening and what your team is going to do about it.
+> Thanks for making time today. I'm Rachel, operations director at Westfield Retail. We've been seeing consistent delays on our shipments over the past three weeks — three to four days late on average — and it's starting to affect our store replenishment schedule. I need to understand what's happening and what your team is doing to fix it.
 > 
-> [You are an account manager at a logistics company meeting with Rachel from Westfield Retail, a major client. The goal is to address her concerns about late deliveries, explain the situation, and agree on a solution and next steps.]
+> [Westfield Retail, a US-based retail chain. You are the account manager at a logistics company. Rachel is frustrated about repeated late deliveries and wants answers and a plan.]
 > 
 > [You can describe a different situation anytime.]
 
@@ -837,13 +322,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene).
 
-> &lt;character name="Maya" gender="female"/&gt;
+> &lt;character name="Rachel" gender="female"/&gt;
 > 
-> Thanks for joining, everyone. Let's hear from you first — how's the mobile app launch looking this week?
+> Thanks for joining, everyone. Before we dive into the details, could you walk us through where we stand on the app launch? I've been getting some questions from leadership about our timeline.
 > 
-> [You're the PM leading the weekly status meeting at your company. Maya is a senior engineer on your team. She wants to hear your update before she shares her team's progress.]
-> 
-> [You can describe a different situation anytime.]
+> [Scene: Your company, a tech firm in San Francisco. You are the PM leading the weekly status meeting for your mobile app launch. Rachel is a senior stakeholder from the product team who has joined to get an update for leadership. Goal: give a clear status update and align on next steps.]
 
 **T2 [RP]** "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
 - ✓ doesn't contain any of ["Start with your introduction"]
@@ -851,9 +334,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
 
-> Good to know where we stand. The payment API delay is frustrating — we've been waiting on their team since early March. 
+> Rachel: Thanks for the update. Seventy percent on development is solid. On the payment API delay — leadership was really hoping to keep the beta date as planned. What would launching without payments first mean for the user experience?
 > 
-> On our side, iOS is ready for testing, but Android still has some stability issues. We can't really commit to a beta date until we know which direction you're taking on payments. What are you leaning toward?
+> [Hint: you could say "That would mean users can browse and save items, but they can't complete purchases until we add payments in a later update."]
 
 ### S3 Production defects: business level, feedback fits the scene · PASS
 
@@ -866,39 +349,37 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Marcus" gender="male"/&gt;
 > 
-> Marcus: "Thanks for flagging this. I've seen the numbers too — defect rate on Line 2 went from 2% to almost 5% since Monday. That's a big jump. What do you think is driving it?"
+> Marcus: "Hey, thanks for coming by. I saw the numbers from Line 2 this morning and honestly, I'm not sure what to make of them yet. What's your take on what's driving the spike?"
 > 
-> [You are a quality engineer at an EV battery supplier. Marcus is your production manager. The conversation is about the spike in defective cells on Line 2 this week. Goal: discuss the issue, identify likely causes, and agree on next steps.]
+> [You are a quality engineer at an EV battery supplier. Marcus is the production manager. The conversation is in his office on the production floor. Goal: discuss the defective cell increase on Line 2 and agree on next steps.]
 
 **T2 [RP]** "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
 - ✓ no feedback
-- ✓ words ≤ 120: 49 words
+- ✓ words ≤ 120: 52 words
 - ✓ global checks G1–G4
 - [ ] Stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
 
-> Marcus: "A new supplier — that timing lines up. My team can support the inspection, but we're already behind on the Q3 ramp schedule. If we pull people to inspect 100%, we'll lose about two days of output. Can we narrow it down to specific batch numbers instead of everything?"
+> Marcus: "Four percent — that's a big jump. I can see why you'd want to hold those batches. Full inspection is going to slow us down though. We're already behind on the Q3 customer orders. Is there a way to narrow it down, or do we really need to check every single cell?"
 
 **T3 [RP]** "feedback"
-- ✓ feedback score ≥ 1: score 4
+- ✓ feedback score ≥ 1: score 3
 - ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
 - ✓ global checks G1–G4
 - [ ] Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria.
 
-> **Course score: 4/5**: You stated the problem clearly with data, proposed a specific action, and asked for support — strong general checklist work.
+> **Course score: 3/5**: You stated the problem clearly with data and proposed a specific action, but the conversation didn't fully follow the feedback sandwich method for disagreeing with a colleague.
 > 
-> **How it went:** Great job staying direct and solution-focused. You handled Marcus's pushback professionally and kept the conversation moving toward a decision.
+> **How it went:** You came in with facts and a clear plan, which is good. Marcus pushed back on resources, and you have a chance to keep the discussion open.
 > 
 > **What worked:**
-> - "The defect rate went from 1% to 4% after we changed suppliers for one part" — states the purpose clearly early on with a specific reason and example, which builds credibility immediately.
+> - "The defect rate went from 1% to 4% after we changed suppliers for one part" — you gave a specific reason with data, which supports your position well.
 > 
 > **What to improve:**
-> - When Marcus raised the tradeoff (two days of lost output), you didn't yet respond. The general checklist includes handling concerns calmly and closing with a clear next step and a time. Try acknowledging his constraint before pushing your solution further.
-> - You also didn't ask Marcus for his input on narrowing the scope — inviting his expertise could get you to a faster agreement.
-> 
-> **Also worth noting:** "Can your team support that this week?" is clear, but slightly direct. Softening with "Would your team be able to support..." keeps the same meaning with a more collaborative tone.
+> - You moved straight to your solution without partially agreeing with Marcus's concern about Q3 delays. The first step of the feedback sandwich is to show you understand his side.
+> - You didn't ask a question about alternatives or invite discussion. Ending with "Can your team support that?" is close, but a more open question would help find a compromise together.
 > 
 > **Try this instead:**
-> "I understand the Q3 pressure. Could we start with the three most recent batch numbers and reassess Thursday? That would limit the output hit while we confirm if it's isolated to the new supplier."
+> "I understand that Q3 orders are tight and full inspection will slow things down. The defect rate went from 1% to 4% after the supplier change, so I want to be careful. Could we start with 100% on the two most recent batches and see what we find? What would work for your schedule?"
 > 
 > Want to continue this conversation, try again, or pick a new scene?
 
@@ -913,9 +394,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Sam" gender="male"/&gt;
 > 
-> I know this isn't what anyone wants to hear, but we're looking at a real risk of slipping past the November deadline. Our QA team just flagged three integration issues that are going to take longer to fix than we estimated.
+> I know this isn't what you wanted to hear, but we're looking at a real risk of slipping into July. The integration testing took longer than we estimated, and now we're seeing some issues with the data migration module.
 > 
-> [Your team at a US-based software company is in a weekly status call with Sam, a project lead from an external vendor. Sam's team is building a payment module for your platform. The goal of this conversation is to understand the delay and agree on next steps.]
+> [You're a project lead in a weekly status meeting with Sam, your vendor's technical lead. The goal is to understand the delay and agree on a path forward.]
+> 
+> What questions do you have for me?
 
 **T2 [RP]** "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -923,11 +406,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Answers as Sam with a cause and a concrete ask; the meeting continues.
 
-> The three integration issues are all around how our module talks to your user authentication system. Two of them we can handle internally, but the third one needs your API team to change how session tokens are passed back to us. We didn't catch this earlier because your test environment was using a simpler setup than production.
+> The main bottleneck is the data migration module. We found edge cases in the customer records that our standard tool doesn't handle cleanly, so the team had to write custom scripts. That added about two weeks we didn't plan for.
 > 
-> If your API team can give us a revised endpoint by next Wednesday, we can probably recover about half the lost time. Otherwise we're looking at a two-week slip, maybe three.
+> To stay on schedule, we'd need either more engineering hours from our side—which means a change order—or your team could take on the data validation piece internally. That would free us up to focus on the migration scripts and keep testing on track.
 > 
-> [Hint: you could say "Can you walk me through the three issues so I can brief our API team accurately?"]
+> What works better for you?
 
 ### S5 Clear switch: meeting opener to a project delay · FAIL
 
@@ -939,9 +422,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Control: the built-in opener starts as usual.
 
-> Thanks for joining today's kickoff. I'm Sarah, the marketing lead on this project. We're excited to get started and hear your plan.
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> [You're the project lead at Apple, kicking off a new app launch with the marketing and engineering teams in Cupertino. Over the past week, there have been a few email threads about scope and timeline. Today's goal is to align everyone on the schedule and key features before development begins. The next step is to send a written summary to leadership by next Friday.]
+> Thanks for setting this up. We're all looking forward to getting started.
+> 
+> [Setting: You're a project manager at Apple, leading a kickoff meeting for a new mobile app feature. The team has exchanged emails for the past week about requirements and timing. Today's goal is to align on the schedule and key deliverables before development begins next month. Your next step is to send a summary to leadership by Friday.]
 > 
 > [Start with your introduction.]
 
@@ -961,9 +446,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> I appreciate you flagging this early. Two weeks is a significant slip, though. Walk me through what you're seeing in testing and what recovery options you have in mind.
+> I appreciate you flagging this early. Two weeks is a real concern, though — the client demo is fixed for the 15th. Walk me through what you're seeing and what your recovery plan looks like.
 > 
-> [You're a senior engineer at Apple reporting to David, your engineering manager, in Cupertino. Your team is building a new feature for the Maps app, and integration testing with the hardware team is scheduled in three weeks. David has already shared a preliminary timeline with the executive team.]
+> [Setting: You're a senior engineer at Microsoft reporting to David, your engineering manager. Your team is building a cloud integration tool for an enterprise client. Internal testing wrapped yesterday and uncovered blocking issues in the authentication module. The client demo is scheduled for the 15th and cannot move. David needs to decide whether to cut scope, add resources, or negotiate a delay with the client.]
 
 **Attempt 2**
 
@@ -973,11 +458,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Control: the built-in opener starts as usual.
 
-> &lt;character name="Sarah" gender="female"/&gt;
+> Thanks for joining us today. We're looking forward to hearing your plan for the project kickoff.
 > 
-> Thanks for setting this up. We're all looking forward to getting started.
-> 
-> [You are the lead project manager for the launch of a new mobile app at Google. Over the past two weeks, your team and the design team have exchanged several emails about requirements and timelines. Today's goal is to align everyone on the schedule and main features before development begins. The next step will be to share a timeline with leadership by next Friday.]
+> [You are the lead project manager at Apple, running your first status meeting for a new mobile app launch. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to share a timeline with leadership by next Friday.]
 > 
 > [Start with your introduction.]
 
@@ -995,11 +478,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
 
-> &lt;character name="David" gender="male"/&gt;
+> I appreciate the heads-up. Two weeks is a real problem — the client demo is locked in for the 15th. Walk me through the bugs and your recovery plan. How many are we talking, and which features are hit the hardest?
 > 
-> Two weeks is a big slip, and we're already tight on the overall timeline. Walk me through what you're seeing and how much of that time you think you can realistically recover.
+> [You are a senior project manager at Microsoft reporting to your manager, Priya. Your team is building a new internal analytics dashboard. Testing wrapped up last Friday and uncovered critical issues in the data export module and two reporting filters. The client demo is scheduled for the 15th and cannot move.]
 > 
-> [You are a senior engineer at Apple. Your manager David asked for a status update on the new payment feature you're leading. The original deadline was end of quarter for the board demo. Testing wrapped up last week and the bug count came in higher than the team estimated.]
+> &lt;character name="Priya" gender="female"/&gt;
 
 ### S6 Ambiguous request: "Ask my boss for a proportion" · PASS
 
@@ -1011,11 +494,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> David: "Hey, do you have a minute? I wanted to run something by you. The Q3 budget came in flat, but the product team just added two new features to the roadmap. I'm going to need more headcount to hit those dates."
+> David: "Hey, got a minute? I wanted to run something by you about the Q3 budget."
 > 
-> [You're a senior engineer at a mid-sized software company. Your manager David just dropped by your desk on Thursday afternoon. You were planning to ask him for a raise and a better project allocation ratio—more time on core infrastructure, less on ad-hoc client requests. He's opened with his own resource problem, which puts pressure on you.]
-> 
-> [Hint: you could say "I hear you on the budget pressure. Before we get into that, I did want to discuss my own role and how my time is split right now."]
+> [You are a project lead at a mid-sized tech company. David is your manager. He has just walked over to your desk on Thursday afternoon. He wants to shift 40% of your team's remaining budget to the new AI initiative his director asked for yesterday. Your goal: ask for a proportion of that budget to stay with your current project, or negotiate a fair split.]
 
 ### S7 Manager 1:1: workload and priorities · PASS
 
@@ -1026,11 +507,13 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Acts as a manager in a 1:1, not someone running a meeting.
 
-> &lt;character name="Linda" gender="female"/&gt;
+> &lt;character name="Lisa" gender="female"/&gt;
 > 
-> I know you've got a lot on your plate right now. Before we dive into updates, how are you feeling about your current workload?
+> Thanks for setting this up. I wanted to check in before the quarter review — I know you've been juggling a lot. How are things going on your end?
 > 
-> [You're a data analyst meeting with Linda, your manager at a tech company in San Francisco. She knows you're busy but hasn't heard specifics yet. Goal: ask for help prioritizing three urgent projects without sounding overwhelmed.]
+> [Scene: A mid-sized tech company in Seattle. You are a data analyst with three urgent projects. Lisa is your manager. Goal: Ask for help prioritizing your workload without appearing overwhelmed.]
+> 
+> [You can describe a different situation anytime.]
 
 **T2 [RP]** "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -1038,9 +521,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
 
-> I appreciate you flagging this early. The Q4 forecast is locked in for the board review on the 15th, so that one can't move. Between the dashboard migration and the pricing analysis, which one do you think would have more impact if it slipped?
+> I appreciate you flagging this early. The pricing analysis is tied to the board meeting on the 28th, so that can't slip. Between the Q4 forecast and the dashboard migration, which one do you think would have more impact if it were delayed?
 > 
-> [Hint: you could say "If the pricing analysis feeds into the forecast, I'd want to keep them together and push the dashboard migration, since that doesn't have a hard deadline."]
+> [Scene: A mid-sized tech company in Seattle. You are a data analyst with three urgent projects. Lisa is your manager. Goal: Ask for help prioritizing your workload without appearing overwhelmed.]
 
 **T3 [RP]** "feedback"
 - ✓ feedback score ≥ 1: score 4
@@ -1048,22 +531,21 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
 
-> **Course score: 4/5**: You clearly stated the problem, proposed a solution, and invited collaboration—strong use of the general checklist for handling a request and negotiating workload.
+> **Course score: 4/5**: You clearly stated the problem, proposed a specific tradeoff, and invited collaboration — strong use of the rejecting/negotiating a request method.
 > 
-> **How it went:** Great job staying solution-focused and confident. You didn't sound overwhelmed; you sounded like someone managing priorities carefully.
+> **How it went:** Great job staying solution-focused and confident. You didn't sound overwhelmed; you sounded like someone managing scope carefully.
 > 
 > **What worked:**
-> - "I can finish two well. Could we decide together which one can move to next month?" — This shows **handling concerns calmly**: you owned your capacity honestly and invited your manager into the decision, which frames you as proactive, not struggling.
+> - "I can finish two well. Could we decide together which one can move to next month?" — This is excellent. It shows you assessed your capacity honestly, proposed a clear tradeoff (time), and asked for partnership rather than rescue.
 > 
 > **What to improve:**
-> - You skipped **stating the purpose clearly early on**. A brief opener like "I wanted to use this 1:1 to align on priorities" would set the frame before listing projects.
-> - You didn't **name a reason or consequence** for your preference. Even a quick "the dashboard migration doesn't have a hard deadline" would strengthen your case.
+> - You named all three projects but didn't briefly state why two is your realistic limit. Adding a one-line reason (e.g., "each needs about two weeks of focused work") would strengthen your case before Lisa pushes back.
+> - When Lisa asked which has more impact, you could have anticipated this and led with your own recommendation, showing you'd thought it through.
 > 
-> **Also worth noting:** "I can finish two well" is clear and confident. Avoid softening it with "maybe" or "I think"—you didn't, which is good.
+> **Also worth noting:** "I can finish two well" is confident and direct. A softer alternative like "I want to make sure I deliver quality on the two most critical ones" works too, but your version was appropriately assertive for a manager conversation.
 > 
-> **Try this instead:** "I wanted to align on priorities. I'm on three projects due this month, and I can deliver two with full quality. The Q4 forecast and pricing analysis both feed the board review, so I'd suggest moving the dashboard migration to next month. Does that work?"
-> 
-> Want to continue this conversation, try again, or pick a new scene?
+> **Try this instead:**
+> "I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three need about two weeks of focused work. I can deliver two of them well this month. My suggestion is to keep the pricing analysis and Q4 forecast on track, and move the das…
 
 ### S8 Discovery: customer success exploring client needs · PASS
 
@@ -1074,37 +556,35 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Plays the client and leaves the questions to the learner.
 
-> &lt;character name="James" gender="male"/&gt;
+> &lt;character name="Mark" gender="male"/&gt;
 > 
-> Thanks for making the time today. We've been looking forward to getting started — our current setup is becoming a real headache, and we're hoping your platform can help us streamline things. I'll be straight with you, though: we've looked at a few vendors already, and the last one overpromised and underdelivered. So we're coming in a bit cautious.
+> Thanks for making the time today. We're about three months away from our current contract ending with our old vendor, so we're looking at options. I'll be straight with you — our biggest pain point right now is that our support team is spending too much time on basic user questions. We need something that cuts that down.
 > 
-> [Your company is a mid-sized logistics firm in Chicago. You are James, the operations director. The learner is a customer success manager from a software company. Goal: understand the client's pain points, current workflow, and what success looks like so the product can be configured correctly.]
-> 
-> [You can describe a different situation anytime.]
+> [Mark is the IT director at a mid-sized logistics company in Chicago. You're the customer success manager from a software company, meeting him for the first time. Goal: understand his needs so you can recommend the right product setup.]
 
 **T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
 - ✓ no feedback
-- ✓ words ≤ 120: 96 words
+- ✓ words ≤ 120: 87 words
 - ✓ global checks G1–G4
 - [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
 
-> Right now we're managing everything through a mix of spreadsheets and email chains. It's not pretty. When a shipment hits a delay, our team has to dig through three different inboxes to figure out who needs to know and what to tell them. Last month we had a $40,000 penalty because a client didn't get notified in time about a customs hold. So the main thing we need is visibility — one place where everyone can see status updates in real time, and where alerts go out automatically before a small issue becomes a big one.
+> Right now we're using a mix of email, a shared inbox, and some basic chat tool that came with our CRM. It's messy. My team gets the same questions about password resets, account access, and tracking shipments maybe twenty or thirty times a day. They can't focus on the real technical issues. We're hoping your platform can automate some of that, maybe through a self-service portal or better routing. But I need to understand what that actually looks like in practice before I commit to anything.
 
 </details>
 
 ---
 
-<details><summary><b>staging-1</b></summary>
+<details><summary><b>production-2</b></summary>
 
 ### Golden set: RED
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:50 UTC
+App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-04 02:40 UTC
 
 **PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| C2 Coach starter: first 90 days | PASS | – |
+| C2 Coach starter: first 90 days | FLAKY | passed on rerun; first try: T1: list items ≥ 2 |
 | C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
 | D1 Mode switch: Role-play → Coach → back | PASS | – |
 | D2 Background in passing, workplace change, and lessons applied only when they fit | FAIL | T3: sandwich steps < 2 (found partially agree, keep it open, move forward together) |
@@ -1115,40 +595,62 @@ App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:50 UTC
 | S5 Clear switch: meeting opener to a project delay | PASS | – |
 | S6 Ambiguous request: "Ask my boss for a proportion" | PASS | – |
 | S7 Manager 1:1: workload and priorities | PASS | – |
-| S8 Discovery: customer success exploring client needs | FLAKY | passed on rerun; first try: T2: words ≤ 120 |
+| S8 Discovery: customer success exploring client needs | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### C2 Coach starter: first 90 days · PASS
+### C2 Coach starter: first 90 days · FLAKY
+
+**Attempt 1 (failed, so it was rerun)**
 
 **T1 [QA]** "What should I do in my first 90 days?"
 - ✓ starts with "This is covered in the course:"
 - ✓ link: lesson link
-- ✓ list items ≥ 2: 8 items
+- ✗ list items ≥ 2: 0 items
 - ✓ global checks G1–G4
 - [ ] The actions are concrete and come from the first-90-days lesson.
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
 
 > This is covered in the course:
 > 
-> **Understand your starting point**
-> - Learn how your team fits into the department, and how the department fits into the company
-> - Understand the company's place in its market
+> **Learn and ask questions.** Use your first 90 days to understand your new environment. Map out your role in the team, the team's role in the department, the department's role in the company, and the company's place in its market.
 > 
-> **Be humble and learn proactively**
-> - Your past success doesn't guarantee success here — stay flexible and listen
-> - Ask questions boldly while you're new; people expect it
-> - Read internal documents and learn from coworkers
-> - Focus on learning first, not on performance ratings
+> **Start with humility.** Your past success does not guarantee success here. Be flexible, listen, and avoid being overly aggressive. Ask questions boldly while you are new, and learn from both coworkers and internal documents. Focus on learning and making a specific plan rather than worrying about performance ratings.
 > 
-> **Set your direction**
-> - Decide where you want your career to go
-> - Let that guide what you learn and which opportunities you pursue, even if your long-term goal is outside the company
+> **Turn problems into goals.** If a skill like networking is difficult, make improving it a specific goal and practice consistently.
+> 
+> **Set SMART goals.** Make them Specific, Measurable, Achievable, Relevant, and Time-bound. Replace vague intentions with concrete outcomes, quantities, and deadlines. Estimate time realistically, including meetings and other responsibilities.
+> 
+> **Introduce yourself clearly.** When you meet coworkers, explain when you started, where you are based, and your role and team.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
+
+**Attempt 2**
+
+**T1 [QA]** "What should I do in my first 90 days?"
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ list items ≥ 2: 5 items
+- ✓ global checks G1–G4
+- [ ] The actions are concrete and come from the first-90-days lesson.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
+
+> This is covered in the course:
 > 
-> What's your new role, and are you joining a large company or a smaller one?
+> Use your first 90 days to learn, ask questions, and understand your new environment. Here's how:
+> 
+> 1. **Map your place in the organization.** Understand your role in the team, the team's role in the department, the department's role in the company, and the company's place in its market.
+> 
+> 2. **Be humble and learn proactively.** Your past success does not guarantee success here. Listen more than you push, ask questions boldly while you are new, and study internal documents. Focus on learning and making a specific plan rather than worrying about performance ratings.
+> 
+> 3. **Observe the culture.** Notice the pace of decisions and how they are made—top-down or bottom-up. Be flexible and assess whether the culture fits you.
+> 
+> 4. **Turn problems into goals.** If a skill like networking is difficult, make improving it a specific goal and practice consistently. Your fresh perspective is also a strength.
+> 
+> 5. **Decide your career direction.** Let that direction guide what you learn and which opportunities you pursue, even if your long-term goal is outside the company.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
 
 ### C3 Scene card: Start a meeting, then a full ICE opening · PASS
 
@@ -1156,44 +658,34 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 - ✓ global checks G1–G4
 - [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Sarah" gender="female"/&gt;
+> Thanks for joining us today. We're looking forward to hearing your plan for this kickoff.
 > 
-> "Hi, I'm Sarah. I'm on the marketing side for this project. Looking forward to getting aligned today."
-> 
-> [We're at Tesla's Austin office. You're the project lead for a new mobile app update that lets owners schedule service appointments. The team has exchanged emails for two weeks, but this is the first kickoff meeting. Your goal: open the meeting with a strong introduction, context, and expectations. Sarah is a supportive teammate ready to help you practice.]
+> [Scene: You're the lead PM at Apple, kicking off a new mobile app project. The team has exchanged emails about requirements for the past two weeks. Today's goal is to align on the schedule and main features. The next step is to share a timeline with leadership by next Friday.]
 > 
 > [Start with your introduction.]
 
 **T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✓ feedback score ≥ 4: score 4
+- ✓ feedback score ≥ 4: score 5
 - ✓ global checks G1–G4
 - [ ] Doesn't ask the learner to redo a step they already covered.
 
-> "Thanks, Lee — that's really clear. Two weeks of back-and-forth on features, and now we lock down the schedule. I'm ready to dig in."
+> Thanks, Lee. That all sounds clear and helpful.
 > 
-> [Now give the context: the past, the present, and the future.]
+> **Course score: 5/5** — You covered all three ICE steps with good detail.
 > 
-> ---
+> **How it went:** Great job! You gave a solid introduction, full context with past, present, and future, and set both expectations in one go.
 > 
-> Wait — let me check again. You did cover past (emails about features), present (agree on schedule), and future (timeline to leadership by Friday). You also gave expectations (questions anytime, detailed discussion). Let me re-read...
+> **What worked:**
+> - "Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday" — This shows strong **Context**: you covered the past, present, and future with a clear deadline, so the team knows exactly where this project stands and what happens next.
 > 
-> Actually, your introduction could be stronger on your role and contribution, but you did say "lead PM" and "manage the schedule." The context step is present. And expectations are there.
+> **What to improve:**
+> - Nothing major. Your line "Please ask questions anytime, and this will be a detailed discussion" works well, though you could make the level of detail even clearer with a phrase like "we're going to get into the details today."
 > 
-> Since all three steps are at least partially covered, let me give Sarah's reaction and move to feedback:
+> **Also worth noting:** "A lot of emails" is fine, but "quite a few emails going back and forth" sounds slightly more natural in a meeting opening.
 > 
-> "That works for me, Lee. Should I pull up the feature list so we can start walking through dependencies?"
+> **Try this instead:** "We've had quite a few emails going back and forth about the main features. Today we'll agree on the schedule, and then we'll send a timeline to leadership by next Friday. Please feel free to interrupt if you have questions, because we're going to get into the details."
 > 
-> ---
-> 
-> **Course score: 4/5**: You covered all three ICE steps and gave a clear next step with a deadline.
-> 
-> **How it went:** A solid opening that moved the meeting forward naturally.
-> 
-> **What worked:** "Over the past two weeks we've had a lot of emails about the main features" — this shows past context and explains how you got here.
-> 
-> **What to improve:** Your introduction named your role but didn't say how you'll contribute beyond "manage the schedule." Also, "Please ask questions anytime, and this will be a detailed discussion" combines two ideas awkwardly — interaction and detail level are both expectations, but they clash slightly.
-> 
-> **Also worth noting:…
+> Want to try again without cues, doing all three steps in one go? Or pick a new scene?
 
 ### D1 Mode switch: Role-play → Coach → back · PASS
 
@@ -1206,11 +698,11 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > &lt;character name="Bob" gender="male"/&gt;
 > 
-> "Hey, thanks for making time. So I've been thinking about the menu redesign for the summer rollout. I want us to list the traditional hot coffees first — espresso, americano, cappuccino, right at the top. It stays true to our brand, and I think customers expect that when they walk in. What do you think?"
+> I think we should list the traditional coffee first on the new store menu. Our brand was built on classic espresso drinks, and that's what loyal customers expect when they walk in.
 > 
-> [Starbucks headquarters, Seattle. You're a product manager on the food and beverage team. Bob is a senior brand strategist. The team needs to finalize the summer menu layout by Thursday.]
+> [Setting: Starbucks headquarters. You're a product manager on the store experience team. Bob is your teammate. The team is deciding how to arrange the new digital menu boards for the summer rollout. Bob wants traditional coffee listed first; you have data showing iced drinks drive summer sales.]
 > 
-> [Hint: you could honestly agree that brand consistency matters, or that traditional coffee is core to the identity.]
+> [Hint: you could partly agree with Bob about brand identity or customer loyalty, then share your concern.]
 
 **T2 [QA]** "How can I politely disagree with the idea?"
 - ✓ global checks G1–G4
@@ -1219,34 +711,31 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > This is covered in the course:
 > 
-> Use the **feedback sandwich** for disagreements at work:
+> Use the feedback sandwich to disagree politely while keeping the discussion open:
 > 
-> • **Partially agree, honestly** — show you understand their view before you oppose it
->   - "I understand that we want to stay true to our traditional coffee brand"
+> 1. Start positive by partially agreeing with the other side. Show you understand their perspective with phrases like "I understand," "I can see," or "it makes sense that."
 > 
-> • **State your opinion with a specific reason** — use facts or data when you can
->   - "but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales"
+> 2. State your own opinion and why you disagree, using specific reasons or data when possible.
 > 
-> • **Keep the discussion open** — ask about alternatives so it feels like teamwork
->   - "Are there other alternatives?"
+> 3. Keep the discussion open by asking a question about alternatives.
 > 
-> • **Move forward together once a decision is made** — even if it isn't your idea
-> 
-> Example full line:
+> Example:
 > "I understand that we want to stay true to our traditional coffee brand, but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales. Are there other alternatives?"
+> 
+> This encourages discussion and often leads to a better team solution. Once a decision is made, the team moves forward together.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
 **T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
 - ✓ no feedback
 - ✓ doesn't contain any of ["Reply with a number","Switched to"]
-- ✓ words ≤ 120: 117 words
+- ✓ words ≤ 120: 71 words
 - ✓ global checks G1–G4
 - [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
 
-> "I hear you on the timing — a full rollout does feel like a big commitment. But honestly, I'm not sure a smaller trial would tell us much. The real question is what customers see first when they walk in. Our data from last summer shows iced frappuccinos outsold hot espresso drinks by almost three to one in July and August. If we lead with traditional coffee, we're hiding our strongest performer. What would a trial need to show you to change your mind?"
+> I hear you on the time concern, and a smaller trial is an interesting idea. But I still think leading with our traditional drinks sends the right brand message from the moment a customer looks at the board. If we test a smaller format, how would we measure whether it's the placement or just the location driving any difference?
 > 
-> [You're doing well — you partially agreed and stated a concern. To fully use the feedback sandwich, add a specific reason tied to the business impact, then keep it open with a question about alternatives.]
+> [You can continue the conversation, or type "feedback" to get my assessment.]
 
 ### D2 Background in passing, workplace change, and lessons applied only when they fit · FAIL
 
@@ -1261,23 +750,17 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > This is covered in the course:
 > 
-> Use the **ICE** template to open a meeting you lead:
+> Open meetings with the ICE template, in this order:
 > 
-> **1. Introductions**
-> - One or two statements about the meeting topic
-> - Your name, role, and how you'll contribute
-> 
-> **2. Context (Past, Present, Future)**
-> - Past: how you got here (emails, earlier meetings)
-> - Present: today's topics and goal
-> - Future: next steps with a deadline
-> 
-> **3. Expectations**
-> - Interaction level: "Please hold questions for the end" or "Feel free to interrupt"
-> - Detail level: very detailed or high level
+> 1. **Introductions** — one or two statements about the meeting topic, then your name, role, and how you will contribute.
+> 2. **Context** — cover past, present, and future:
+>    - Past: how you got to this meeting (emails, earlier discussions)
+>    - Present: today's topics and goal
+>    - Future: next steps with a sense of time ("by next Monday")
+> 3. **Expectations** — set the level of interaction ("please hold questions for the end" or "feel free to interrupt") and the level of detail ("we'll stay high level" or "this will get technical").
 > 
 > Example:
-> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, the lead PM. I'll manage the schedule and be the main point of contact for requirements. We've had emails going back and forth, so today we'll walk through requirements, confirm the schedule, and call out risks. We hope to get sign-off from the US team by next Monday. We have a lot to cover, so please hold questions until the end."
+> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, the lead PM, and I'll manage the schedule and be the main point of contact for requirements. We've had quite a few emails going back and forth. Today we'll walk through requirements, confirm the schedule, and call out risks so everyone is aligned. We hope to get written sign-off from the US team by next Monday. We have a lot to cover, so please hold questions for the end."
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
@@ -1290,44 +773,38 @@ Profile sent: Role: PM. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
 
-> &lt;character name="Priya" gender="female"/&gt;
+> &lt;character name="Alex" gender="male"/&gt;
 > 
-> "Hey, thanks for making time. So I've been looking at the USDA processing guidelines, and honestly, I think we should start washing all the eggs before they go to packaging. It reduces the risk of salmonella contamination, and most large-scale farms already do this. What's your take?"
+> I hear you on food safety, but washing eggs actually removes the natural protective coating. That lets bacteria in through the shell, so we'd need refrigeration right after. For our farm-to-table pilot, that adds cost and complexity.
 > 
-> [You're a PM at Google working on a food supply chain transparency tool. Priya is a product designer on your team. You're in a meeting room in Mountain View discussing a feature for egg farm suppliers. She just proposed adding a mandatory egg-washing checkpoint to your platform. The goal of this conversation is to decide whether this feature belongs in your MVP.]
+> [You and Alex are PMs at Google in Mountain View. Your team is deciding whether to wash eggs for a new farm-to-table pilot program. Alex thinks unwashed is safer and cheaper; you disagree. The goal is to reach a team decision.]
+> 
+> [You can describe a different situation anytime.]
 
 **T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
 Profile sent: Role: PM. Industry: Egg farming.
-- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"an egg farm","industry":"Egg farming","goal":"discuss ML models effectively at work","industry_source":"stated"}
-- ✗ sandwich steps &lt; 2: found partially agree, keep the discussion open, move forward together
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"egg farm","industry":"Egg farming","goal":"discuss ML models at work","industry_source":"stated"}
+- ✓ sandwich steps &lt; 2
 - ✓ global checks G1–G4
 - [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal="discuss ML models effectively at work"/&gt;
+> &lt;profile learner_role="PM" learner_company="egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal="discuss ML models at work"/&gt;
 > [I've saved your details to your profile (if enabled). See more: top-right menu → About.]
 > 
 > This is covered in the course:
 > 
-> Use the **feedback sandwich** when you disagree with a coworker's idea:
+> Open meetings with the ICE template, in this order:
 > 
-> **1. Partially agree, honestly**
-> - Find something you genuinely understand or accept
-> - "It makes sense that…" or "I understand why…"
-> 
-> **2. State your opinion with a specific reason**
-> - Use facts or data where possible
-> - Be direct about your concern
-> 
-> **3. Keep the discussion open**
-> - Friendly tone, ask about alternatives
-> - "Are there other ways we could…?"
-> 
-> **4. Move forward together**
-> - Once you decide, commit clearly
+> 1. **Introductions** — one or two statements about the meeting topic, then your name, role, and how you will contribute.
+> 2. **Context** — cover past, present, and future:
+>    - Past: how you got to this meeting (emails, earlier discussions)
+>    - Present: today's topics and goal
+>    - Future: next steps with a sense of time ("by next Monday")
+> 3. **Expectations** — set the level of interaction ("please hold questions for the end" or "feel free to interrupt") and the level of detail ("we'll stay high level" or "this will get technical").
 > 
 > Example:
-> &gt; "I understand that ML could help us predict laying patterns, but our current data is mostly manual logs with inconsistent timestamps. That means the model's predictions may not be reliable enough for daily operations. Are there other ways we could improve forecasting first, like standardizing the data collection process?"
+> &gt; "Hi everyone, today we're kicking off the ML model review. I'm Jamie, the PM for quality prediction, and I'll coordinate between the data science team and operations. We've had three rounds of back-and-forth on feature selection. Today we'll compare the two finalist models for crack detection accuracy and decide which one to pilot. Next week we'll present the chosen model to the operations lead for budget approval. This will get technical at times, so please jump in if anything needs clarification."
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
@@ -1342,26 +819,19 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > This is covered in the course:
 > 
-> Open meetings with **ICE**: Introductions, Context, Expectations.
+> Use the **ICE template** in this order:
 > 
-> **1. Introductions**
-> - One or two sentences on the meeting topic
-> - Your name, role, and how you'll contribute
+> 1. **Introductions** — one or two statements about the meeting topic, then your name, role, and how you will contribute.
+> 2. **Context** — cover three parts:
+>    - **Past:** how you got to today's meeting (e.g., earlier emails or discussions)
+>    - **Present:** today's topics and goal
+>    - **Future:** next steps after the meeting, with a sense of time (e.g., "by next Monday")
+> 3. **Expectations** — set the level of interaction and detail (e.g., "please hold questions for the end" or "feel free to interrupt").
 > 
-> *"Hi everyone, today we're kicking off the new supplier review. I'm Alex, the PM on this, and I'll be tracking deadlines and coordinating with the quality team."*
+> **Example:**
+> &gt; "Hi everyone, today we're kicking off the new packaging line project. I'm Alex, the lead PM, and I'll manage the schedule and be your main point of contact. We've had emails going back and forth for two weeks. Today we'll walk through requirements, confirm the timeline, and call out risks so we're aligned before we start. We need sign-off from the US team by next Friday. There's a lot to cover, so please hold questions until the end."
 > 
-> **2. Context (Past, Present, Future)**
-> - Past: how you got here (emails, earlier meetings, work done)
-> - Present: today's topics and goal
-> - Future: next steps with a deadline
-> 
-> *"We've exchanged specs with three suppliers over the past two weeks. Today we'll compare their proposals and pick a shortlist. I'll send the final recommendation to procurement by Thursday."*
-> 
-> **3. Expectations**
-> - Interaction level: questions now or at the end?
-> - Detail level: high-level or deep dive?
-> 
-> *"This is a working session, so please jump in with questions as we go."*
+> As a PM in egg farming, you might open a supplier kickoff or a cross-functional review with this same structure.
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
@@ -1375,14 +845,11 @@ Profile sent: Role: PM. Industry: Egg farming.
 - [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
 
 > &lt;profile learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
+> &lt;character name="Jordan" gender="female"/&gt;
 > 
-> &lt;character name="Bob" gender="male"/&gt;
+> I see your point about food safety, but washing eggs removes the natural protective coating. That coating keeps bacteria out. If we wash them, we actually increase the risk of contamination unless we refrigerate them immediately and consistently. That adds cost and complexity across the whole supply chain.
 > 
-> "I think we should wash every egg before it goes to packaging. It looks more professional, and customers expect clean shells."
-> 
-> [You're a PM at Google working on a food supply chain tool. Bob is a product designer who wants to add a mandatory egg-washing step to your farm-to-retail workflow. The team is split on whether this helps or hurts shelf life. Goal: reach a decision together.]
-> 
-> Hint: think about what you could honestly agree with — maybe food safety standards, or customer expectations — before you share your own view.
+> [You and Jordan are both PMs at Google in Mountain View. Your team is exploring a partnership with an egg supplier for the employee cafes. Jordan wants the supplier to wash all eggs before delivery because it looks cleaner and aligns with Google's public health messaging. Your goal is to reach a team decision on the egg-handling standard.]
 
 **T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
 Profile sent: Role: PM. Company: Google. Industry: Egg farming.
@@ -1393,30 +860,19 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
 > 
-> This is about disagreeing with a coworker's idea. Here's a direct approach:
+> This is covered in the course:
 > 
-> **The feedback sandwich**
+> Use the **feedback sandwich** when you disagree with a coworker's idea:
 > 
-> • **Partially agree, honestly** — find something real you can support
->   - *"I agree that clean shells matter for retail buyers."*
+> 1. **Start positive** — partially agree with something honest ("I understand why cleaner-looking eggs align with our health messaging")
+> 2. **State your opinion with a specific reason** — use facts or data ("but washing removes the cuticle, which actually increases contamination risk unless we add constant refrigeration. That raises supply chain costs by an estimated 15%")
+> 3. **Keep it open** — end friendly and ask about alternatives ("Are there other ways we could meet the health messaging goal?")
 > 
-> • **State your view with a specific reason** — use facts or data
->   - *"But washing removes the natural coating, and studies show it cuts shelf life by 40%. That increases waste and costs."*
+> If a decision is reached, commit and move forward together: "Okay, let's go with unwashed eggs plus a visible farm certification sticker — I'll update the supplier brief by Thursday."
 > 
-> • **Keep it open with a question**
->   - *"Could we test a brush-cleaning option instead?"*
+> As a PM at an egg farm, your industry knowledge is your advantage here. Lead with the data you know about egg handling, then invite your coworker to solve the branding concern another way.
 > 
-> • **Move forward together** once you decide
->   - *"Let's run a two-week trial with both methods and compare spoilage rates."*
-> 
-> General tips:
-> - Lead with their concern, not your rejection
-> - "But" or "However" works fine — just keep the tone friendly
-> - Offer an alternative; don't just block
-> 
-> As a PM at an egg farm, you can bring real operational data into these discussions. That strengthens your position more than general arguments.
-> 
-> Want to practice this? Tap the mode menu and choose Role-play.
+> [Want to practice this? Tap the mode menu and choose Role-play, and we can continue that scene or start a new one.]
 
 ### S1 Custom scene: client meeting · PASS
 
@@ -1426,11 +882,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up. No fixed scene menu.
 
-> &lt;character name="Rachel" gender="female"/&gt;
+> &lt;character name="James" gender="male"/&gt;
 > 
-> "Thanks for making time today. I need to be direct — we've had three shipments arrive late this month, and it's costing us. Our warehouse had to pay overtime last week because a delivery came in after the cutoff. What is your team doing to fix this?"
+> Thanks for making time today. I'm James, the operations lead over at Northwind Manufacturing. We've been with your company for about two years now, but the last three months have been rough—three shipments arrived late, and yesterday's delivery missed our production window entirely. I need to understand what's going wrong and what you're going to do about it.
 > 
-> [You are an account manager at a logistics firm. Rachel is the operations director at a retail client in Chicago. She scheduled this call after the third late delivery. Your goal: address her concern, explain what happened, and agree on a plan to prevent it.]
+> [Northeast Logistics — Chicago. You are the account manager for Northwind Manufacturing, a long-term client. James is frustrated about repeated late deliveries and wants answers and a fix.]
 > 
 > [You can describe a different situation anytime.]
 
@@ -1441,11 +897,13 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene).
 
-> &lt;character name="Maya" gender="female"/&gt;
+> &lt;character name="Rachel" gender="female"/&gt;
 > 
-> "We're still seeing a 12% crash rate on the checkout flow in beta. That's blocking our App Store submission. What's the latest from your side?"
+> Thanks for joining, everyone. Before we dive into the details, could you walk us through where we stand on the mobile app launch? I'm particularly interested in timeline and any blockers.
 > 
-> [You're the PM leading the weekly sync for a fintech app launch at Stripe. Maya is your senior engineer in San Francisco. The team is remote across three time zones. Goal: give your update and keep the project on track.]
+> [You are the PM leading this weekly sync at your company. Rachel is a senior stakeholder from the product team. She wants a clear picture of progress and risks.]
+> 
+> [You can describe a different situation anytime.]
 
 **T2 [RP]** "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
 - ✓ doesn't contain any of ["Start with your introduction"]
@@ -1453,11 +911,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
 
-> Maya nods, taking notes.
+> Rachel: Thanks for the update. Moving the beta date or launching without payments are both big decisions. What's your recommendation, and what would each option mean for the full launch timeline?
 > 
-> "Seventy percent is solid, but that API delay is rough. Our checkout crash is tied to the payment flow, so launching without payments doesn't solve the beta blocker. What does the vendor say about the two-week slip? And if we move beta, what's the new date you're looking at?"
-> 
-> [You stated the situation clearly and proposed two options. Maya's pushing for more detail before she'll buy into either path.]
+> [You are the PM leading this weekly sync at your company. Rachel is a senior stakeholder from the product team. She wants a clear picture of progress and risks.]
 
 ### S3 Production defects: business level, feedback fits the scene · PASS
 
@@ -1470,37 +926,42 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Marcus" gender="male"/&gt;
 > 
-> "Hey, thanks for coming by. I was just looking at this week's numbers and Line 2 is showing a spike in defective cells — from 2% up to almost 5%. That's our highest line in the plant right now. What's your take on what's driving it?"
+> Marcus: "Thanks for flagging this. I've seen the numbers too — defect rate on Line 2 is up to 4.2% this week, from our usual 1.8%. That's a big jump. What's your read on what's causing it?"
 > 
-> [You're a quality engineer at an EV battery supplier. Marcus is the production manager. He's concerned about output targets and doesn't want to slow the line without a clear reason. Your goal: discuss the defect jump, explain what you've found, and agree on next steps.]
+> [You are a quality engineer at an EV battery supplier. Marcus is the production manager. You're in a meeting room in Detroit. Goal: discuss the spike in defective cells on Line 2 and agree on next steps.]
 
 **T2 [RP]** "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
 - ✓ no feedback
-- ✓ words ≤ 120: 58 words
+- ✓ words ≤ 120: 65 words
 - ✓ global checks G1–G4
 - [ ] Stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
 
-> Marcus crosses his arms and exhales. "Four percent — that's a big jump, and right after a supplier change. I get it. But holding batches and 100% inspection means pulling people off other lines and maybe missing Thursday's shipment to the OEM. How sure are you that it's the new supplier part and not something else on Line 2?"
+> Marcus: "I can see the timing lines up with the supplier change, but 100% inspection is going to slow us down a lot. We're already behind on the Q3 order for Rivian. If we hold all affected batches, that's roughly 12,000 cells sitting idle. Is there a way to narrow it down — maybe just the lots from the first two days after the switch?"
 
 **T3 [RP]** "feedback"
-- ✓ feedback score ≥ 1: score 4
+- ✓ feedback score ≥ 1: score 3
 - ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
 - ✓ global checks G1–G4
 - [ ] Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> **Course score: 4/5**: You stated the problem clearly with data, proposed a specific action, and asked for support — strong structure for a difficult conversation.
+> **Course score: 3/5**: You stated your position clearly with data and a specific request, but you skipped partial agreement and didn't keep the discussion open with a question.
 > 
-> **How it went:** You came in with facts and a plan, which kept the discussion professional and focused on solutions rather than blame.
+> **How it went:** You got straight to the point with facts, which helped Marcus understand your concern. The conversation stayed professional, but it felt more like a directive than a collaborative discussion.
 > 
-> **What worked:** "The defect rate went from 1% to 4% after we changed suppliers for one part" — you gave a clear cause with numbers, and "I'd like to hold the affected batches and inspect 100% of the cells" named a specific, time-bound action.
+> **What worked:**
+> - "The defect rate went from 1% to 4% after we changed suppliers for one part" — this gave a specific reason tied to data, which supports your opinion well.
 > 
-> **What to improve:** You moved straight to your solution without acknowledging Marcus's pressure (output targets, Thursday shipment). A brief pause on his constraints would build more trust before asking for resources.
+> **What to improve:**
+> - You jumped directly to your solution without acknowledging Marcus's pressure on the Q3 order. Partial agreement builds trust before you push back.
+> - You closed with "Can your team support that?" — a yes/no question that doesn't invite alternatives. The feedback sandwich method ends with openness to discussion.
 > 
-> **Also worth noting:** "Can your team support that this week?" is a bit direct. Softening to "What would that look like for your team this week?" invites collaboration.
+> **Try this instead:**
+> "I understand we're under pressure on the Rivian order, and I don't want to slow production more than we have to. The defect rate jumped from 1% to 4% right after the supplier change, so I think we need to be careful. Could we start with 100% inspection on just the first two days of batches, and then decide whether to expand based on what we find? What do you think?"
 > 
-> **Try this instead:** "The defect rate went from 1% to 4% after we changed suppliers for one part. I know Thursday's shipment is tight. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause — what capacity do you have this week, or should we look at borrowing from Line 1?"
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 > 
-> Is there anything specific you'd like feedback on? Or we can continue this conversation, try again, or pick a new scene.
+> Want to continue this conversation, try again, or pick a new scene?
 
 ### S4 Mid-meeting: "We're already halfway through" · PASS
 
@@ -1513,9 +974,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Sam" gender="male"/&gt;
 > 
-> I know this isn't what anyone wants to hear, but I'm looking at our delivery schedule and I think we need to talk about the timeline. We've hit some integration issues with the API layer that are taking longer than we estimated, and honestly, I'm not sure we can make the March deadline without cutting corners on testing. I wanted to flag this now rather than surprise you later.
+> I know this isn't what anyone wants to hear, but we're looking at a real risk of slipping into next month. The integration testing is taking longer than we estimated, and we just found some issues with the payment module that we didn't catch in the earlier rounds.
 > 
-> [You're the project lead at your company, in a mid-meeting discussion with Sam, your main vendor contact. The goal: address the delay risk and agree on next steps.]
+> [Setting: you're the project lead at your company, meeting with Sam, a vendor project manager. The weekly status call is halfway through. Sam's team is building the payment integration for your platform. Goal: address the delay risk and agree on a path forward.]
+> 
+> [You can describe a different situation anytime.]
 
 **T2 [RP]** "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -1523,11 +986,7 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Answers as Sam with a cause and a concrete ask; the meeting continues.
 
-> The API integration is the main blocker. The documentation we got from your team didn't cover the newer endpoints, so our engineers had to reverse-engineer some of the data flows. That's burned about two weeks already.
-> 
-> To stay on schedule, we'd need two things. First, someone from your engineering side to walk us through the endpoint specs, ideally this week. Second, we'd need to either reduce the custom reporting scope or add two more developers to our side. Otherwise, we're looking at a four-to-six-week slip.
-> 
-> [What do you want to do with this information?]
+> The payment module issues are the main thing. Our QA team found that some transaction types are failing under load, and fixing that properly means refactoring part of the code we thought was solid. To stay on schedule, we'd need either two more engineers for the next three weeks, or we push the go-live by about four weeks. What works better on your end?
 
 ### S5 Clear switch: meeting opener to a project delay · PASS
 
@@ -1539,9 +998,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Hi, I'm Sarah. I'm on the marketing team and I'll be handling the campaign assets for this project.
+> Thanks for setting this up. I'm looking forward to hearing what you have in mind for the project.
 > 
-> [You're the project lead for a new mobile app launch at Apple. The team is in Cupertino. Over the past two weeks, there have been emails back and forth between design, engineering, and marketing about feature priorities. Today's goal is to agree on the final feature set so engineering can start build next week. You need to send the locked plan to the VP by Friday.]
+> [You're the lead project manager at Apple, kicking off a new app launch. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to share a timeline with leadership by next Friday.]
 > 
 > [Start with your introduction.]
 
@@ -1551,13 +1010,15 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
 
+> I understand. Let me set up a new scene for you.
+> 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> Hey, do you have a minute? I just got off a call with the client and they're asking about our timeline.
+> Hey, do you have a minute? I wanted to check in on the website redesign. The leadership team is asking for an update, and I need to report numbers at the end of the week. Where do we stand?
 > 
-> [You're a project manager at Tesla. David is your manager, based in Austin. The battery management software project you lead is running behind because two key engineers were out sick last month. The original delivery date was June 15. You need to tell him it'll be June 29. The goal: deliver the news, explain why, and agree on what to tell the client.]
+> [You are a project manager at Apple. David is your manager. You are leading a website redesign project that was supposed to launch in three weeks. You have just learned that the project will be delayed by two weeks due to integration issues with the payment system. David does not know about the delay yet.]
 > 
-> [Hint: state the delay clearly early, give a brief reason with facts, and come with a proposed next step.]
+> [You can describe a different situation anytime.]
 
 **T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
 - ✓ doesn't contain any of ["Start with your introduction"]
@@ -1565,11 +1026,7 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
 
-> &lt;character name="David" gender="male"/&gt;
-> 
-> Two weeks puts us past the client's quarterly review. How many bugs are we talking about, and what's your recovery plan?
-> 
-> [You're a project manager at Tesla. David is your manager in Austin. The battery management software project you lead was due June 15; you're now telling him June 29. Testing found more bugs than expected. Goal: explain the delay, handle his concern, and agree on what to tell the client.]
+> I appreciate you flagging this early. Two weeks is a significant slip, though. Walk me through what you're seeing and what recovery looks like.
 
 ### S6 Ambiguous request: "Ask my boss for a proportion" · PASS
 
@@ -1581,11 +1038,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> David: "Hey, got a minute? I wanted to check in about the Q3 budget. The leadership team just approved a 15% increase for the marketing campaign, but they want the same launch date. That means pulling three engineers off their current sprint. How do you see us handling that?"
+> Hey, got a minute? I wanted to run something by you. The team just wrapped up the Q2 product launch and the numbers look solid. I'm wondering if we could talk about adjusting my equity stake to reflect the growth I've driven here.
 > 
-> [Setting: You're a senior project manager at a fintech startup in Singapore. David is your direct manager. The conversation goal: negotiate a fair allocation of resources so your core product roadmap doesn't collapse.]
+> [You work at a mid-sized software company in Austin. You're a senior product manager meeting with David, your director. The goal: ask for a larger equity proportion in your compensation package.]
 > 
-> [Hint: think about the project triangle: cost (resources), quality (scope), and time (schedule). If David wants more, something else has to give.]
+> [You can describe a different situation anytime.]
 
 ### S7 Manager 1:1: workload and priorities · PASS
 
@@ -1596,15 +1053,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Acts as a manager in a 1:1, not someone running a meeting.
 
-> &lt;character name="David" gender="male"/&gt;
+> &lt;character name="Rachel" gender="female"/&gt;
 > 
-> "Hey, thanks for coming in. I wanted to check in—how's everything going with the dashboard rebuild, the Q3 forecast, and that ad-hoc request from Sales? I know all three landed at once."
+> Thanks for flagging this early. I know you've been juggling a lot lately. Walk me through the three projects—what's the timeline and who else is involved on each one?
 > 
-> [You're a data analyst at a mid-sized tech company in Austin. David is your manager, friendly but stretched thin himself. Goal: get help prioritizing three urgent projects without appearing overwhelmed.]
-> 
-> ---
-> 
-> What would you like to say?
+> [You're a data analyst at Apple in Cupertino. Rachel is your manager. Goal: get help prioritizing three urgent projects without appearing overwhelmed.]
 
 **T2 [RP]** "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -1612,9 +1065,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
 
-> "That's helpful to know. The Q4 forecast has to go to the board on the 15th, so that one's fixed. Between the dashboard migration and the pricing analysis, which one do you think would slip more if we pushed it?"
+> I appreciate you bringing this to me. The Q4 forecast is locked in with Finance—they need it by the 15th for board prep. The pricing analysis is tied to the product launch review. The dashboard migration is important, but it's more internal. 
 > 
-> [He wants your input, but he's also testing whether you've thought through the tradeoffs. What matters most to the business?]
+> Why do you think two is the limit? Is it a bandwidth issue, or are there blockers I don't know about?
 
 **T3 [RP]** "feedback"
 - ✓ feedback score ≥ 1: score 4
@@ -1622,54 +1075,23 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
 
-> **Course score: 4/5**: You stated the problem clearly, proposed a realistic limit, and invited collaboration—exactly what a manager wants to hear.
+> **Course score: 4/5**: You clearly stated your situation, proposed a specific tradeoff, and invited collaboration—strong use of the general checklist for handling a request or concern.
 > 
-> **How it went:** David engaged immediately because you came with a plan, not just a complaint.
+> **How it went:** Great job staying solution-focused and confident. You didn't complain or sound overwhelmed; you presented a clear path forward.
 > 
-> **What worked:** "I can finish two well" — this shows ownership and sets a clear boundary. "Could we decide together" — you made him a partner in the solution, not the source of your stress.
+> **What worked:**
+> - "I can finish two well. Could we decide together which one can move to next month?" — This shows you assessed your own capacity honestly and invited your manager into the decision, which demonstrates ownership rather than helplessness.
 > 
-> **What to improve:** You didn't name the impact of doing all three. Adding why it matters helps him advocate for you. For example: doing all three would mean rushing the forecast or delivering incomplete analysis.
+> **What to improve:**
+> - You didn't name the specific constraint driving the limit (time, dependencies, or complexity). Rachel had to ask "Why two?" Adding this upfront would have strengthened your position and saved a round of questioning.
+> - You could have briefly ranked the three projects by impact yourself, showing you'd already thought through the business priority.
 > 
-> **Also worth noting:** Your opening was direct and calm. No apology for needing help, which is the right tone.
+> **Also worth noting:** "I can finish two well" is clear and confident. A slightly softer alternative like "I want to make sure I deliver quality on all three, and I believe two this month is realistic" frames it as care for outcomes rather than a personal limit.
 > 
-> **Try this instead:** "I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. If I take all three, I'll need to cut corners on at least one. I can finish two with full quality. Could we decide together which one can move to next month, or if another analyst can take one?"
-> 
-> Want to continue this conversation, try again, or pick a new scene?
+> **Try this instead:**
+> "I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. The forecast and pricing analysis both have external deadlines with Finance and Product, while the migration is internal. I can deliver …
 
-### S8 Discovery: customer success exploring client needs · FLAKY
-
-**Attempt 1 (failed, so it was rerun)**
-
-**T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the client and leaves the questions to the learner.
-
-> &lt;character name="Priya" gender="female"/&gt;
-> 
-> Hi, thanks for making the time. I'm Priya, VP of Operations at Northfield Logistics. We finally got the green light to replace our old tracking system, and your platform came up in every conversation I had with peers.
-> 
-> So, you're from the success team — what does that mean for how we'll work together?
-> 
-> [Northfield Logistics, Chicago. You are the CSM from the software company. Goal: understand Priya's needs, current pain points, and success criteria before implementation. She has budget approval but is cautious after a bad experience with her last vendor.]
-
-**T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-- ✓ no feedback
-- ✗ words ≤ 120: 142 words
-- ✓ global checks G1–G4
-- [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
-
-> Good question — and honestly, it's why I wanted this meeting.
-> 
-> Right now we're running our fleet tracking on three different tools that don't talk to each other. Dispatch uses one system, drivers use another app, and finance pulls data manually into spreadsheets for billing. Last month we had a shipment go to the wrong warehouse because dispatch saw one status and the driver saw something else. Cost us twelve hours and a penalty fee.
-> 
-> I'm hoping your platform gives us one place where everyone sees the same thing in real time. But I need to be straight with you — our last vendor promised the same thing and it took eight months to get basic reporting working. So I'm going to push hard on implementation timelines and what "real time" actually means.
-> 
-> What does your onboarding look like for a company our size?
-
-**Attempt 2**
+### S8 Discovery: customer success exploring client needs · PASS
 
 **T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -1678,48 +1100,50 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Plays the client and leaves the questions to the learner.
 
-> &lt;character name="Maya" gender="female"/&gt;
+> &lt;character name="Marcus" gender="male"/&gt;
 > 
-> Hi, thanks for making the time. I'm Maya, VP of Operations at Northfield Logistics. We reached out because our current system isn't keeping up — our team is still doing a lot of manual tracking, and we're losing visibility once shipments leave our warehouse.
+> Thanks for coming out today. We've been looking forward to getting started — our current tools are really slowing the team down, and we're hoping your platform can help us streamline things.
 > 
-> [You're a customer success manager at a software company. Maya is a new client at Northfield Logistics, a mid-sized supply chain firm in Chicago. She wants to reduce manual work and get real-time shipment visibility. Your goal: understand her needs so you can configure the product. Ask away.]
+> [Marcus is the VP of Operations at a mid-sized logistics company in Chicago. You're the customer success manager from a software company, meeting for the first time to understand his team's needs before implementation.]
+> 
+> [You can describe a different situation anytime.]
 
 **T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
 - ✓ no feedback
-- ✓ words ≤ 120: 81 words
+- ✓ words ≤ 120: 77 words
 - ✓ global checks G1–G4
 - [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
 
-> Right now we're using spreadsheets and email threads to track shipments across three warehouses. It's fine when volume is low, but last quarter we hit a bottleneck — a major retail client expanded their contract, and we missed two delivery windows because no one saw the delay coming. We had to pay penalties and nearly lost the account.
+> Right now we're juggling three different systems — one for tracking shipments, one for inventory, and spreadsheets for everything else. My team spends about six hours a week just moving data between them, and we still get errors. Last month we sent a shipment to the wrong warehouse because someone copied a tracking number wrong. We're hoping your platform can bring that into one place.
 > 
-> So the main thing I need is earlier warning when something's going off track, not just a record of where it already went wrong.
+> What does your typical setup process look like for a company like ours?
 
 </details>
 
 ---
 
-<details><summary><b>staging-2</b></summary>
+<details><summary><b>staging-1</b></summary>
 
 ### Golden set: RED
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-03 14:59 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-04 02:35 UTC
 
-**PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0**
+**PASS 9 · FAIL 1 · FLAKY 2 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
 | C2 Coach starter: first 90 days | PASS | – |
-| C3 Scene card: Start a meeting, then a full ICE opening | FAIL | T2: feedback score ≥ 4 (no score) |
+| C3 Scene card: Start a meeting, then a full ICE opening | FLAKY | passed on rerun; first try: T2: feedback score ≥ 4 |
 | D1 Mode switch: Role-play → Coach → back | PASS | – |
-| D2 Background in passing, workplace change, and lessons applied only when they fit | PASS | – |
+| D2 Background in passing, workplace change, and lessons applied only when they fit | FAIL | T3: sandwich steps < 2 (found partially agree, keep the discussion open, move forward together) |
 | S1 Custom scene: client meeting | PASS | – |
 | S2 Status update: a brief opening is fine, a kickoff isn't | PASS | – |
 | S3 Production defects: business level, feedback fits the scene | PASS | – |
 | S4 Mid-meeting: "We're already halfway through" | PASS | – |
-| S5 Clear switch: meeting opener to a project delay | PASS | – |
+| S5 Clear switch: meeting opener to a project delay | FLAKY | passed on rerun; first try: T2: character line: present |
 | S6 Ambiguous request: "Ask my boss for a proportion" | PASS | – |
 | S7 Manager 1:1: workload and priorities | PASS | – |
-| S8 Discovery: customer success exploring client needs | FLAKY | passed on rerun; first try: T2: words ≤ 120 |
+| S8 Discovery: customer success exploring client needs | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
@@ -1729,28 +1153,34 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 **T1 [QA]** "What should I do in my first 90 days?"
 - ✓ starts with "This is covered in the course:"
 - ✓ link: lesson link
-- ✓ list items ≥ 2: 5 items
+- ✓ list items ≥ 2: 13 items
 - ✓ global checks G1–G4
 - [ ] The actions are concrete and come from the first-90-days lesson.
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
 
 > This is covered in the course:
 > 
-> **First 90 days: learn and observe**
+> Use your first 90 days to learn, ask questions, and understand your new environment before trying to prove yourself.
 > 
-> • **Map the organization** — understand your role in the team, the team's role in the department, and the department's role in the company. Also learn where the company sits in its market.
+> • **Map your place in the organization**
+>   - Your role in the team
+>   - The team's role in the department
+>   - The department's role in the company
+>   - The company's place in its market
 > 
-> • **Set your direction** — decide where you want your career to go. Use that to guide what you learn and which opportunities you pursue, even if your long-term goal is outside the company.
+> • **Set your career direction**
+>   - Decide where you want your career to go
+>   - Let that guide what you learn and which opportunities you pursue, even if your long-term goal is outside the company
 > 
-> • **Stay humble and ask questions** — your past success doesn't guarantee success here. Listen more than you push. Ask questions boldly while you're new.
-> 
-> • **Learn from documents and people** — read internal documents, talk to coworkers, and focus on learning before worrying about performance ratings.
-> 
-> • **Make a specific plan** — set concrete learning goals for your first 90 days rather than just trying to look busy.
+> • **Stay humble and learn proactively**
+>   - Your past success doesn't guarantee success here — be flexible and listen
+>   - Ask questions boldly while you're new
+>   - Learn from coworkers and internal documents
+>   - Focus on learning and making a specific plan, not on performance ratings
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
 
-### C3 Scene card: Start a meeting, then a full ICE opening · FAIL
+### C3 Scene card: Start a meeting, then a full ICE opening · FLAKY
 
 **Attempt 1 (failed, so it was rerun)**
 
@@ -1760,9 +1190,9 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Hi everyone, thanks for joining. I'll hand it over to you.
+> Hi everyone, thanks for joining. I'm Sarah, UX designer on this project. Looking forward to getting started.
 > 
-> [You're the project lead for a new mobile app at Tesla. The team is in Austin. Over the past two weeks, you've exchanged emails with design and engineering about user flow. Today's goal is to agree on the core features for the MVP. After the meeting, you'll send the feature list to the VP by Thursday. Sarah is a supportive teammate on the call.]
+> [You're at Apple in Cupertino, leading the kickoff for a new fitness app feature. The team has exchanged emails for two weeks about user research findings. Today's goal is to agree on the design direction. You'll send the chosen concept to the engineering lead by Wednesday.]
 > 
 > [Start with your introduction.]
 
@@ -1771,13 +1201,9 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 - ✓ global checks G1–G4
 - [ ] Doesn't ask the learner to redo a step they already covered.
 
-> Thanks, Lee. Good to have that clarity. I'm looking forward to locking this down.
+> Sarah: Great to have that clarity, Lee. Two weeks of back-and-forth on features — it’ll be good to lock something in. I'm ready when you are.
 > 
 > [Now give the context: the past, the present, and the future.]
-> 
-> ---
-> 
-> Wait — let me check what you've covered so far. You gave your introduction and your expectations. The context you shared mentions emails and today's goal, but it's missing a clear "past, present, future" structure with a sense of time for the next step. Try adding that in.
 
 **Attempt 2**
 
@@ -1787,22 +1213,44 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > &lt;character name="Sarah" gender="female"/&gt;
 > 
-> "Hi, I'm Sarah. I think we're all here now."
+> Hi everyone, thanks for joining. I'll hand it over to you.
 > 
-> [You're the project lead for a new mobile app at Tesla in Austin. The team has been exchanging emails about the app for two weeks, but this is the first formal meeting. Your goal today is to agree on the core features and timeline, then send a summary to the design team by Wednesday. Sarah is a supportive teammate ready to help you practice the opening.]
+> [You're a project lead at Apple in Cupertino. This is the kickoff for a new iPhone camera feature. The team has exchanged emails for two weeks. Today's goal is to align on the design direction. You'll send the finalized brief to the camera engineering team by next Wednesday. Sarah is a supportive designer on your team.]
 > 
 > [Start with your introduction.]
 
 **T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✗ feedback score ≥ 4: no score
+- ✓ feedback score ≥ 4: score 5
 - ✓ global checks G1–G4
 - [ ] Doesn't ask the learner to redo a step they already covered.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> "Great to meet you formally, Lee. Two weeks of emails — I'm glad we're finally getting everyone in one place. Agreeing on the schedule sounds like the right next step, and Friday gives us a clear target."
+> Thanks, Lee. Good to have the background—two weeks of back-and-forth, and we need to lock the schedule today. I'm ready to dig into the details.
 > 
 > [Now give the context: the past, the present, and the future.]
 > 
-> [Hint: you covered your introduction well — name, role, and contribution are clear. For Context, try adding how you got here, what exactly you'll cover today, and a specific next step with a deadline. The "past, present, future" structure helps the team follow along.]
+> ---
+> 
+> Wait—let me re-read. The learner actually covered all three ICE steps:
+> 
+> - **Introduction**: name (Lee), role (lead PM), topic (new app launch), contribution (manage schedule)
+> - **Context**: past (two weeks of emails about main features), present (agree on schedule), future (send timeline to leadership by next Friday)
+> - **Expectations**: interaction level (ask questions anytime), detail level (detailed discussion)
+> 
+> This is complete. I should give one short Sarah line, then feedback. No cue.
+> 
+> Let me check: "Please ask questions anytime" = interaction expectation. "This will be a detailed discussion" = detail expectation. Yes, both covered.
+> 
+> The scene says: "The opening is done if they've attempted Expectations, or every step appears at least partly." They attempted expectations.
+> 
+> So: one short Sarah line, then full feedback format.
+> 
+> For feedback:
+> - Score: 5/5? Let me check calibration. "all three steps, but no timed next step in Context = 4/5" — they have "by next Friday," so timed next step is present. Steps are there with key details. I'd say 5/5.
+> 
+> What worked: quote their words and name the step. Maybe the expectations step: "Please ask questions anytime, and this will be a detailed discussion" shows both interaction and detail expectations.
+> 
+> What to improve: anyt…
 
 ### D1 Mode switch: Role-play → Coach → back · PASS
 
@@ -1815,11 +1263,11 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > &lt;character name="Bob" gender="male"/&gt;
 > 
-> "Hey, I've been thinking about our menu redesign for the new app launch. I really think we should put the traditional coffee section right at the top — it's what defines us as a brand, and loyal customers expect to see it first. What do you think?"
+> "Hey, thanks for making time. So I've been thinking about the menu redesign for the new store app. I want us to list traditional coffee drinks first — espresso, americano, cappuccino — before any of the seasonal or iced stuff. It keeps the brand identity strong and respects our roots."
 > 
-> [You're on the product team at Starbucks headquarters in Seattle. Bob is your teammate. He wants traditional coffee listed first on the menu. You know that iced frappuccinos have been the summer best sellers for three years running. The goal is to disagree professionally and reach a team decision.]
+> [You're a product manager at Starbucks headquarters in Seattle. Bob is a senior marketing colleague. He proposed listing traditional coffee first on the new mobile app menu. You believe iced frappuccinos are the summer best sellers and should be prioritized. The goal: disagree professionally and reach a team decision.]
 > 
-> Hint: what can you honestly agree with in Bob's idea?
+> [Hint: you could honestly agree that brand identity matters, or that traditional drinks are important to loyal customers.]
 
 **T2 [QA]** "How can I politely disagree with the idea?"
 - ✓ global checks G1–G4
@@ -1828,34 +1276,36 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 > This is covered in the course:
 > 
-> Use the **feedback sandwich** to disagree while keeping the discussion open:
+> Use the feedback sandwich for disagreements:
 > 
-> • **Partially agree, honestly** — show you see their point  
-> "I understand that we want to stay true to our traditional coffee brand."
+> • **Partially agree first** — show you understand their view
+>   - "I understand that we want to stay true to our traditional coffee brand…"
 > 
-> • **State your opinion with a specific reason** — use facts or data  
-> "But our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales."
+> • **State your opinion with a reason** — use facts or data
+>   - "…but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales."
 > 
-> • **Keep it open** — invite alternatives  
-> "Are there other alternatives?"
+> • **Keep it open** — invite alternatives
+>   - "Are there other alternatives?"
 > 
-> • **Move forward together** — once the team decides, commit  
-> "Maybe we could try a digital display so that we can update the menus depending on the season."
+> • **Move forward together** — once the team decides, commit
+>   - "Maybe we could try a digital display so that we can update the menus depending on the season."
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/
 
 **T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
 - ✓ no feedback
 - ✓ doesn't contain any of ["Reply with a number","Switched to"]
-- ✓ words ≤ 120: 66 words
+- ✓ words ≤ 120: 76 words
 - ✓ global checks G1–G4
 - [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
 
-> "I hear you on wanting to test first, but I'm not sure I follow — are you saying the menu order itself would take too much time to change, or that you're worried about something else?"
+> "I hear you on wanting to test this carefully. But just to be clear — are you saying the menu order itself would take too much time to implement, or that you're worried about the impact on users if we get it wrong?"
 > 
-> [Hint: you named a concern, but Bob isn't clear what "this" refers to. Try naming the specific issue directly: "Listing traditional coffee first" or "Moving away from our top-selling items."]
+> [You're still in the disagreement scene with Bob. He wants traditional coffee listed first; you raised a concern about time and suggested a smaller trial. He's asking for clarification before responding to your proposal.]
 
-### D2 Background in passing, workplace change, and lessons applied only when they fit · PASS
+### D2 Background in passing, workplace change, and lessons applied only when they fit · FAIL
+
+**Attempt 1 (failed, so it was rerun)**
 
 **T1 [QA]** "How do I start a meeting?"
 Profile sent: Role: PM. Industry: Egg farming.
@@ -1866,23 +1316,759 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > This is covered in the course:
 > 
-> Use the **ICE template** for the first 8 minutes:
+> Open meetings with **ICE** — three steps in this order:
 > 
-> 1. **Introductions**
->    - One or two sentences about the meeting topic
->    - Your name, role, and how you'll contribute
+> **1. Introductions**
+> - One or two statements about the meeting topic
+> - Your name, role, and how you'll contribute
 > 
-> 2. **Context (Past, Present, Future)**
->    - Past: how you got here (emails, earlier meetings)
->    - Present: today's topics and goal
->    - Future: next steps with a deadline ("by next Monday")
+> *Example:*
+> &gt; "Hi everyone, today we're kicking off the new supply-chain system. I'm Alex, the PM, and I'll manage the schedule and be your main contact for requirements."
 > 
-> 3. **Expectations**
->    - Interaction level: "Please hold questions for the end" or "Feel free to interrupt"
->    - Detail level: high-level overview or deep dive
+> **2. Context (Past, Present, Future)**
+> - **Past:** how you got here (emails, earlier meetings)
+> - **Present:** today's topics and goal
+> - **Future:** next steps with a deadline
+> 
+> *Example:*
+> &gt; "We've had emails going back and forth since last month. Today we'll walk through requirements, confirm the timeline, and list risks so we're aligned. I'll send the signed plan to the US team by next Monday."
+> 
+> **3. Expectations**
+> - Interaction level: "Please hold questions for the end" or "Feel free to interrupt"
+> - Detail level: very detailed or high level
+> 
+> *Example:*
+> &gt; "We have a lot to cover and not much time, so please hold questions until the end."
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+
+**T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","industry_source":"stated"}
+- ✓ character line: present
+- ✓ sandwich steps &lt; 2
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
+
+> &lt;profile learner_name="" learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
+> 
+> &lt;character name="Bob" gender="male"/&gt;
+> 
+> I think we should wash all the eggs before they go into the cartons. It makes the product look cleaner and more professional on the shelf. Customers notice dirt spots, and that hurts our brand.
+> 
+> [You're a PM at Google, working on a new smart-farming initiative. Bob is a teammate from the operations side. You're in a meeting room in Mountain View. The goal: decide whether to add an automated egg-washing step to the supply chain.]
+> 
+> Want to try again on Hard? Bob will push back a bit more.
+
+**T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
+Profile sent: Role: PM. Company: Google. Industry: Egg farming.
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","industry":"Egg farming","goal":"discuss ML models at work","industry_source":"stated"}
+- ✗ sandwich steps &lt; 2: found partially agree, keep the discussion open, move forward together
+- ✓ global checks G1–G4
+- [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
+
+> &lt;profile learner_name="" learner_role="PM" learner_company="" learner_industry="Egg farming" learner_industry_source="stated" learner_goal="discuss ML models at work"/&gt;
+> 
+> This is covered in the course:
+> 
+> Use the **feedback sandwich** when you disagree with a coworker's idea:
+> 
+> **1. Partially agree, honestly**
+> - Find something you can genuinely support
+> 
+> *Example:*
+> &gt; "I agree that cleaner-looking eggs could help with retail perception."
+> 
+> **2. State your own view with a specific reason**
+> - Use facts or data where possible
+> 
+> *Example:*
+> &gt; "But washing removes the natural protective coating. That actually increases the risk of bacteria getting in, and we'd need refrigeration throughout the supply chain. Our current data shows unwashed eggs have lower spoilage rates."
+> 
+> **3. Keep the discussion open**
+> - Friendly tone, ask about alternatives
+> 
+> *Example:*
+> &gt; "Are there other ways to improve shelf appearance without the food-safety tradeoff?"
+> 
+> **4. Move forward together**
+> - Once there's a decision, commit to next steps
+> 
+> *Example:*
+> &gt; "If we go with dry brushing instead, I can check packaging options by Friday."
+> 
+> ---
+> 
+> Since you're a PM at an egg farm, your industry knowledge strengthens step 2. Lead with the operational or food-safety data you know.
+> 
+> Want to try this in a role-play? Tap the mode menu at the top right and choose Role-play.
+
+**Attempt 2**
+
+**T1 [QA]** "How do I start a meeting?"
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ global checks G1–G4
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
+
+> This is covered in the course:
+> 
+> Use the **ICE** method to open a meeting in three steps:
+> 
+> **1. Introductions**
+> - One or two statements about the meeting topic
+> - Your name, role, and how you'll contribute
+> 
+> **2. Context (Past, Present, Future)**
+> - Past: how you got here (emails, earlier meetings)
+> - Present: today's topics and goal
+> - Future: next steps with a deadline
+> 
+> **3. Expectations**
+> - Level of interaction ("please hold questions for the end" / "feel free to interrupt")
+> - Level of detail (high level or very detailed)
 > 
 > Example:
-> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, the lead PM, and I'll manage the schedule and be the point of contact for requirements. We've had emails going back and forth, so today we'll walk through requirements, confirm the schedule, and call out risks so we're aligned before we start. We hope to get written sign-off from the US team by next Monday. We have a lot to cover, so please hold questions until the end."
+> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, lead PM for this project, and I'll manage the schedule and be the main point of contact for requirements."
+> &gt;
+> &gt; "We've had emails going back and forth about this kickoff. Today we'll walk through requirements, confirm the schedule, and call out risks so everyone is aligned. We hope to get written sign-off from the US team by next Monday."
+> &gt;
+> &gt; "We have a lot of content and not much time, so please hold questions for the end."
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+
+**T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","industry_source":"stated"}
+- ✓ character line: present
+- ✓ sandwich steps &lt; 2
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
+
+> &lt;profile learner_name="" learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
+> 
+> &lt;character name="Elena" gender="female"/&gt;
+> 
+> "I think we should start washing all the eggs before they go to packaging. It makes the product look cleaner and safer for buyers."
+> 
+> [You and Elena are PMs at a Google-backed ag-tech startup in Chicago. You're discussing a process change for your egg supply chain: whether to add an industrial washing step before packaging. Elena supports it; you have concerns. The team needs a decision today so the operations lead can update the vendor contract by Friday.]
+> 
+> Hint: think about what you can honestly agree with before you share your own view.
+
+**T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
+Profile sent: Role: PM. Company: Google. Industry: Egg farming.
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"Egg farm","industry":"Egg farming","industry_source":"stated"}
+- ✗ sandwich steps &lt; 2: found partially agree, keep the discussion open, move forward together
+- ✓ global checks G1–G4
+- [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
+
+> &lt;profile learner_name="" learner_role="PM" learner_company="Egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal=""/&gt;
+> 
+> This is covered in the course:
+> 
+> Use the **feedback sandwich** method when you disagree with a coworker's idea:
+> 
+> • **Partially agree, honestly** — find something you genuinely accept ("I understand that…", "It makes sense that…")
+> 
+> • **State your own view with a specific reason** — use facts or data where possible
+> 
+> • **Keep the discussion open** — friendly tone, ask about alternatives
+> 
+> • **Move forward together** once you reach a decision
+> 
+> Example:
+> &gt; "I understand that washing the eggs makes them look cleaner to buyers, but our data shows unwashed eggs keep their natural protective coating and stay fresh 30% longer in storage. Could we test both approaches with a small batch first?"
+> 
+> As a PM at an egg farm, bring in what you know: shelf-life data, buyer requirements, or storage costs. If you're leading the meeting, use ICE to open it. If you're just disagreeing with a teammate's ML approach, use the sandwich above.
+> 
+> [I’ve saved your details to your profile (if enabled). See more: top-right menu → About.]
+
+### S1 Custom scene: client meeting · PASS
+
+**T1 [RP]** "I'd like to practice a client meeting. I'm an account manager at a logistics company, and the client is unhappy about late deliveries."
+- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker","Start with your introduction"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up. No fixed scene menu.
+
+> &lt;character name="Rachel" gender="female"/&gt;
+> 
+> Thanks for reaching out, but this is the third time this quarter we've had shipments miss the promised window. I'm looking at the data right now, and it's costing us.
+> 
+> [You're an account manager at a logistics company. Rachel is the operations director at a retail client in Chicago. She's frustrated about late deliveries and wants to know what you're going to do about it. The goal: rebuild confidence and agree on a fix.]
+> 
+> What can you tell me about what's been going wrong?
+
+### S2 Status update: a brief opening is fine, a kickoff isn't · PASS
+
+**T1 [RP]** "I want to practice giving a weekly status update to my project team. I'm a PM on a mobile app launch."
+- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker"]
+- ✓ global checks G1–G4
+- [ ] Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene).
+
+> &lt;character name="Rachel" gender="female"/&gt;
+> 
+> "We're seeing some risk on the iOS submission timeline. The review team flagged three compliance items yesterday."
+> 
+> [You're the PM leading the weekly sync for the mobile app launch at your company. Rachel is your lead engineer. The team is distributed across three time zones. Goal: practice a clear, actionable status update that surfaces issues and sets next steps.]
+> 
+> What's the current status on our end?
+
+**T2 [RP]** "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
+- ✓ doesn't contain any of ["Start with your introduction"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
+
+> Rachel nods, making a quick note.
+> 
+> "That lines up with what I'm seeing. The iOS compliance items I mentioned are actually tied to the payment flow — Apple's asking for additional documentation we don't have yet. If we drop payments for beta, that solves both problems, but Finance signed off on launch revenue projections that assume payments go live with the beta. What's your take on running that conversation with them?"
+
+### S3 Production defects: business level, feedback fits the scene · PASS
+
+**T1 [RP]** "I'm a quality engineer at an EV battery supplier. I need to talk with the production manager about a jump in defective cells on Line 2 this week."
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ character line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Plays a production manager in plain business language (impact, schedule, staffing, next steps).
+
+> &lt;character name="Marcus" gender="male"/&gt;
+> 
+> Marcus: Hey, thanks for coming by. I just got the weekly report and saw the spike on Line 2 — from 0.8% to 2.3% defective cells. That's the highest we've seen in six months. What's your take on what's driving it?
+> 
+> [You're a quality engineer at CATL, speaking with Marcus, the production manager, in your Ningbo plant. The conversation goal: discuss the defect jump, identify likely causes, and agree on next steps.]
+> 
+> [If you want to structure your opening, you could state the purpose, share what you've checked so far, and propose what you need from Marcus.]
+
+**T2 [RP]** "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
+- ✓ no feedback
+- ✓ words ≤ 120: 104 words
+- ✓ global checks G1–G4
+- [ ] Stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
+
+> Marcus: 4% — that's worse than I thought. Which part changed, and when exactly did the new supplier's material hit Line 2? I need to know if we're talking about two days of output or five.
+> 
+> My team can support extra inspection, but we're already behind on the Model Y order. If we pull people to 100% check, that line slows down. What's your timeline for confirming the cause — are we talking 48 hours, or a full week?
+> 
+> [Hint: you could say what you've already done to check — sampling, talking to the supplier, comparing specs — and give Marcus a specific timeline with a decision point.]
+
+**T3 [RP]** "feedback"
+- ✓ feedback score ≥ 1: score 4
+- ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
+- ✓ global checks G1–G4
+- [ ] Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria.
+
+> **Course score: 4/5**: You stated the problem clearly, proposed a specific action, and asked for support with a deadline — strong operational communication.
+> 
+> **How it went:** Marcus engaged directly and started negotiating resources, which shows your opening was concrete enough to move the conversation forward.
+> 
+> **What worked:** "I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause" — this states purpose, proposes a specific containment action, and sets a condition for lifting it.
+> 
+> **What to improve:** You didn't share what you've already checked before asking for resources. Marcus had to ask "which part" and "when," which costs you credibility as the quality expert who should already know. Also, your timeline was vague — "until we confirm" leaves Marcus guessing whether his team is committed for two days or ten.
+> 
+> **Also worth noting:** Leading with the supplier change is good context, but adding "we changed suppliers for the cathode material on Tuesday" would let Marcus calculate impact immediately.
+> 
+> **Try this instead:** "The defect rate jumped to 4% after we switched cathode suppliers on Tuesday. I've already pulled samples for SEM analysis and contacted the supplier for their COA. I'd like to hold all batches from Tuesday onward and run 100% inspection through Friday. If the lab confirms the root cause by then, we can release the hold. Can your team free up two people on Line 2 for those three days?"
+> 
+> Is there anything specific yo…
+
+### S4 Mid-meeting: "We're already halfway through" · PASS
+
+**T1 [RP]** "We're already halfway through our weekly project meeting. Sam from the vendor just said they might miss next month's deadline. Please play Sam."
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ character line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Sam picks up mid-meeting; no introductions or meeting opening.
+
+> &lt;character name="Sam" gender="male"/&gt;
+> 
+> "Yeah, so I need to flag this. We're looking at a possible delay on our end. The integration testing is taking longer than we estimated, and honestly, I'm not sure we'll hit that March deadline."
+> 
+> [You're the project lead at a mid-sized software company. Sam's team is building the payment module for your platform. The meeting is already in progress, and Sam just dropped this update. Your goal: understand the situation and agree on what happens next.]
+
+**T2 [RP]** "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Answers as Sam with a cause and a concrete ask; the meeting continues.
+
+> "Thanks for asking. It's really two things. First, your API documentation had some gaps we didn't catch early—especially around error handling—so we had to build workarounds and then redo them when we got clarification. Second, our senior engineer on this got pulled into another client emergency for two weeks. We're back to full staff now, but that lost time hurts."
+> 
+> "We could maybe recover some of it if we had clearer specs for the remaining endpoints. But even then, we're probably looking at mid-April, not March. What flexibility do you have on your side?"
+
+### S5 Clear switch: meeting opener to a project delay · FLAKY
+
+**Attempt 1 (failed, so it was rerun)**
+
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
+- ✓ bracket line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Control: the built-in opener starts as usual.
+
+> &lt;character name="Sarah" gender="female"/&gt;
+> 
+> Hi everyone. I'm Sarah, from the marketing team. Looking forward to hearing what we've got lined up.
+> 
+> [We're at Tesla headquarters in Austin. You're the project lead for a new mobile app update. The team has been going back and forth on email for two weeks about features and timeline. Today you need to get everyone aligned on the final feature list so development can start. Sarah is a supportive teammate here to help you practice the opening.]
+> 
+> [Start with your introduction.]
+
+**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
+- ✓ doesn't contain any of ["Start with your introduction"]
+- ✗ character line: present
+- ✓ global checks G1–G4
+- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
+
+> Got it. New scene.
+> 
+> ---
+> 
+> Hi. I wanted to check in on the Phoenix rollout. The steering committee asked for a timeline update, and I need to report something solid this afternoon. Where do we stand?
+> 
+> [You're at Pfizer in New York. I'm David, your manager. You lead a regulatory documentation project that was due to submit to the FDA by the end of this month. You need to tell me the submission will be delayed by about two weeks because a key vendor delivered data late. The conversation just started.]
+> 
+> [What's your opening line?]
+
+**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
+- ✓ doesn't contain any of ["Start with your introduction"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
+
+> I see. Two weeks is a significant slip, and the steering committee is asking for numbers today. How many bugs are we talking about, and what's the plan to recover time?
+> 
+> [You can describe a different situation anytime.]
+
+**Attempt 2**
+
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
+- ✓ bracket line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Control: the built-in opener starts as usual.
+
+> &lt;character name="Sarah" gender="female"/&gt;
+> 
+> "Hi, I'm here. Looking forward to this kickoff."
+> 
+> [You are the project lead for a new mobile app at Apple in Cupertino. Sarah is a supportive teammate on the engineering side. The team has been exchanging emails about requirements for two weeks, and today you need to align everyone on the feature set so development can start. Your goal: open this meeting using the ICE steps — Introductions, Context, Expectations.]
+> 
+> [Start with your introduction.]
+
+**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
+- ✓ doesn't contain any of ["Start with your introduction"]
+- ✓ character line: present
+- ✓ global checks G1–G4
+- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
+
+> &lt;character name="David" gender="male"/&gt;
+> 
+> "Hey, do you have a minute? I wanted to check on the timeline for the mobile app before I update leadership."
+> 
+> [You are a project manager at Apple in Cupertino. David is your manager. He has a quarterly review with the VP next Tuesday and needs accurate dates. The app was scheduled to ship in three weeks, but testing found a performance issue that needs fixing. Your goal: tell David the project will be two weeks late, explain why, and agree on what to communicate upward and when.]
+> 
+> [What's your opening line?]
+
+**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
+- ✓ doesn't contain any of ["Start with your introduction"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
+
+> "Two weeks — that's cutting it close for the quarterly review. How many bugs are we talking about, and what's your recovery plan?"
+> 
+> [David sounds concerned but he's listening. He's waiting for numbers and specifics.]
+
+### S6 Ambiguous request: "Ask my boss for a proportion" · PASS
+
+**T1 [RP]** "Ask my boss for a proportion"
+- ✓ doesn't contain any of ["Reply with a number","Disagree with a coworker","Start a meeting"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Asks one clarifying question (proposal, raise, share of the budget?) or makes a reasonable guess and starts that scene. No fixed scene menu.
+
+> &lt;character name="David" gender="male"/&gt;
+> 
+> "Hey, can I grab you for a minute? I need to talk about the workload for the Q3 product launch."
+> 
+> [You're a senior developer at a fintech startup in Singapore. David is your engineering manager. The team is already at capacity, and David just added a new compliance feature to the launch without adjusting deadlines or headcount. Your goal: ask for a fair proportion of resources or time to handle the extra work.]
+> 
+> What would you like to say to David?
+
+### S7 Manager 1:1: workload and priorities · PASS
+
+**T1 [RP]** "I have a 1:1 with my manager. I'm a data analyst, and I have three urgent projects at once. I want to ask for help prioritizing without sounding like I can't handle it. Please play my manager."
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ character line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Acts as a manager in a 1:1, not someone running a meeting.
+
+> &lt;character name="Linda" gender="female"/&gt;
+> 
+> "Morning. Thanks for blocking the time. I wanted to check in—how are things going with the three projects we have running right now? The board report, the customer churn model, and the pricing analysis."
+> 
+> [You're a data analyst at a fintech company in Singapore. Linda is your manager, two levels up from you, direct but fair. She values people who flag problems early with solutions. The conversation goal: get her help prioritizing without looking overwhelmed.]
+
+**T2 [RP]** "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
+
+> "That makes sense—doing all three at full quality this month isn't realistic. Before we decide, can you walk me through the business impact of each one? Who's waiting on it, and what happens if it slips?"
+> 
+> [Hint: name the stakeholders and the cost of delay for each. This shows you thought it through and helps Linda help you.]
+
+**T3 [RP]** "feedback"
+- ✓ feedback score ≥ 1: score 4
+- ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
+- ✓ global checks G1–G4
+- [ ] Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
+
+> **Course score: 4/5**: You stated the problem clearly, proposed a realistic limit, and invited collaboration on the solution.
+> 
+> **How it went:** Strong opening—you came with facts and a clear ask rather than just complaining.
+> 
+> **What worked:** "I can finish two well. Could we decide together which one can move to next month?" This shows ownership and frames the conversation as a joint decision, not you giving up.
+> 
+> **What to improve:** You skipped the stakeholder impact Linda asked for. In a real 1:1, bringing that upfront strengthens your case and saves a round of questions. Also worth adding a brief note on what "well" means—e.g., validated, documented, reviewed—to set quality expectations.
+> 
+> **Also worth noting:** "Could we decide together" is polite, but "I'd like your input on which to prioritize" sounds slightly more confident since you're driving the agenda.
+> 
+> **Try this instead:** "I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two with full validation and documentation. The sales team needs the forecast for planning, the product team is blocked on the dashboard, and pricing is for the board meeting. I'd like your input on which two to prioritize and which can move to next month."
+> 
+> Is there anything specific you'd like feedback on? Or we can continue this conversation, try again, or pick a new scene.
+
+### S8 Discovery: customer success exploring client needs · PASS
+
+**T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
+- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
+- ✓ character line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Plays the client and leaves the questions to the learner.
+
+> &lt;character name="Priya" gender="female"/&gt;
+> 
+> "Thanks for making the time. We're a mid-size logistics company — about 400 people across three warehouses. We signed up for your platform because our current system can't handle real-time tracking, and our operations team is spending maybe six hours a week just reconciling shipment data manually. I'm the VP of Operations, so this falls on my desk, but I also need to get buy-in from our warehouse managers before we roll anything out."
+> 
+> [You're a CSM at a software company meeting Priya, VP of Operations at a logistics firm. She has a pain point around real-time tracking and manual data work, and internal stakeholders she needs to convince. Your goal: understand her needs so you can configure the product and plan the rollout.]
+> 
+> What would you like to ask first?
+
+**T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
+- ✓ no feedback
+- ✓ words ≤ 120: 105 words
+- ✓ global checks G1–G4
+- [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
+
+> "We're basically running blind between warehouses and the final mile. Right now our drivers scan packages at pickup and delivery, but everything in between — transfers, delays, reroutes — that's all phone calls and spreadsheet updates. My team pulls data from three different systems every Friday just to tell me what actually moved during the week. It's accurate eventually, but by the time I see a problem, it's already cost us money or a client."
+> 
+> [She's confirmed the pain point and added detail: fragmented systems, reactive problem-solving, cost and client impact. She hasn't mentioned the warehouse managers' concerns yet.]
+> 
+> What do you want to explore next?
+
+</details>
+
+---
+
+<details><summary><b>staging-2</b></summary>
+
+### Golden set: RED
+
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-04 02:44 UTC
+
+**PASS 10 · FAIL 1 · FLAKY 1 · ERROR 0**
+
+| Case | Result | Failed checks (last attempt) |
+|---|---|---|
+| C2 Coach starter: first 90 days | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | FLAKY | passed on rerun; first try: T2: feedback score ≥ 4 |
+| D1 Mode switch: Role-play → Coach → back | PASS | – |
+| D2 Background in passing, workplace change, and lessons applied only when they fit | FAIL | T3: sandwich steps < 2 (found partially agree, keep the discussion open, move forward together) |
+| S1 Custom scene: client meeting | PASS | – |
+| S2 Status update: a brief opening is fine, a kickoff isn't | PASS | – |
+| S3 Production defects: business level, feedback fits the scene | PASS | – |
+| S4 Mid-meeting: "We're already halfway through" | PASS | – |
+| S5 Clear switch: meeting opener to a project delay | PASS | – |
+| S6 Ambiguous request: "Ask my boss for a proportion" | PASS | – |
+| S7 Manager 1:1: workload and priorities | PASS | – |
+| S8 Discovery: customer success exploring client needs | PASS | – |
+
+## Every reply (passed and failed)
+Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
+
+### C2 Coach starter: first 90 days · PASS
+
+**T1 [QA]** "What should I do in my first 90 days?"
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ list items ≥ 2: 14 items
+- ✓ global checks G1–G4
+- [ ] The actions are concrete and come from the first-90-days lesson.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
+
+> This is covered in the course:
+> 
+> Use your first 90 days to learn, ask questions, and understand your new environment.
+> 
+> • **Map your place in the organization**
+>   - Your role in the team
+>   - The team's role in the department
+>   - The department's role in the company
+>   - The company's place in its market
+> 
+> • **Decide your career direction**
+>   - Let that direction guide what you learn and which opportunities you pursue
+>   - This applies even if your long-term goal is outside the company
+> 
+> • **Stay humble and learn proactively**
+>   - Your previous success does not automatically transfer to a new company
+>   - Listen more than you push
+>   - Ask questions boldly while you are new
+>   - Learn from coworkers and internal documents
+>   - Focus on learning and making a specific plan rather than worrying about performance ratings
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
+
+### C3 Scene card: Start a meeting, then a full ICE opening · FLAKY
+
+**Attempt 1 (failed, so it was rerun)**
+
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
+- ✓ global checks G1–G4
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
+
+> &lt;character name="Sarah" gender="female"/&gt;
+> 
+> Hi everyone, thanks for joining. I'm Sarah, I'll be handling the marketing side for this project. Looking forward to working with you all.
+> 
+> [You're leading the kickoff for Project Hippo, a new mobile app for Tesla's customer service team. You're the project lead based in Shanghai. The team has exchanged emails for two weeks but hasn't met as a group yet. Today's goal is to align on requirements and schedule so development can start. Sarah is a supportive teammate from marketing.]
+> 
+> [Start with your introduction.]
+
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✗ feedback score ≥ 4: no score
+- ✓ global checks G1–G4
+- [ ] Doesn't ask the learner to redo a step they already covered.
+
+> Sarah: Thanks, Lee — that background really helps. Two weeks of emails, so it's good we're finally getting aligned face-to-face. I'm ready to dig into the details.
+> 
+> [Now set expectations for the meeting.]
+
+**Attempt 2**
+
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
+- ✓ global checks G1–G4
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
+
+> &lt;character name="Sarah" gender="female"/&gt;
+> 
+> Hi everyone. I'm Sarah, UX lead on this project. Looking forward to getting started.
+> 
+> [We're at Tesla, Palo Alto. You're the project lead for a new mobile app update. The team has exchanged emails for two weeks, but this is the first kickoff meeting. Today's goal is to align on the design direction. You'll send the final design brief to the engineering team by next Wednesday. Sarah is a supportive teammate.]
+> 
+> [Start with your introduction.]
+
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 5
+- ✓ global checks G1–G4
+- [ ] Doesn't ask the learner to redo a step they already covered.
+
+> Great to meet you, Lee. Two weeks of emails definitely made it clear we needed to get in a room together.
+> 
+> [Now give the context: the past, the present, and the future.]
+> 
+> ---
+> 
+> Wait — let me re-read. You've actually covered all three steps already:
+> 
+> - **Introduction**: name, role, topic, contribution ✓
+> - **Context**: past (two weeks of emails), present (agree on schedule), future (timeline to leadership by next Friday) ✓
+> - **Expectations**: detailed discussion, questions welcome ✓
+> 
+> **Course score: 5/5**: You delivered a complete, well-structured opening that gave the team clear direction and invited participation.
+> 
+> **How it went:** Strong first impression — you sounded in control and made it easy for everyone to follow.
+> 
+> **What worked:** "Over the past two weeks we've had a lot of emails about the main features" sets the past clearly, and "the next step is to send a timeline to leadership by next Friday" gives a concrete future with a deadline.
+> 
+> **What to improve:** Nothing major. If you wanted to add even more clarity, you could briefly name the specific topics for today, like "first the launch date, then the feature priorities."
+> 
+> **Also worth noting:** "Please ask questions anytime" is friendly, but in a larger or more senior meeting you might specify *when* — "feel free to jump in, or save bigger questions for the end" — so you can stay on track.
+> 
+> **Try this instead:** "Over the past two weeks we've had a lot of emails about the main features. Today we'll first agree on the…
+
+### D1 Mode switch: Role-play → Coach → back · PASS
+
+**T1 [RP]** "Start the role-play scene "Disagree with a coworker". Difficulty: Medium."
+- ✓ doesn't contain any of ["Reply with a number"]
+- ✓ bracket line: present
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
+
+> &lt;character name="Bob" gender="male"/&gt;
+> 
+> "Hey, I've been thinking about the new menu layout for the Shanghai store launch. I really think we should lead with our traditional coffee — the dark roasts, the pour-overs, the classics that built this brand. That's what sets us apart from the chains down the street."
+> 
+> [Starbucks headquarters, Seattle. You and Bob are on the store design team. He's proposing the menu order for the new flagship store. Your goal: disagree with his idea using the feedback sandwich method.]
+> 
+> [Hint: what can you honestly agree with? Bob cares about brand identity, and the traditional line is genuinely strong.]
+
+**T2 [QA]** "How can I politely disagree with the idea?"
+- ✓ global checks G1–G4
+- [ ] Coaching advice based on the character's actual proposal, not a line spoken as the character.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/
+
+> This is covered in the course:
+> 
+> Use the **feedback sandwich** to disagree while keeping the discussion open:
+> 
+> 1. **Partially agree honestly**
+>    - "I understand that we want to stay true to our traditional coffee brand."
+>    - "It makes sense that the classics set us apart."
+> 
+> 2. **State your opinion with a specific reason**
+>    - "But our iced frappuccinos are our best sellers during the summer."
+>    - "Listing them first will increase sales."
+> 
+> 3. **Keep it open with a question**
+>    - "Are there other alternatives?"
+>    - "Maybe we could try a digital display so that we can update the menus depending on the season?"
+> 
+> Once the team decides, move forward together — even if it wasn't your idea.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/
+
+**T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
+- ✓ no feedback
+- ✓ doesn't contain any of ["Reply with a number","Switched to"]
+- ✓ words ≤ 120: 88 words
+- ✓ global checks G1–G4
+- [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
+
+> Bob leans back, a little surprised. "A smaller trial? I'm not sure we have time for that — the launch is six weeks out, and the print vendor needs final artwork in ten days. But you're right that switching the whole menu is a big move." He pauses. "What specifically are you worried about — the production timeline, or something about customer response?"
+> 
+> [Starbucks headquarters, Seattle. Bob's pushed back on your trial idea and asked for specifics. He's still listening, but he wants to understand your concern before considering alternatives.]
+
+### D2 Background in passing, workplace change, and lessons applied only when they fit · FAIL
+
+**Attempt 1 (failed, so it was rerun)**
+
+**T1 [QA]** "How do I start a meeting?"
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ global checks G1–G4
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
+
+> This is covered in the course:
+> 
+> Open meetings with **ICE** — three steps in order:
+> 
+> • **Introductions**
+>   - One or two sentences about the meeting topic
+>   - Your name, role, and how you'll contribute
+> 
+> • **Context (past, present, future)**
+>   - Past: how you got here (emails, earlier meetings)
+>   - Present: today's topics and goal
+>   - Future: next steps with a deadline ("by next Monday")
+> 
+> • **Expectations**
+>   - Interaction level: "feel free to interrupt" or "hold questions for the end"
+>   - Detail level: high-level or very detailed
+> 
+> Example:
+> &gt; "Hi everyone, today we're kicking off Project Hippo. I'm Danny, the lead PM, and I'll manage schedule and be the point of contact for requirements. We've had emails going back and forth, so today we'll walk through requirements, confirm the schedule, and call out risks so we're aligned before we start. We hope to get sign-off from the US team by next Monday. We have a lot to cover, so please hold questions for the end."
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+
+**T2 [RP]** "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ profile: company contains any of ["google"]: saved {"role":"PM","company":"Google","industry":"Egg farming","goal":"discuss whether or not we should wash eggs with a coworker","industry_source":"inferred"}
+- ✓ character line: present
+- ✓ sandwich steps &lt; 2
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] A natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
+
+> &lt;profile learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="inferred" learner_goal="discuss whether or not we should wash eggs with a coworker"/&gt;
+> 
+> &lt;character name="Priya" gender="female"/&gt;
+> 
+> "I think we should wash all the eggs before they go to packaging. It makes the product look cleaner and more professional to buyers."
+> 
+> [You're a PM at Google working on a food supply chain tool. Your team is advising a large egg farming cooperative. Priya is a product analyst on your team. She wants to add an automated egg-washing step to the workflow you're designing. The cooperative currently ships unwashed eggs. Your team needs to decide what to recommend.]
+> 
+> What do you think?
+
+**T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
+Profile sent: Role: PM. Company: Google. Industry: Egg farming (guessed from the company). Learning goal: discuss whether or not we should wash eggs with a coworker.
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"an egg farm","industry":"Egg farming","goal":"discuss ML models with a coworker","industry_source":"stated"}
+- ✗ sandwich steps &lt; 2: found partially agree, keep it open, move forward together
+- ✓ global checks G1–G4
+- [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
+
+> &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated" learner_goal="discuss ML models with a coworker"/&gt;
+> 
+> This is covered in the course:
+> 
+> Use the **feedback sandwich** when you need to disagree or push back on an idea:
+> 
+> • **Partially agree, honestly**
+>   - "I understand why ML seems promising here…"
+> 
+> • **State your own view with a specific reason**
+>   - Use facts or data: training data quality, maintenance cost, error rates
+> 
+> • **Keep it open**
+>   - Ask about alternatives: "Would a simpler rule-based system work for now?"
+> 
+> • **Move forward together once you decide**
+> 
+> Example:
+> &gt; "I agree that ML could help us predict demand. But we only have two years of clean data, and the model would need constant retraining as seasons change. A weighted moving average might give us 80% of the benefit with almost no upkeep. Could we pilot both for one quarter and compare?"
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+
+**Attempt 2**
+
+**T1 [QA]** "How do I start a meeting?"
+Profile sent: Role: PM. Industry: Egg farming.
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ global checks G1–G4
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
+
+> This is covered in the course:
+> 
+> Use the **ICE** template in this order:
+> 
+> **1. Introductions**
+> - One or two sentences about the meeting topic
+> - Your name, role, and how you'll contribute
+> 
+> **2. Context (Past, Present, Future)**
+> - **Past:** how you got here (emails, earlier meetings)
+> - **Present:** today's topics and goal
+> - **Future:** next steps with a deadline ("by next Monday")
+> 
+> **3. Expectations**
+> - Interaction level: "Please hold questions for the end" or "Feel free to interrupt"
+> - Detail level: very detailed or high level
+> 
+> Example:
+> &gt; "Hi everyone, today we're kicking off the new supplier onboarding. I'm Priya, the operations lead, and I'll manage the timeline and vendor communications. We've had several emails about requirements over the past two weeks. Today we'll confirm the rollout plan and flag any risks, so we're aligned before implementation. I'll send the signed agreement to the legal team by Friday. We have a lot to cover, so please save questions for the end."
 > 
 > Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
@@ -1897,35 +2083,36 @@ Profile sent: Role: PM. Industry: Egg farming.
 
 > &lt;profile learner_role="PM" learner_company="Google" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
 > 
-> &lt;character name="Rachel" gender="female"/&gt;
+> &lt;character name="Bob" gender="male"/&gt;
 > 
-> "I think we should wash every egg before it goes into the carton. It looks cleaner, and customers expect it."
+> Bob: "Hey, I've been looking at the data on our egg processing line, and I think we should start washing all eggs before packaging. It reduces visible dirt and improves the shelf appearance. Customers notice clean eggs first."
 > 
-> [You and Rachel are PMs at a Google-backed ag-tech startup in Chicago. You're discussing quality standards for a new egg-sorting system. Rachel wants to add an automated wash step to the line. Your goal: share your view and reach a decision together.]
+> [At Google Food's pilot egg-supply project in Mountain View, you're the PM overseeing farm-to-kitchen standards. Bob is a supply-chain analyst on your team. The goal of this conversation is to decide whether to add an egg-washing step to your pilot program.]
 > 
-> Hint: think about what you can honestly agree with, then share your concern with a specific reason.
+> Hint: think about what you can honestly agree with in Bob's idea, then share your own view with a specific reason.
 
 **T3 [QA]** "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
 Profile sent: Role: PM. Company: Google. Industry: Egg farming.
-- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"Egg farm","industry":"Egg farming","industry_source":"stated"}
-- ✓ sandwich steps &lt; 2
+- ✓ profile: industry or company contains any of ["egg","poultry","farm","agri"]: saved {"role":"PM","company":"an egg farm","industry":"Egg farming","industry_source":"stated"}
+- ✗ sandwich steps &lt; 2: found partially agree, keep the discussion open, move forward together
 - ✓ global checks G1–G4
 - [ ] Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
 
-> &lt;profile learner_role="PM" learner_company="Egg farm" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
+> &lt;profile learner_role="PM" learner_company="an egg farm" learner_industry="Egg farming" learner_industry_source="stated"/&gt;
 > 
-> This is about communicating at work, not a specific course skill. Here's a direct way to approach it:
+> This is covered in the course:
 > 
-> • **State the purpose early** — "I want to align on how the ML model fits our operation."
+> Use the **feedback sandwich** when you disagree with a coworker's idea:
 > 
-> • **Bridge their world to yours** — Use terms they know. Egg farming: "grading accuracy," "throughput per hour," "rejection rate." Avoid ML jargon unless they use it first.
+> 1. **Partially agree, honestly** — find something real you can support
+> 2. **State your own opinion with a specific reason** — use facts or data
+> 3. **Keep the discussion open** — friendly tone, ask about alternatives
+> 4. **Move forward together** once a decision is made
 > 
-> • **Lead with impact, not technique** — "If we hit 95% grading accuracy, we cut manual inspection by half" beats explaining neural networks.
+> Example for your situation:
+> &gt; "It makes sense that ML could help us predict demand more precisely. At the same time, our current data is mostly manual farm logs, and cleaning that data would take two quarters. Are there simpler forecasting tools we could pilot first, or should we scope a data-collection phase before building any model?"
 > 
-> • **Offer a concrete next step** — "Can we run a two-week pilot on Line 3? I'll share results by Friday."
-> 
-> Example:
-> &gt; "The model we're testing could sort eggs by grade faster than our current setup. My concern is whether it handles dirty shells as well as clean ones. Before we commit, I'd like to test it on Line 3 for two weeks and compare rejection rates. I can have numbers for you by next Friday."
+> If you're leading the discussion, state the purpose early, ask for their view, then use the steps above.
 > 
 > [I saved your details to your profile (if enabled). See more: top-right menu → About.]
 
@@ -1937,13 +2124,13 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up. No fixed scene menu.
 
-> &lt;character name="Maya" gender="female"/&gt;
+> &lt;character name="Rachel" gender="female"/&gt;
 > 
-> "Thanks for making time today, Mark. I need to be direct — we've had three delayed shipments in the past month, and my warehouse team is now questioning whether we can rely on your routes. What's going on?"
+> "Thanks for making time today. I'm Rachel, the operations director on your account. I need to be direct with you — we've had three late deliveries in the past two weeks, and it's affecting your production schedule. One shipment was two days late, another missed the Friday window entirely. My team is looking at the root causes, but I wanted to hear from you first. How is this impacting your operations right now?"
 > 
-> [You're an account manager at a logistics firm. Maya is the operations director at a mid-sized retail client in Chicago. She agreed to this call after the third late delivery. Her goal: understand the root cause and get confidence your service will improve.]
+> [You're an account manager at a logistics firm. Rachel is the operations director at a manufacturing client in Chicago. The goal: understand the impact, take ownership, and agree on a fix with a clear timeline.]
 > 
-> What do you say?
+> [Difficulty: Medium — Rachel is frustrated but fair; she wants specifics, not promises.]
 
 ### S2 Status update: a brief opening is fine, a kickoff isn't · PASS
 
@@ -1952,11 +2139,13 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene).
 
-> &lt;character name="Elena" gender="female"/&gt;
+> &lt;character name="Lena" gender="female"/&gt;
 > 
-> "Hey, thanks for setting this up. I've got back-to-back meetings today, so let's keep it focused. Where are we on the beta rollout?"
+> Great, let's run this. I'm Lena, one of the engineers on your team.
 > 
-> [You're the PM leading the weekly status for your mobile app launch at a fintech startup in Singapore. Elena is your engineering lead. The beta was supposed to ship to 1,000 users last Tuesday, but you hit a blocker with push notifications on Android. The marketing team is waiting for a green light to announce. Goal: update Elena, align on where things stand, and agree on next steps.]
+> "Hey, thanks for setting this up. I've got a few things on my plate this week and I'm hoping we can get clear on priorities. Where do we stand with the app launch?"
+> 
+> [You're the PM leading the weekly sync for your mobile app launch. The team includes Lena (engineering), a designer, and a QA lead. The launch is six weeks out. You've just joined the call. Goal: give your update and align the team on next steps.]
 
 **T2 [RP]** "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
 - ✓ doesn't contain any of ["Start with your introduction"]
@@ -1964,9 +2153,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
 
-> "Got it — 70% and the payment API slip is the main issue. Two questions: do we have a fallback if the API comes in another week late, and what's your read on launching without payments? Marketing's been asking me for a firm date."
+> Lena nods, pulling up her notes.
 > 
-> [You stated the purpose early and named a specific blocker with options — good. Elena's pushing for your assessment so the team can decide.]
+> "Thanks for flagging that — the payment delay is definitely my biggest concern too. Just to make sure I'm tracking, when you say 70% complete, is that overall development or specifically the core features we need for beta? And if we drop payments for the first release, do we have a rough timeline for adding it back in?"
+> 
+> [You stated the purpose and gave clear status with a specific blocker. Good start — now the team needs to understand the tradeoffs before deciding.]
 
 ### S3 Production defects: business level, feedback fits the scene · PASS
 
@@ -1977,39 +2168,49 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Plays a production manager in plain business language (impact, schedule, staffing, next steps).
 
-> &lt;character name="Miguel" gender="male"/&gt;
+> &lt;profile learner_role="quality engineer" learner_company="EV battery supplier" learner_industry="automotive / EV" learner_industry_source="stated" learner_goal="discuss quality issues with production manager"/&gt;
 > 
-> "Hey, thanks for coming by. I've been looking at the numbers and they're not great — Line 2 is showing a 4% defect rate this week, up from our usual 1.2%. That's almost 200 extra cells flagged. Before I escalate this to the plant director, I want to understand what's driving it. What's your take?"
+> &lt;character name="Marcus" gender="male"/&gt;
 > 
-> [You're a quality engineer at CATL, speaking with Miguel, the production manager at your battery plant in Detroit. The weekly quality report just landed, and both of you need to align on cause and next steps before the director's review on Friday.]
+> "Hey, thanks for making time. I'm seeing something on Line 2 that's got my attention — defective cells are up to 4.2% this week, and that's double our normal rate. Before I escalate this upward, I wanted to check in with you. What's your take on what's changed?"
+> 
+> [You're a quality engineer at a battery supplier like CATL or LG Energy Solution. Marcus is the production manager for Line 2. He's been running that line for three years and takes pride in his numbers. He doesn't know about the spike yet — you spotted it in this morning's data. The goal: get his perspective, agree on root cause and next steps, and decide who else needs to know.]
+> 
+> [You can describe a different situation anytime.]
 
 **T2 [RP]** "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
+Profile sent: Role: quality engineer. Company: EV battery supplier. Industry: automotive / EV. Learning goal: discuss quality issues with production manager.
 - ✓ no feedback
-- ✓ words ≤ 120: 81 words
+- ✓ words ≤ 120: 89 words
 - ✓ global checks G1–G4
 - [ ] Stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
 
-> "That timing lines up — we switched to the new anode supplier on Monday. But holding all affected batches and going to 100% inspection? That's basically stopping our normal output for Line 2. We're already behind on the Q3 order for GM. If we divert that much labor to inspection, I need to know what you're asking my team to stop doing instead."
+> Marcus leans back, frowning slightly.
 > 
-> [He wants to help, but needs to understand the tradeoff and how long this lasts. What do you propose?]
+> "Four percent — that's not a drift, that's a jump. And you think it's the new supplier's part? Which part exactly, and when did that lot hit the line?"
+> 
+> He pauses, glancing at his shift schedule on the monitor.
+> 
+> "Holding batches and going to full inspection, that's a big hit. We're already behind on the Q3 ramp. If I pull people to inspect every cell, something else stops. What does your data actually show — is it all batches with the new part, or just some?"
 
 **T3 [RP]** "feedback"
+Profile sent: Role: quality engineer. Company: EV battery supplier. Industry: automotive / EV. Learning goal: discuss quality issues with production manager.
 - ✓ feedback score ≥ 1: score 4
 - ✓ doesn't contain any of ["introductions, context","introduce yourself","start with your introduction","self-introduction"]
 - ✓ global checks G1–G4
 - [ ] Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria.
 
-> **Course score: 4/5**: You stated the purpose early, backed your request with a specific cause, and proposed a clear next step with a time boundary.
+> **Course score: 4/5**: You stated the problem clearly with specific data, proposed a concrete containment action, and asked directly for support — strong quality-engineer communication.
 > 
-> **How it went:** Strong opening — you connected the defect jump to the supplier change and moved straight to a concrete ask, which kept the conversation focused on solutions.
+> **How it went:** Marcus engaged immediately because you led with facts and a specific ask; the conversation moved straight to tradeoffs, which is realistic.
 > 
-> **What worked:** "I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause" — this states your recommendation, defines the scope, and includes an exit condition.
+> **What worked:** "The defect rate went from 1% to 4% after we changed suppliers for one part" — you named the problem, the data, and the likely cause in one line, which satisfies "states the purpose early with a reason."
 > 
-> **What to improve:** You didn't fully address Miguel's concern about the tradeoff. When he pushed back on labor and the GM order, the next step would be to acknowledge the impact and offer a limited trial or phased approach rather than repeating the same ask.
+> **What to improve:** Your ask ("Can your team support that this week?") was clear but didn't acknowledge the resource conflict Marcus raised. A stronger line would name the tradeoff and invite his input on how to manage it, rather than asking for a yes/no on capacity he may not have.
 > 
-> **Also worth noting:** "Can your team support that this week?" is polite but slightly soft for a quality hold situation. A quality engineer typically owns the hold decision and informs production of the plan.
+> **Also worth noting:** "I'd like to hold the affected batches" is fine, but "I recommend we hold" sounds more decisive in a quality issue where you're the data owner.
 > 
-> **Try this instead:** "I understand the GM order is tight. To limit the impact, I propose we hold just the batches from Monday to Wednesday and run 100% inspection on those first. If the data confirms the supplier link by Thursday, we can decide whether to expand or release. I'll own the inspection protocol and report back to you daily."
+> **Try this instead:** "The defect rate jumped from 1% to 4% after the supplier change on the separator film. I recommend we hold affected batches and inspect 100% until we confirm. I know Q3 ramp is tight — can we walk through what that would mean for your line this week, and who else we'd need to loop in?"
 > 
 > Is there anything specific you'd like feedback on? Or we can continue this conversation, try again, or pick a new scene.
 
@@ -2024,11 +2225,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Sam" gender="male"/&gt;
 > 
-> Yeah, so I need to flag something. The integration testing is taking longer than we estimated, and honestly? We're looking at a two-week slip. That puts us past the deadline you have with your client.
+> "Yeah, so I need to flag something. We're looking at the remaining integration work, and honestly, we might not hit the March deadline. It's tighter than we estimated."
 > 
-> [We're at Tesla's Austin office. You're the internal PM running this weekly sync. Sam is the vendor lead. The goal: understand the delay and agree on a path forward.]
+> [You're the project lead at your company, meeting with Sam's team at a mid-size software vendor. The project is a client dashboard rollout. Sam is your main technical contact. He just dropped this delay risk halfway through the meeting, and the rest of your team is on the call too.]
 > 
-> What's our move here?
+> What do you want to say to Sam?
 
 **T2 [RP]** "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -2036,9 +2237,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Answers as Sam with a cause and a concrete ask; the meeting continues.
 
-> It's the third-party API we depend on for real-time vehicle data. Their sandbox environment keeps timing out, so our team can't run the full test suite. We raised a ticket two weeks ago, but their support is slow.
+> "It's mainly the API mapping — we underestimated how different your client's data structure is from our standard template. We'd need your team to reformat about forty percent of the incoming feeds, or we build a custom adapter on our side."
 > 
-> What would help? Dedicated access to their staging server instead of sandbox, and honestly, someone from your side to escalate with the API vendor. Your contract with them carries more weight than ours. If we get that by end of week, we might recover a few days, but not the full two weeks.
+> [That opened the door for Sam to shift responsibility to you. He's watching to see if you'll absorb the extra work or push back.]
+> 
+> What do you say?
 
 ### S5 Clear switch: meeting opener to a project delay · PASS
 
@@ -2050,9 +2253,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Hi everyone. I'm Sarah, from the marketing team. I'll be helping with the launch plan once we lock the direction.
+> Hi everyone, thanks for joining. I'm Sarah, UX designer on this project. Looking forward to getting started.
 > 
-> [We're at Apple in Cupertino. You're the lead PM for a new fitness app feature. The team has exchanged emails for two weeks about user research findings. Today's goal is to agree on the top three features for the MVP. You'll send the prioritized list to the engineering lead by next Tuesday.]
+> [You're at Apple in Cupertino. You're the project lead for a new iPhone app feature. The team has exchanged emails for two weeks about requirements. Today's goal is to align on the design direction so you can move to development. Your next step is to share the timeline with the leadership team by Wednesday.]
 > 
 > [Start with your introduction.]
 
@@ -2064,13 +2267,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> [You can describe a different situation anytime.]
+> Hey, do you have a minute? I wanted to check in on the Phoenix rollout before the leadership review next Monday.
 > 
-> Hi, do you have a minute? I wanted to check in on the Phoenix rollout.
+> [You're at Tesla in Austin. You're a senior project manager reporting to David, the engineering director. The Phoenix software update was scheduled to ship to the factory floor in ten days, but integration testing found a critical battery-monitoring bug. You need to tell David the timeline has slipped by about two weeks.]
 > 
-> [We're at Apple in Cupertino. You report to David, the senior director for product operations. The Phoenix project — a new supplier onboarding system — was due to go live on March 15. You've just learned from the vendor that integration testing will take two weeks longer than planned. David has a quarterly review with the VP next Thursday and is counting on Phoenix being on track.]
-> 
-> I saw the green status in yesterday's report. What's going on?
+> What should I expect for the rollout?
 
 **T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
 - ✓ doesn't contain any of ["Start with your introduction"]
@@ -2078,11 +2279,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
 
-> David leans back, frowning slightly.
+> David crosses his arms and leans against the desk.
 > 
-> Two weeks. That's a problem — I told the VP we'd be live by March 15. What kind of bugs are we talking about, and how much time does your recovery plan actually save us?
+> Two weeks. That's going to push us past the quarterly review. What kind of bugs are we talking about, and what's your recovery plan?
 > 
-> [He's concerned but listening. What's your plan?]
+> [He sounds concerned but not angry. He's waiting for specifics.]
 
 ### S6 Ambiguous request: "Ask my boss for a proportion" · PASS
 
@@ -2094,11 +2295,9 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 
 > &lt;character name="David" gender="male"/&gt;
 > 
-> David: "Hey, got a minute? I wanted to check in about the Q3 budget. The product team is asking for more headcount, and I need to know what percentage of the engineering budget we can actually allocate to them. What's your take on a fair split?"
+> David: "Hey, do you have a minute? I wanted to check in about the Q3 budget — specifically the marketing spend. I was hoping we could talk about adjusting my team's proportion. We've taken on the APAC launch, but our allocation is still the same as last quarter."
 > 
-> [You're a team lead at a mid-sized software company in Austin. David is your manager. The product team wants 40% of your engineering budget for new hires, but you need to protect resources for infrastructure work. Your goal: negotiate a proportion that works for both sides.]
-> 
-> [Hint: state your position clearly and bring data if you have it.]
+> [You're a team lead at a mid-sized software company. David is your manager. The company just approved a new regional expansion, and your team is doing the work without matching budget. Goal: ask for a larger share of the marketing budget, with clear reasoning.]
 
 ### S7 Manager 1:1: workload and priorities · PASS
 
@@ -2109,11 +2308,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Acts as a manager in a 1:1, not someone running a meeting.
 
-> &lt;character name="Linda" gender="female"/&gt;
+> &lt;character name="Priya" gender="female"/&gt;
 > 
-> Hey, come on in. I wanted to check in before the weekend—how's everything looking on your end?
+> Thanks for flagging this early. I know you've been juggling a lot lately. Walk me through the three projects—what's on your plate right now, and what are the deadlines we're looking at?
 > 
-> [You're a data analyst at a mid-sized fintech company in Chicago. Linda is your manager, three months in the role. She has a direct but fair style. Goal: get her help prioritizing three urgent projects without undermining yourself.]
+> [You're a data analyst at a mid-sized fintech company in Chicago. Priya is your manager, three years senior, direct but fair. She wants to help you prioritize, but she also needs to understand the business impact of each project before she can reallocate anything or push back on stakeholders.]
 
 **T2 [RP]** "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -2121,9 +2320,11 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
 
-> I appreciate you flagging this early. The Q4 forecast is locked in for the board review on the 22nd, so that one can't move. Between the dashboard migration and the pricing analysis, which one feels like it would slip first if you had to choose?
+> I appreciate you bringing this to me with options already in mind. That helps.
 > 
-> [Hint: you could say something like "The pricing analysis has the most unknowns, so it would benefit from more time, and delaying it by two weeks wouldn't miss a client deadline."]
+> Before we decide, I need to understand the downstream impact. The Q4 forecast—who's waiting on that, and what happens if it slips by even a week? Same question for the pricing analysis: is that tied to a product launch or a leadership review?
+> 
+> [Hint: name the specific stakeholders or business consequences for each project. That gives Priya the information she needs to negotiate on your behalf, rather than asking her to guess.]
 
 **T3 [RP]** "feedback"
 - ✓ feedback score ≥ 1: score 4
@@ -2131,23 +2332,21 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
 
-> **Course score: 4/5**: You stated the problem clearly with specifics and proposed a collaborative solution.
+> **Course score: 4/5**: You stated the problem clearly, proposed a workable solution, and invited collaboration rather than dumping the decision on your manager.
 > 
-> **How it went:** Linda engaged immediately because you came with facts, not complaints, and you invited her into the decision rather than dumping the problem on her.
+> **How it went:** This was a strong, professional opening—Priya had what she needed to start negotiating with you instead of just reassuring you.
 > 
-> **What worked:** "I can finish two well" — this shows ownership and sets a realistic boundary without sounding overwhelmed. "Could we decide together which one can move to next month?" — this frames the ask as partnership, not inability.
+> **What worked:** "I can finish two well" honestly frames your capacity, and "Could we decide together which one can move to next month?" turns a potential weakness into a shared problem with a clear path forward.
 > 
-> **What to improve:** You didn't name the business impact of each option or suggest which one to delay. Linda had to ask you to choose first, which puts the work back on her.
+> **What to improve:** You skipped the stakeholder impact Priya asked about. Naming who needs each output and what happens if it's late gives her ammunition to push back on deadlines or reallocate resources.
 > 
-> **Also worth noting:** "Finish two well" is strong phrasing — it signals quality matters to you.
+> **Also worth noting:** "All three are due this month" is slightly vague—specific dates would help Priya triage faster.
 > 
-> **Try this instead:** "I can deliver two of these with full quality. My view is the pricing analysis has the most unknowns, so pushing it to next month carries the least risk — no client deadline would be missed. Does that work, or is there another factor I should consider?"
+> **Try this instead:** "The Q4 forecast goes to the board on the 22nd, so that can't move. The pricing analysis is for the product team's go-no-go decision, and the dashboard migration is internal. Could we delay the migration to January and keep the other two?"
 > 
-> Want to continue this conversation, try again, or pick a new scene?
+> Is there anything specific you'd like feedback on? Or we can continue this conversation, try again, or pick a new scene.
 
-### S8 Discovery: customer success exploring client needs · FLAKY
-
-**Attempt 1 (failed, so it was rerun)**
+### S8 Discovery: customer success exploring client needs · PASS
 
 **T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
 - ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
@@ -2156,58 +2355,25 @@ Profile sent: Role: PM. Company: Google. Industry: Egg farming.
 - ✓ global checks G1–G4
 - [ ] Plays the client and leaves the questions to the learner.
 
-> &lt;profile learner_role="customer success manager" learner_industry="software" learner_industry_source="stated" learner_goal="lead client discovery meetings confidently"/&gt;
+> &lt;profile learner_role="customer success manager" learner_company="a software company" learner_industry="software" learner_industry_source="stated" learner_goal="lead client discovery meetings confidently"/&gt;
 > 
 > &lt;character name="Priya" gender="female"/&gt;
 > 
-> Hi, thanks for making the time. I'm Priya, VP of Operations at Meridian Logistics. We just signed with your platform last month, and honestly, we're still figuring out exactly how it fits into our workflow. Our team is spread across three warehouses, and right now everything runs on spreadsheets and WhatsApp groups—it's messy.
+> Thanks for making time today. We're looking forward to getting this platform up and running, but to be honest, we've had some bad experiences with software rollouts before—tools that promised a lot and then didn't fit how we actually work. So I want to make sure we do this right.
 > 
-> [Meridian Logistics, Chicago. You're the CSM, first discovery call. Goal: understand Priya's operational pain points and priorities before implementation.]
+> [You're at a mid-sized logistics company in Chicago. Priya is the operations director. She approved the purchase but hasn't used the product yet. Your goal: understand their current workflow, what's not working, and what success looks like for her team.]
 > 
-> What should we start with?
+> What would you like to know first?
 
 **T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-Profile sent: Role: customer success manager. Industry: software. Learning goal: lead client discovery meetings confidently.
+Profile sent: Role: customer success manager. Company: a software company. Industry: software. Learning goal: lead client discovery meetings confidently.
 - ✓ no feedback
-- ✗ words ≤ 120: 122 words
+- ✓ words ≤ 120: 73 words
 - ✓ global checks G1–G4
 - [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
 
-> Good opening—let me answer that.
+> Right now our dispatch team is juggling three different systems—spreadsheets, a legacy TMS, and a lot of phone calls. The biggest pain point is visibility. When a shipment is delayed, customer service finds out after the customer does, and then it's already damage control. We're hoping your platform can give us real-time tracking in one place, so we can be proactive instead of reactive.
 > 
-> Right now, our biggest headache is inventory visibility. I have 200 SKUs moving across three locations, and my warehouse managers update a shared spreadsheet every evening. By the time I see a stockout, it's already happened. Last quarter we lost a $40,000 contract because we promised inventory we didn't actually have.
-> 
-> We've tried Slack alerts and even a basic barcode system, but nothing talks to each other. I'm hoping your platform gives us real-time stock levels across all sites, and ideally some kind of low-stock alert before we hit zero.
-> 
-> [She's answered directly. Natural follow-up: dig deeper into one area, or broaden to team/process.]
-> 
-> What else would you like to know?
-
-**Attempt 2**
-
-**T1 [RP]** "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the client and leaves the questions to the learner.
-
-> &lt;character name="Priya" gender="female"/&gt;
-> 
-> Hi there, thanks for making the time. I'm Priya, VP of Operations at Northfield Logistics. We finally got the green light to move off our old system, so we're looking at your platform for our three main distribution centers.
-> 
-> [Northfield Logistics, a mid-size freight company in Chicago. You're the customer success manager from the software vendor. Priya has budget approval but is cautious after a bad experience with a previous vendor. She needs the new system live before their Q4 peak season. Your goal: understand her needs and concerns so you can configure the product correctly.]
-> 
-> What would you like to know?
-
-**T2 [RP]** "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-- ✓ no feedback
-- ✓ words ≤ 120: 99 words
-- ✓ global checks G1–G4
-- [ ] Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner.
-
-> Good question. Right now we're running our dispatch and inventory on a legacy system we built in-house about eight years ago. It worked fine when we had one warehouse, but since we expanded to three centers, the data doesn't sync in real time. That means our planners are calling each other to confirm stock levels, and we still get customer complaints about delayed shipments.
-> 
-> I'm hoping your platform gives us one view across all three locations, with automated alerts when inventory drops below our reorder points. What does your typical setup look like for a company our size?
+> [You can describe a different situation anytime.]
 
 </details>
