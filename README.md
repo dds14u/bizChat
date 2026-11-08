@@ -1,6 +1,6 @@
 # Real Business by Donald
 
-An AI Business English coach for Chinese professionals, in live beta. Learners practice real workplace conversations (starting a meeting, disagreeing, a difficult 1:1) with a coach that explains a concept and then plays a manager or colleague so they can try it out.
+An AI Business English coach for non-native English speakers at work, in live beta. Learners practice real workplace conversations (starting a meeting, disagreeing, a difficult 1:1) with a coach that explains a concept and then plays a manager or colleague so they can try it out.
 
 **[Try the live app →](https://bizchatv1.netlify.app)** · **[Read the build story: What I learned building an AI communication coach →](https://www.donaldsoon.com/posts/shipping-rag-chat)**
 
@@ -17,16 +17,22 @@ Learners can write in English or Chinese.
 
 ### Problem
 
-Business communication is more than vocabulary. It's knowing when to call someone after a few emails, how much background to give before a discussion, and what belongs at the top of a status update. Most professionals are left to figure these skills out on their own. A general AI chat can help, but it leaves the learner to decide what to practice first, how to progress and when to ask for feedback, which is hard when you don't yet know what you need to learn.
+After a decade of international projects, I kept seeing the same communication gaps between teams in different countries. Business communication is more than vocabulary. It's knowing when to call someone after a few emails, how much background to give before a discussion, and what belongs at the top of a status update. Most professionals are left to figure these skills out on their own.
+
+The help that exists has three gaps:
+
+- **Scenarios that don't match real work.** Much Business English teaching is done by instructors without corporate experience, so lessons rarely reflect what happens in a real meeting. Most content also jumps from beginner topics ("introduce yourself in a meeting") to advanced ones ("negotiation and persuasion"), skipping the everyday situations people actually face: kicking off a project, running a status meeting, pushing back on an unreasonable request, handling an escalation.
+- **Content is one-way.** Videos and courses can explain a concept, but learners can't try it out and find out how they did. People learn faster when they practice and get feedback right away.
+- **General AI chat leaves learners on their own.** It can help, but the learner has to decide what to practice first, how to progress and when to ask for feedback, which is hard when you don't yet know what you need to learn.
 
 ### Target user
 
-Non-native English speaking professionals who use English at work, from beginners who need guided practice to advanced learners who want to rehearse their own situations.
+Non-native English speakers who use English at work, from beginners who need guided practice to advanced learners who want to rehearse their own situations. The first market is China, where a conservative estimate puts the audience at 15M+ professionals: employees of local companies with international clients or operations, people in foreign trade, and staff at international companies, across hardware, software, EV and medical industries. The design isn't tied to one language, so it can extend to learners in other regions.
 
 ### Goals / Non-goals
 
 **Goals:**
-- Let learners practice a workplace conversation before they face it at work, with structured feedback at the end.
+- Let learners practice a workplace conversation before they face it at work, with feedback as soon as the scene ends, while the attempt is still fresh.
 - Keep coaching and role-play clearly separate, so learners always know whether they're being taught or practicing.
 - Support both guided beginner scenes and custom scenarios that advanced learners bring themselves.
 
@@ -246,6 +252,6 @@ React · Vite · TypeScript · Netlify Functions · Upstash Redis · Dify · Kim
 
 ## About
 
-Built solo by Donald, owning both product and code, as part of an ongoing Business English education practice.
+Built solo by Donald, owning both product and code, as part of an ongoing business communication education practice.
 
 [donaldsoon.com](https://www.donaldsoon.com) · [LinkedIn](https://www.linkedin.com/in/donald-soon/)
