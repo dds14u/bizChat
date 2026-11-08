@@ -1,6 +1,8 @@
 # Real Business by Donald
 
-An AI Business English tutor for Chinese professionals, currently in private beta.
+An AI Business English coach for Chinese professionals, in live beta. Learners practice real workplace conversations (starting a meeting, disagreeing, a difficult 1:1) with a coach that explains a concept and then plays a manager or colleague so they can try it out.
+
+**[Try the live app →](https://bizchatv1.netlify.app)** · **[Read the build story: What I learned building an AI communication coach →](https://www.donaldsoon.com/posts/shipping-rag-chat)**
 
 Learners chat with a tutor that works in two modes:
 
@@ -9,7 +11,47 @@ Learners chat with a tutor that works in two modes:
 
 Learners can write in English or Chinese.
 
-**Live site:** [bizchatv1.netlify.app](https://bizchatv1.netlify.app)
+---
+
+## Mini PRD
+
+### Problem
+
+Business communication is more than vocabulary. It's knowing when to call someone after a few emails, how much background to give before a discussion, and what belongs at the top of a status update. Most professionals are left to figure these skills out on their own. A general AI chat can help, but it leaves the learner to decide what to practice first, how to progress and when to ask for feedback, which is hard when you don't yet know what you need to learn.
+
+### Target user
+
+Chinese professionals who use English at work, from beginners who need guided practice to advanced learners who want to rehearse their own situations.
+
+### Goals / Non-goals
+
+**Goals:**
+- Let learners practice a workplace conversation before they face it at work, with structured feedback at the end.
+- Keep coaching and role-play clearly separate, so learners always know whether they're being taught or practicing.
+- Support both guided beginner scenes and custom scenarios that advanced learners bring themselves.
+
+**Non-goals (this version):**
+- A general-purpose AI chat. The app guides what to practice and when feedback comes.
+- User accounts. Invite codes are access passes, and the saved learner profile is linked to an anonymous browser ID.
+
+### Results so far
+
+- Grew from a 21-person user study to a live beta with 80+ users.
+- A golden set of about 20 core multi-turn scenarios, each with a yes-or-no behavior check (for example, "did it stay in the scene the learner asked for?"), run several times per prompt version. A second model reviews the replies to catch problems the checks miss.
+- Release evaluations cut validation time by 50% compared with manual testing.
+- Prompt strategy, tested on the same conversations and model: beginner exercises passed 5/6 with strict rules vs. 2/6 with directional guidance; advanced learners switching scenes passed 5/6 with directional guidance vs. 1/6 with strict rules.
+
+### Key decisions and tradeoffs
+
+- **Code owns state; the model owns the conversation.** The model drifted between coach and colleague even when told not to, so the mode became a variable the learner controls, tagged onto every turn. The model can't change it.
+- **Saved, not remembered.** The model mixed up learners' roles in long chats, so details like name, role and company are saved to a profile and sent with every message.
+- **Strict rules for beginners, directional guidance for advanced practice.** Dozens of patch rules made the model forget some of them. Giving it a goal it could judge ("challenging but doable") cut the rules and handled situations the rules never covered, while introductory exercises kept strict rules.
+- **Behavior checks over exact-wording tests.** Once the model could phrase things its own way, tests had to check what it did, not what it said.
+- **Netlify owns access; Dify owns tutoring.** API keys never reach the browser, and quotas are checked atomically and refunded if a reply fails.
+
+### What's next
+
+See the [Roadmap](#roadmap) below.
 
 ---
 
@@ -199,3 +241,11 @@ INVITE_CODES-env-value.txt
 ## Tech stack
 
 React · Vite · TypeScript · Netlify Functions · Upstash Redis · Dify · Kimi (Moonshot)
+
+---
+
+## About
+
+Built solo by Donald, owning both product and code, as part of an ongoing Business English education practice.
+
+[donaldsoon.com](https://www.donaldsoon.com) · [LinkedIn](https://www.linkedin.com/in/donald-soon/)
