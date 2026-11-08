@@ -21,7 +21,7 @@ Business communication is more than vocabulary. It's knowing when to call someon
 
 ### Target user
 
-Chinese professionals who use English at work, from beginners who need guided practice to advanced learners who want to rehearse their own situations.
+Non-native English speaking professionals who use English at work, from beginners who need guided practice to advanced learners who want to rehearse their own situations.
 
 ### Goals / Non-goals
 
