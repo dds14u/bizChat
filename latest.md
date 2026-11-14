@@ -1,6 +1,6 @@
 # Golden set comparison: RED
 
-Spec: z_Chat_Regression_Test_v1.8 · staging · 2 runs each · 2026-11-14 04:35 UTC
+Spec: z_Chat_Regression_Test_v1.8 · staging · 2 runs each · 2026-11-14 04:37 UTC
 
 Each cell = passed on the first try / runs. "Flaky" = failed, then passed on the automatic rerun.
 When the cell counts differ between apps for the same prompt, that difference is run-to-run variation.
@@ -22,7 +22,7 @@ Full reports for each run, including failed replies and review items, follow bel
 
 ### Golden set: RED
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:34 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:37 UTC
 
 **PASS 0 · FAIL 1 · FLAKY 0 · ERROR 0**
 
@@ -38,28 +38,6 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 **Attempt 1 (failed, so it was rerun)**
 
 **T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
-
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="tech" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
-> 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> "Hi everyone, thanks for joining. I'm Sarah, the retail operations lead for Greater China. I know we're all busy with Q4 prep, so I'll keep this brief. D, the floor is yours — what's the main thing we need to lock down today?"
-> 
-> [Apple, Shanghai. You are D, a PM leading a kickoff with Sarah and the China retail team on the holiday sales plan. Goal: align on promotions, staffing, and inventory targets for the November–December period.]
-> 
-> [Start with your introduction.]
-
-**Attempt 2**
-
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
 - ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
 - ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
 - ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
@@ -70,12 +48,33 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 - [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
 
 > &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="consumer electronics" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> &lt;character name="Wei" gender="male"/&gt;
+> Hi everyone, thanks for joining. I'm Sarah, the retail operations lead for Greater China. I know we're all busy with Q4 prep, so let's make this productive.
 > 
-> Hi D, thanks for setting this up. The retail team in Shanghai and Beijing have been asking for clarity on the holiday plan, especially around inventory and staffing. I'm looking forward to hearing the overall direction.
+> [You're D, a PM at Apple, leading a kickoff with Sarah and the China retail team in Shanghai. The goal is to align on the holiday sales plan. Over the past two weeks, there have been emails going back and forth about inventory targets and promotional timing. Today's meeting should confirm the schedule and key markets. The next step is to get written sign-off from the US merchandising team.]
 > 
-> [Apple retail headquarters, Cupertino connecting to China regional leads. You are the PM leading this kickoff. Wei is the China retail operations lead. Goal: align on the holiday sales plan and confirm next steps.]
+> [Start with your introduction.]
+
+**Attempt 2**
+
+**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
+- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ character line: present
+- ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
+- ✓ no feedback
+- ✓ global checks G1–G4
+- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
+
+> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="stated" learner_goal="lead client presentations confidently"/&gt;
+> 
+> &lt;character name="Mei" gender="female"/&gt;
+> 
+> Hi D, thanks for getting us together. I'm Mei, the regional retail operations lead for Greater China. We've got a lot to cover before the holiday season kicks in.
+> 
+> [Apple, Shanghai. You are the PM leading this kickoff with the China retail team. Mei is your key operations counterpart. Goal: align on the holiday sales plan and lock in next steps.]
 > 
 > [Start with your introduction.]
 
@@ -87,7 +86,7 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 ### Golden set: RED
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:35 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:37 UTC
 
 **PASS 0 · FAIL 1 · FLAKY 0 · ERROR 0**
 
@@ -103,43 +102,44 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 **Attempt 1 (failed, so it was rerun)**
 
 **T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"Technology","goal":"lead client presentations confidently","industry_source":"stated"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"Technology","goal":"lead client presentations confidently","industry_source":"stated"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"Technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
 - ✓ character line: present
 - ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
 - ✓ no feedback
 - ✓ global checks G1–G4
 - [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
 
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="Technology" learner_industry_source="stated" learner_goal="lead client presentations confidently"/&gt;
-> &lt;character name="Wei" gender="male"/&gt;
+> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="stated" learner_goal="lead client presentations confidently"/&gt;
 > 
-> Hi D, thanks for setting this up. I'm Wei, regional operations lead for Greater China retail. We've got a lot riding on this quarter.
+> &lt;character name="Mei" gender="female"/&gt;
 > 
-> [Apple, Shanghai — you're the PM leading the kickoff with the China retail team. Wei is your key operations partner. Goal: align on the holiday sales plan and confirm who does what by when.]
+> Hi D, thanks for setting this up. I'm Mei, the regional retail operations lead for Greater China. We've got a lot riding on this holiday season, so I'm glad we're aligning early.
+> 
+> [You're a PM at Apple, leading a kickoff with Mei and the China retail team in Shanghai. The goal: align on the holiday sales plan. Over the past two weeks, there have been emails between Cupertino and the regional team about inventory targets and promotional timing. Today's meeting will walk through the sales forecast, confirm the promotional calendar, and flag any supply risks. The next step is to get written sign-off from the US merchandising team by next Friday so local stores can start prep.]
 > 
 > [Start with your introduction.]
 
 **Attempt 2**
 
 **T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
 - ✓ character line: present
 - ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
 - ✓ no feedback
 - ✓ global checks G1–G4
 - [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
 
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="consumer electronics" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
+> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
 > 
-> &lt;character name="Wei" gender="male"/&gt;
+> &lt;character name="Maya" gender="female"/&gt;
 > 
-> "Thanks for pulling this together. The regional numbers from last quarter look strong, but we need to lock in the holiday plan before the end of the month."
+> Thanks for joining, D. I'm Maya, the regional retail operations lead. I've been looking at the preliminary numbers from last year's holiday season, and I think we need to make some real changes to how we approach inventory this year.
 > 
-> [You're a PM at Apple, leading a kickoff with Wei, the retail lead for Greater China, based in Shanghai. The goal: align on the holiday sales plan and confirm next steps.]
+> [You're a PM at Apple, leading a kickoff with Maya from retail operations in Shanghai. The goal: align on the holiday sales plan and next steps.]
 > 
 > [Start with your introduction.]
 

@@ -4,14 +4,14 @@
     "staging"
   ],
   "repeats": 2,
-  "at": "2026-11-14T04:35:19.111Z",
+  "at": "2026-11-14T04:37:37.663Z",
   "green": false,
   "runs": [
     {
       "name": "staging-1",
       "spec": "z_Chat_Regression_Test_v1.8",
       "app": "staging",
-      "at": "2026-11-14T04:34:44.020Z",
+      "at": "2026-11-14T04:37:20.701Z",
       "green": false,
       "results": [
         {
@@ -32,17 +32,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -73,8 +73,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"tech\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\n\"Hi everyone, thanks for joining. I'm Sarah, the retail operations lead for Greater China. I know we're all busy with Q4 prep, so I'll keep this brief. D, the floor is yours — what's the main thing we need to lock down today?\"\n\n[Apple, Shanghai. You are D, a PM leading a kickoff with Sarah and the China retail team on the holiday sales plan. Goal: align on promotions, staffing, and inventory targets for the November–December period.]\n\n[Start with your introduction.]",
-                  "ms": 9931
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm Sarah, the retail operations lead for Greater China. I know we're all busy with Q4 prep, so let's make this productive.\n\n[You're D, a PM at Apple, leading a kickoff with Sarah and the China retail team in Shanghai. The goal is to align on the holiday sales plan. Over the past two weeks, there have been emails going back and forth about inventory targets and promotional timing. Today's meeting should confirm the schedule and key markets. The next step is to get written sign-off from the US merchandising team.]\n\n[Start with your introduction.]",
+                  "ms": 10479
                 }
               ]
             },
@@ -91,17 +91,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
@@ -132,8 +132,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Wei\" gender=\"male\"/>\n\nHi D, thanks for setting this up. The retail team in Shanghai and Beijing have been asking for clarity on the holiday plan, especially around inventory and staffing. I'm looking forward to hearing the overall direction.\n\n[Apple retail headquarters, Cupertino connecting to China regional leads. You are the PM leading this kickoff. Wei is the China retail operations lead. Goal: align on the holiday sales plan and confirm next steps.]\n\n[Start with your introduction.]",
-                  "ms": 7909
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Mei\" gender=\"female\"/>\n\nHi D, thanks for getting us together. I'm Mei, the regional retail operations lead for Greater China. We've got a lot to cover before the holiday season kicks in.\n\n[Apple, Shanghai. You are the PM leading this kickoff with the China retail team. Mei is your key operations counterpart. Goal: align on the holiday sales plan and lock in next steps.]\n\n[Start with your introduction.]",
+                  "ms": 13924
                 }
               ]
             }
@@ -145,7 +145,7 @@
       "name": "staging-2",
       "spec": "z_Chat_Regression_Test_v1.8",
       "app": "staging",
-      "at": "2026-11-14T04:35:19.080Z",
+      "at": "2026-11-14T04:37:37.633Z",
       "green": false,
       "results": [
         {
@@ -166,17 +166,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
                     },
                     {
                       "ok": true,
@@ -207,8 +207,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"Technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n<character name=\"Wei\" gender=\"male\"/>\n\nHi D, thanks for setting this up. I'm Wei, regional operations lead for Greater China retail. We've got a lot riding on this quarter.\n\n[Apple, Shanghai — you're the PM leading the kickoff with the China retail team. Wei is your key operations partner. Goal: align on the holiday sales plan and confirm who does what by when.]\n\n[Start with your introduction.]",
-                  "ms": 16032
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Mei\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Mei, the regional retail operations lead for Greater China. We've got a lot riding on this holiday season, so I'm glad we're aligning early.\n\n[You're a PM at Apple, leading a kickoff with Mei and the China retail team in Shanghai. The goal: align on the holiday sales plan. Over the past two weeks, there have been emails between Cupertino and the regional team about inventory targets and promotional timing. Today's meeting will walk through the sales forecast, confirm the promotional calendar, and flag any supply risks. The next step is to get written sign-off from the US merchandising team by next Friday so local stores can start prep.]\n\n[Start with your introduction.]",
+                  "ms": 9909
                 }
               ]
             },
@@ -225,17 +225,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -266,8 +266,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Wei\" gender=\"male\"/>\n\n\"Thanks for pulling this together. The regional numbers from last quarter look strong, but we need to lock in the holiday plan before the end of the month.\"\n\n[You're a PM at Apple, leading a kickoff with Wei, the retail lead for Greater China, based in Shanghai. The goal: align on the holiday sales plan and confirm next steps.]\n\n[Start with your introduction.]",
-                  "ms": 18993
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Maya\" gender=\"female\"/>\n\nThanks for joining, D. I'm Maya, the regional retail operations lead. I've been looking at the preliminary numbers from last year's holiday season, and I think we need to make some real changes to how we approach inventory this year.\n\n[You're a PM at Apple, leading a kickoff with Maya from retail operations in Shanghai. The goal: align on the holiday sales plan and next steps.]\n\n[Start with your introduction.]",
+                  "ms": 6989
                 }
               ]
             }
