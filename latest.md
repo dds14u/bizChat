@@ -1,95 +1,80 @@
-# Golden set comparison: GREEN
+# Golden set: GREEN
 
-Spec: z_Chat_Regression_Test_v1.8 · staging · 2 runs each · 2026-11-14 04:39 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:40 UTC
 
-Each cell = passed on the first try / runs. "Flaky" = failed, then passed on the automatic rerun.
-When the cell counts differ between apps for the same prompt, that difference is run-to-run variation.
-
-| Case | staging |
-|---|---|
-| C5 Custom scene with profile | 2/2 |
-| **Total (first try)** | **2/2** |
-
-## Runs
-- staging-1: GREEN · PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0
-- staging-2: GREEN · PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0
-
-Full reports for each run, including failed replies and review items, follow below.
-
----
-
-<details><summary><b>staging-1</b></summary>
-
-### Golden set: GREEN
-
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:39 UTC
-
-**PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0**
+**PASS 2 · FAIL 0 · FLAKY 0 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| C5 Custom scene with profile | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
+| C4 Menu path: greeting, then "1" | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### C5 Custom scene with profile · PASS
+### C3 Scene card: Start a meeting, then a full ICE opening · PASS
 
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead retail meetings confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead retail meetings confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead retail meetings confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✓ doesn't contain any of ["Start with your introduction"]
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
+Scene sent: Start a meeting
+- ✓ global checks G1–G4
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
+
+> Thanks for joining. I'm looking forward to hearing how we'll move this forward.
+> 
+> [We're at Apple in Cupertino. You're the lead PM kicking off a new app project. I'm Sarah, a teammate. Our goal is to align on the plan and next steps.]
+> 
+> [Start with your introduction.]
+
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 5
+- ✓ global checks G1–G4
+- [ ] Doesn't ask the learner to redo a step they already covered.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
+
+> Thanks, that's helpful. I appreciate the clear timeline.
+> 
+> **Course score: 5/5**: You covered all three ICE steps with specific details and a timed next step.
+> 
+> **How it went:** A strong, complete opening that gives the team confidence in the plan.
+> 
+> **What worked:** Your Context covered past ("a lot of emails about the main features"), present ("agree on the schedule"), and future ("send a timeline to leadership by next Friday") with a clear deadline. Your Expectations set both interaction level ("ask questions anytime") and detail level ("detailed discussion").
+> 
+> **What to improve:** No major gap. If you wanted to add one thing, you could say how *you* specifically will contribute beyond managing schedule — for example, "I'll also be the main point of contact for requirements."
+> 
+> **Also worth noting:** "A lot of emails" is fine; "quite a few emails going back and forth" sounds slightly more natural for a kickoff.
+> 
+> **Try this instead:** "Hi everyone, I'm Lee, the lead PM for this app launch. I'll manage the schedule and be the main point of contact for requirements. Over the past two weeks we've had quite a few emails going back and forth about the main features. Today we'll agree on the schedule and call out any risks. The next step is to send a timeline to leadership by next Friday. Please ask questions anytime — this will be a detailed discussion."
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
+> 
+> Want to try again, or pick a new scene?
+
+### C4 Menu path: greeting, then "1" · PASS
+
+**T1 [RP]** "Hello"
+- ✓ contains "Start a meeting"
+- ✓ contains any of ["describe","your own"]
+- ✓ character line: absent
 - ✓ no feedback
 - ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
 
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="inferred" learner_goal="lead retail meetings confidently"/&gt;
-> &lt;character name="Mei" gender="female"/&gt;
-> 
-> Thanks for setting this up. I'm ready to hear the plan.
-> 
-> [You're leading a planning meeting at Apple. Mei is a retail operations manager based in Shanghai. The goal is to align on the holiday sales plan and confirm next steps.]
+> Let's practice a real workplace conversation. Reply with a number:
+> 1. Start a meeting (easy)
+> 2. Disagree with a coworker
+> 3. Reject a late request
+> Or describe your own situation.
+> [Tip: describe your real role and a situation you're facing at work. The conversation will be more realistic and more challenging.]
 
-</details>
-
----
-
-<details><summary><b>staging-2</b></summary>
-
-### Golden set: GREEN
-
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 04:39 UTC
-
-**PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0**
-
-| Case | Result | Failed checks (last attempt) |
-|---|---|---|
-| C5 Custom scene with profile | PASS | – |
-
-## Every reply (passed and failed)
-Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
-
-### C5 Custom scene with profile · PASS
-
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
+**T2 [RP]** "1"
+Scene sent: Start a meeting
+- ✓ doesn't contain any of ["Reply with a number"]
 - ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
+- [ ] Starts the built-in meeting-opening scene with a character.
 
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="consumer electronics" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
-> &lt;character name="Elena" gender="female"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Thanks for getting us together. I'm looking forward to hearing the plan for the holiday push.
+> Thanks for setting this up. I'm looking forward to getting aligned today.
 > 
-> [You're leading a planning meeting at Apple. I'm Elena, a senior retail operations manager based in Shanghai. The team needs to align on the holiday sales plan for Greater China, including staffing, inventory, and promotional timing. Goal: agree on priorities and next steps before we brief the regional VP next week.]
+> [We're at Tesla in Austin. You're the lead project manager kicking off a new mobile app for tracking charging station availability. Over the past week, there have been emails back and forth between the design and engineering teams. Today's goal is to agree on the feature set and timeline so development can begin. Your next step after this meeting is to get leadership sign-off. Sarah is a senior engineer attending to help finalize the technical scope.]
 > 
-> [I can describe a different situation anytime.]
-
-</details>
+> [Start with your introduction.]
