@@ -4,11 +4,12 @@
 //   DIFY_API_KEY=… node evals/run.mjs            all cases
 //   EVAL_CASES="C1 D2" node evals/run.mjs        only some cases
 //   EVAL_CASES="S" node evals/run.mjs            a whole group (S1, S2, …)
-//   EVAL_HELD_OUT=1 node evals/run.mjs           all cases, including held-out ones (H1–H3)
+//   EVAL_OPTIONAL=1 node evals/run.mjs           all cases, including optional ones (O1–O3)
 // Optional: DIFY_API_URL (default https://api.dify.ai/v1), LESSON_VIDEO_IDS (comma-separated Bilibili BV IDs),
-// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 1: the Dify plan limits knowledge-base requests per minute).
+// EVAL_APP (label for the report), EVAL_CONCURRENCY (default 1: the Dify plan limits knowledge-base requests per minute),
+// EVAL_HISTORY (folder of earlier runs' results.json files, for the non-blocking baselines).
 // Writes report.md and results.json to evals/out/ (or EVAL_OUT). Exit code 1 when any case FAILS.
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { mergeProfile, profileSummary, readProfileTags, sanitizeProfile } from "../netlify/lib/profile.mjs";
@@ -30,13 +31,13 @@ if (!apiKey) {
 
 const golden = JSON.parse(await readFile(new URL("./golden.json", import.meta.url), "utf8"));
 // EVAL_CASES takes case IDs ("S3") or group letters ("S" = S1, S2, …).
-// Held-out cases (heldOut: true) are skipped unless named in EVAL_CASES or EVAL_HELD_OUT=1
-const includeHeldOut = env.EVAL_HELD_OUT === "1";
+// Optional cases (optional: true) are skipped unless named in EVAL_CASES or EVAL_OPTIONAL=1
+const includeOptional = env.EVAL_OPTIONAL === "1" || env.EVAL_HELD_OUT === "1";
 const picked = (id) => {
   const ID = id.toUpperCase();
   return only.has(ID) || [...only].some((t) => /^[A-Z]+$/.test(t) && new RegExp(`^${t}\\d+$`).test(ID));
 };
-const cases = golden.cases.filter((c) => (only.size ? picked(c.id) : !c.heldOut || includeHeldOut));
+const cases = golden.cases.filter((c) => (only.size ? picked(c.id) : !c.optional || includeOptional));
 if (!cases.length) {
   console.error(`No cases match EVAL_CASES="${env.EVAL_CASES}".`);
   process.exit(2);
@@ -138,7 +139,7 @@ async function attempt(c) {
     const summary = profileSummary(profile);
     const sent = asPageSends(t.message, t.mode, lastReply);
     const inputs = { ...(summary ? { learner_profile: summary } : {}), ...(sent.scene ? { scene: sent.scene } : {}) };
-    const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], review: [...(t.review || [])] };
+    const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], watch: [], review: [...(t.review || [])] };
     try {
       const r = await askWithRetry({ query: `${t.mode} ${sent.query}`, inputs, conversationId });
       conversationId = r.conversationId;
@@ -147,6 +148,8 @@ async function attempt(c) {
       if (sent.scene) turn.sceneSent = sent.scene;
       turn.ms = r.ms;
       for (const check of t.auto || []) turn.checks.push(runCheck(check, r.answer));
+      // Non-blocking: checked the same way, reported, never fail the attempt
+      for (const check of t.watch || []) turn.watch.push(runCheck(check, r.answer));
       const g = globalChecks(r.answer, t.message, lessonIds);
       turn.checks.push(...g.results);
       turn.review.push(...g.review);
@@ -186,6 +189,33 @@ await Promise.all(
   })
 );
 
+// ---------- Non-blocking checks: this run vs. earlier runs of the same app ----------
+// Each check is scored on the case's first attempt. Baseline = pass rate over the last 10 earlier runs.
+const app = env.EVAL_APP || "production";
+const watch = results.flatMap((r) =>
+  r.attempts[0].turns.flatMap((t) => (t.watch || []).map((w) => ({ key: `${r.id} T${t.n}: ${w.label}`, ok: w.ok })))
+);
+const history = [];
+if (env.EVAL_HISTORY) {
+  for (const name of await readdir(env.EVAL_HISTORY).catch(() => [])) {
+    if (!name.endsWith(".json")) continue;
+    try {
+      const h = JSON.parse(await readFile(resolve(env.EVAL_HISTORY, name), "utf8"));
+      if (h.app === app && Array.isArray(h.watch)) history.push(h);
+    } catch {
+      // not a single-run results file
+    }
+  }
+}
+history.sort((a, b) => String(a.at).localeCompare(String(b.at)));
+for (const w of watch) {
+  const past = history.map((h) => h.watch.find((x) => x.key === w.key)).filter(Boolean).slice(-10);
+  w.baseline = past.length ? { rate: past.filter((x) => x.ok).length / past.length, runs: past.length } : null;
+  const last10 = [...past, w].slice(-10);
+  w.readyToPromote = last10.length === 10 && last10.filter((x) => x.ok).length >= 9;
+  w.worse = Boolean(w.baseline && w.baseline.runs >= 3 && (w.ok ? 1 : 0) <= w.baseline.rate - 0.25);
+}
+
 // ---------- Report ----------
 const count = (s) => results.filter((r) => r.status === s).length;
 const green = count("FAIL") === 0 && count("ERROR") === 0;
@@ -194,10 +224,11 @@ const quote = (text, max = 1500) => {
   const cut = t.length > max ? `${t.slice(0, max)}…` : t;
   return cut.split("\n").map((l) => `> ${l}`).join("\n") || "> (empty)";
 };
+const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const lines = [];
 lines.push(`# Golden set: ${green ? "GREEN" : "RED"}`);
 lines.push("");
-lines.push(`App: ${env.EVAL_APP || "production"} · Spec: ${golden.spec} · ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC`);
+lines.push(`App: ${app} · Spec: ${golden.spec} · ${new Date().toISOString().replace("T", " ").slice(0, 16)} UTC`);
 lines.push("");
 lines.push(`**PASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}**`);
 lines.push("");
@@ -209,14 +240,26 @@ for (const r of results) {
   const shown = r.status === "FLAKY" ? `passed on rerun; first try: ${r.attempts[0].turns.flatMap((t) => t.checks.filter((c) => !c.ok).map((c) => `T${t.n}: ${c.label}`)).join("; ")}` : fails.join("; ");
   lines.push(`| ${r.id} ${r.title} | ${r.status} | ${shown.replace(/\|/g, "\\|") || "–"} |`);
 }
+if (watch.length) {
+  const pct = (x) => `${Math.round(x * 100)}%`;
+  lines.push("");
+  lines.push("## Non-blocking checks");
+  lines.push("Reported only; they never fail a case. Baseline = pass rate over the last 10 earlier runs of this app (first attempts).");
+  lines.push("");
+  lines.push("| Check | This run | Baseline | Note |");
+  lines.push("|---|---|---|---|");
+  for (const w of watch) {
+    const note = w.worse ? "worse" : w.readyToPromote ? "ready to promote" : "";
+    lines.push(`| ${esc(w.key).replace(/\|/g, "\\|")} | ${w.ok ? "✓" : "✗"} | ${w.baseline ? `${pct(w.baseline.rate)} (${w.baseline.runs} runs)` : "–"} | ${note} |`);
+  }
+}
 
 // Every case, passed or not, with each turn's message, check results, review items and the full reply.
 // Hidden lines (<profile …/>, <character …/>) are shown as text so they can be inspected too.
-const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const isGlobal = (c) => /^G\d /.test(c.label);
 lines.push("");
 lines.push("## Every reply (passed and failed)");
-lines.push("Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.");
+lines.push("Each case shows every attempt. ✓ = check passed, ✗ = check failed. Human-review items are for you to judge; non-blocking checks are marked.");
 for (const r of results) {
   lines.push("");
   lines.push(`### ${r.id} ${r.title} · ${r.status}`);
@@ -233,6 +276,7 @@ for (const r of results) {
       const own = t.checks.filter((c) => !isGlobal(c));
       const globals = t.checks.filter(isGlobal);
       for (const c of own) lines.push(`- ${c.ok ? "✓" : "✗"} ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
+      for (const c of t.watch || []) lines.push(`- ${c.ok ? "✓" : "✗"} (non-blocking) ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
       const badGlobals = globals.filter((c) => !c.ok);
       if (globals.length) lines.push(badGlobals.length ? badGlobals.map((c) => `- ✗ ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`).join("\n") : "- ✓ global checks G1–G4");
       for (const item of t.review) lines.push(`- [ ] ${esc(item)}`);
@@ -247,7 +291,7 @@ await mkdir(outDir, { recursive: true });
 await writeFile(new URL("report.md", outDir), lines.join("\n") + "\n");
 await writeFile(
   new URL("results.json", outDir),
-  JSON.stringify({ spec: golden.spec, app: env.EVAL_APP || "production", at: new Date().toISOString(), green, results }, null, 2)
+  JSON.stringify({ spec: golden.spec, app, at: new Date().toISOString(), green, watch, results }, null, 2)
 );
 console.log(`\nPASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}`);
 process.exit(green ? 0 : 1);
