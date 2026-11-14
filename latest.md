@@ -1,22 +1,20 @@
 # Golden set comparison: GREEN
 
-Spec: z_Chat_Regression_Test_v1.8 · production vs staging · 2 runs each · 2026-11-14 00:00 UTC
+Spec: z_Chat_Regression_Test_v1.8 · production vs staging · 2 runs each · 2026-11-14 01:46 UTC
 
 Each cell = passed on the first try / runs. "Flaky" = failed, then passed on the automatic rerun.
 When the cell counts differ between apps for the same prompt, that difference is run-to-run variation.
 
 | Case | production | staging |
 |---|---|---|
-| H1 Held out: finance and IT on audit-software bugs | 2/2 | 2/2 |
-| H2 Held out: editor exploring AI proofreading with engineering | 2/2 | 2/2 |
-| H3 Held out: PM and engineering disagree on launch scope | 2/2 | 2/2 |
-| **Total (first try)** | **6/6** | **6/6** |
+| C3 Scene card: Start a meeting, then a full ICE opening | 1/2 (1 flaky) | 2/2 |
+| **Total (first try)** | **1/2** | **2/2** |
 
 ## Runs
-- production-1: GREEN · PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0
-- production-2: GREEN · PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0
-- staging-1: GREEN · PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0
-- staging-2: GREEN · PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0
+- production-1: GREEN · PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0
+- production-2: GREEN · PASS 0 · FAIL 0 · FLAKY 1 · ERROR 0
+- staging-1: GREEN · PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0
+- staging-2: GREEN · PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0
 
 Full reports for each run, including failed replies and review items, follow below.
 
@@ -26,89 +24,51 @@ Full reports for each run, including failed replies and review items, follow bel
 
 ### Golden set: GREEN
 
-App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-13 23:58 UTC
+App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 01:45 UTC
 
-**PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0**
+**PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| H1 Held out: finance and IT on audit-software bugs | PASS | – |
-| H2 Held out: editor exploring AI proofreading with engineering | PASS | – |
-| H3 Held out: PM and engineering disagree on launch scope | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### H1 Held out: finance and IT on audit-software bugs · PASS
+### C3 Scene card: Start a meeting, then a full ICE opening · PASS
 
-**T1 [RP]** "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
 - ✓ global checks G1–G4
-- [ ] Plays the IT lead at business level.
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Marcus" gender="male"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Marcus: "Thanks for flagging this. I know the quarter-end deadline is tight, and we want to get this right. Before we dive in, can you walk me through which reports are affected and how far off the totals are? That'll help me prioritize the fixes."
+> Hi everyone, thanks for joining. We're all set on our end.
 > 
-> [Setting: You're a finance analyst at your company. Marcus is the IT lead. You're meeting to decide which audit software bugs to fix first, with quarter-end closing in about two weeks. The goal is to agree on a priority order and a timeline for the fixes.]
+> [You are the lead project manager at Apple, kicking off a new mobile app launch. The team has exchanged emails about requirements for the past two weeks. Today's goal is to align on the schedule and main features. The next step is to share a timeline with leadership by next Friday.]
+> 
+> [Start with your introduction.]
 
-**T2 [RP]** "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-- ✓ no feedback
-- ✓ words ≤ 120: 65 words
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 4
 - ✓ global checks G1–G4
-- [ ] Discusses priorities and deadlines, not engineering detail.
+- [ ] Doesn't ask the learner to redo a step they already covered.
 
-> Marcus: "I hear you on the auditor deadline — that's non-negotiable. The totals issue is tricky though. Fixing it touches three different data sources, and we're short one backend developer this sprint. If we pull someone off the formatting work, that pushes the management dashboard to next month. Is there any flexibility on what the auditors actually need to see versus what we normally generate?"
-
-### H2 Held out: editor exploring AI proofreading with engineering · PASS
-
-**T1 [RP]** "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the engineering lead in plain language.
-
-> &lt;character name="Maya" gender="female"/&gt;
+> Thanks, Lee. That all sounds clear — looking forward to seeing the timeline.
 > 
-> Thanks for reaching out. I know the editorial team has been looking at ways to speed up the production cycle, and AI tools are getting a lot of attention right now. Before I share my thoughts, I'd like to understand your main concern — is it cost, turnaround time, or quality consistency you're most worried about?
+> **Course score: 4/5** — You covered all three ICE steps: Introductions, Context, and Expectations.
 > 
-> [Setting: You're an editor at a publishing company. Maya is the engineering lead. The goal is to discuss whether AI proofreading could work for your books.]
-
-**T2 [RP]** "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-- ✓ no feedback
-- ✓ words ≤ 120: 91 words
-- ✓ global checks G1–G4
-- [ ] Discusses feasibility and tradeoffs without getting overly technical.
-
-> That's a smart place to start. Names and technical terms are actually the hardest part for AI — it handles grammar and style well, but it can "correct" a proper name into something more common, or miss specialized vocabulary entirely. A pilot on one book would cost roughly two to three thousand dollars, including setup and human review of the AI output.
+> **How it went:** Great job! You moved smoothly from your introduction into the past, present, and future, and you set both interaction and detail expectations in one line.
 > 
-> What kind of technical terms does your list usually include — medical, legal, something else? And would your team have time to double-check the AI suggestions against your style guide?
-
-### H3 Held out: PM and engineering disagree on launch scope · PASS
-
-**T1 [RP]** "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] A custom scope disagreement, not the built-in "Disagree with a coworker" scene.
-
-> &lt;character name="Jordan" gender="male"/&gt;
+> **What worked:**
+> - "Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday" — This shows strong Context: past, present, and future with a clear deadline.
 > 
-> I hear you on the timeline pressure, but honestly, cutting the onboarding tutorial feels like the cleanest way to protect the launch date. The core product is solid, and we can always add the tutorial in a point release.
+> **What to improve:**
+> - Your introduction could include when you started or how long you've been with the team, to build more connection with the group.
+> - "Please ask questions anytime, and this will be a detailed discussion" combines interaction and detail well, but splitting them slightly would make each expectation even clearer.
 > 
-> [You are a PM at a tech company. Jordan is the engineering lead. The team is two weeks from code freeze on a new product launch, and the onboarding tutorial is at risk. Goal: disagree professionally and agree on scope or timeline.]
-
-**T2 [RP]** "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-- ✓ no feedback
-- ✓ words ≤ 120: 38 words
-- ✓ global checks G1–G4
-- [ ] Negotiates as the engineering lead (pushes back or proposes a middle ground).
-
-> That's a fair point — user drop-off is real, and a simpler tutorial is better than none. What did you have in mind for "simpler"? We're talking maybe two or three screens instead of the full interactive walkthrough?
+> **Try this instead:**
+> "Hi everyone, I'm Lee. I've been with the team for two years and I'm the lead PM for this app launch. I'll be managing the schedule and also the main point of contact for requirements. We've had quite a few emails going back and forth about the main features over the past two weeks. Today we'll agree on the schedule and confirm the feature set, so that everyone is aligned before development starts. The next step is to share a timeline with leadership by next Friday. Please feel free to interrupt if you…
 
 </details>
 
@@ -118,93 +78,80 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 ### Golden set: GREEN
 
-App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-13 23:59 UTC
+App: production · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 01:45 UTC
 
-**PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0**
+**PASS 0 · FAIL 0 · FLAKY 1 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| H1 Held out: finance and IT on audit-software bugs | PASS | – |
-| H2 Held out: editor exploring AI proofreading with engineering | PASS | – |
-| H3 Held out: PM and engineering disagree on launch scope | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | FLAKY | passed on rerun; first try: T2: feedback score ≥ 4 |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### H1 Held out: finance and IT on audit-software bugs · PASS
+### C3 Scene card: Start a meeting, then a full ICE opening · FLAKY
 
-**T1 [RP]** "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
+**Attempt 1 (failed, so it was rerun)**
+
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
 - ✓ global checks G1–G4
-- [ ] Plays the IT lead at business level.
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Marcus" gender="male"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Marcus: "Thanks for flagging this. I know the quarter-end deadline is tight, so I want to make sure we fix the right things first. Can you walk me through which reports are affected and how far off the totals are?"
+> Thanks for setting this up. We're looking forward to getting started.
 > 
-> [You're a finance manager at a global firm. Marcus is the IT lead. The goal is to agree on which software bugs to prioritize before your quarter-end audit deadline.]
+> [You're the lead PM for a new mobile app launch at Microsoft. The team has exchanged emails about requirements for two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to share a timeline with leadership by next Friday.]
 > 
-> [You can describe a different situation anytime.]
+> [Start with your introduction.]
 
-**T2 [RP]** "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-- ✓ no feedback
-- ✓ words ≤ 120: 81 words
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✗ feedback score ≥ 4: no score
 - ✓ global checks G1–G4
-- [ ] Discusses priorities and deadlines, not engineering detail.
+- [ ] Doesn't ask the learner to redo a step they already covered.
 
-> Marcus: "I hear you on the auditor deadline — that's non-negotiable. The totals bug is in the export module, and my team can start on it Monday. But the formatting issues aren't just cosmetic; they break the report layout that the auditors use to read the data. If we fix totals first and formatting second, are you confident the auditors can still read the reports on the 15th?"
+> Thanks, Lee. That all sounds clear, and it's helpful to know we can jump in with questions.
 > 
-> [Hint: you could say "I see your point about formatting. What if we..."]
+> [Start with your introduction.]
+> 
+> Want to try again, or pick a new scene?
 
-### H2 Held out: editor exploring AI proofreading with engineering · PASS
+**Attempt 2**
 
-**T1 [RP]** "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
 - ✓ global checks G1–G4
-- [ ] Plays the engineering lead in plain language.
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Marcus" gender="male"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> "I appreciate you reaching out. Before I dig into the technical side, can you tell me what your current proofreading process looks like and where you're hoping AI could help?"
+> Thanks for setting this up. I'm looking forward to getting aligned today.
 > 
-> [You are an editor at a publishing company. Marcus is an engineering lead at a tech firm. The conversation is about whether AI proofreading tools could fit into your book production workflow. You want to understand the possibilities and limits, and he wants to understand your quality standards before making any recommendations.]
+> [You are the lead PM for a new mobile app launch at a consumer tech company. Over the past week, the team has exchanged several emails about conflicting priorities between the design and engineering teams. Today's goal is to agree on the core features for the first release and confirm who owns each piece. After the meeting, the plan is to send a decision summary to leadership by next Wednesday.]
+> 
+> [Start with your introduction.]
 
-**T2 [RP]** "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-- ✓ no feedback
-- ✓ words ≤ 120: 75 words
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 4
 - ✓ global checks G1–G4
-- [ ] Discusses feasibility and tradeoffs without getting overly technical.
+- [ ] Doesn't ask the learner to redo a step they already covered.
 
-> "That's a smart place to start. Names and technical terms are actually the hardest part for most AI systems right now, because they don't follow standard grammar rules and the context doesn't always help. For a pilot on one book, we could set up a limited test with a custom glossary you provide, but I'd need to know: how does your team currently handle those terms, and who would review the AI output for errors?"
-
-### H3 Held out: PM and engineering disagree on launch scope · PASS
-
-**T1 [RP]** "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] A custom scope disagreement, not the built-in "Disagree with a coworker" scene.
-
-> &lt;character name="Marcus" gender="male"/&gt;
+> Thanks, Lee. That all sounds good — looking forward to the detailed walkthrough.
 > 
-> I hear you on the deadline, but I think we need to cut the onboarding tutorial. It's adding two weeks, and we committed to leadership that we'd launch by end of quarter.
+> **Course score: 4/5** — You covered all three ICE steps: Introductions, Context, and Expectations.
 > 
-> [You're a PM at a tech company. Marcus is the engineering lead. You're in a launch scope meeting, and the goal is to agree on what ships in the first release.]
-
-**T2 [RP]** "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-- ✓ no feedback
-- ✓ words ≤ 120: 85 words
-- ✓ global checks G1–G4
-- [ ] Negotiates as the engineering lead (pushes back or proposes a middle ground).
-
-> I can see why user retention matters to you, but even a simpler tutorial still needs design and testing. That puts us back to the same problem. What would "simpler" look like in terms of days?
+> **How it went:** Great job! You got through the opening clearly and gave the team a clear picture of where things stand.
 > 
-> [Hint: you could say "I understand that we need to hit the end-of-quarter date, but our data shows that 40% of new users leave without guidance. A three-screen tooltip flow would take three days instead of two weeks. Are there other features we could cut instead?"]
+> **What worked:**
+> - "Over the past two weeks we've had a lot of emails about the main features" — This is strong Context: Past. You explained how you got to this meeting, which helps everyone understand why they're here.
+> 
+> **What to improve:**
+> - Your Context: Future has a deadline, but it's slightly vague what the summary will include. "Send a timeline to leadership" could be sharper — will it be the feature list, the schedule, or both? A clearer next step would help.
+> - Your Expectations line mixes interaction and detail in one sentence, which is fine, but you could make the level of detail more explicit: "this will be a detailed discussion" works, though you might also signal whether you'll go into technical specifics or stay at a feature level.
+> 
+> **Try this instead:**
+> "We hope to send a confirmed feature list and timeline to leadership by next Friday, so we can get formal sign-off and start development the following week."
+> 
+> Want to try again, or pick a new scene?
 
 </details>
 
@@ -214,93 +161,49 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 ### Golden set: GREEN
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-13 23:59 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 01:45 UTC
 
-**PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0**
+**PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| H1 Held out: finance and IT on audit-software bugs | PASS | – |
-| H2 Held out: editor exploring AI proofreading with engineering | PASS | – |
-| H3 Held out: PM and engineering disagree on launch scope | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### H1 Held out: finance and IT on audit-software bugs · PASS
+### C3 Scene card: Start a meeting, then a full ICE opening · PASS
 
-**T1 [RP]** "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
 - ✓ global checks G1–G4
-- [ ] Plays the IT lead at business level.
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Marcus" gender="male"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Marcus: "Hey, thanks for flagging this. I know quarter-end is tight. Before we dive in, can you walk me through which reports are affected and how far off the totals are? That'll help me figure out where to start."
+> Hi everyone, thanks for joining. I'm Sarah, and I'll be supporting the marketing side on this project. I'm looking forward to hearing what we'll be working on.
 > 
-> [You're a finance manager at your company. Marcus is the IT lead. The goal: agree on which bugs to fix first before your quarter-end audit deadline.]
+> [You're the lead project manager for a new mobile app at Apple. The team is in Cupertino. Over the past two weeks, there have been emails going back and forth about requirements and timing. Today's goal is to align on the schedule and main features so development can begin. The next step will be to share a timeline with leadership for sign-off.]
 > 
-> [You can describe a different situation anytime.]
+> [Start with your introduction.]
 
-**T2 [RP]** "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-- ✓ no feedback
-- ✓ words ≤ 120: 71 words
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 5
 - ✓ global checks G1–G4
-- [ ] Discusses priorities and deadlines, not engineering detail.
+- [ ] Doesn't ask the learner to redo a step they already covered.
 
-> Marcus: "Fixing the totals first makes sense for the audit. The formatting issues are annoying, but they won't block sign-off. Here's the thing though — my team has two sprints before the 15th, and the totals bug touches three different modules. If we pull everyone onto that, we might not touch the formatting at all. Are you okay with that tradeoff, or is there a hard deadline for the formatting too?"
-
-### H2 Held out: editor exploring AI proofreading with engineering · PASS
-
-**T1 [RP]** "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the engineering lead in plain language.
-
-> &lt;character name="Maya" gender="female"/&gt;
+> Thanks, that's helpful. I appreciate the clear timeline.
 > 
-> I don't think AI proofreading is a good fit for books. We've tested it on documentation, and it misses tone, voice, and context. For a novel, that could change what the author meant.
+> **Course score: 5/5**: You covered all three ICE steps with clear details and a specific deadline.
 > 
-> [You're an editor at a publishing company. Maya is the engineering lead at a tech partner your company works with. You're meeting to explore whether AI proofreading tools could work for your books. She knows the tech but not publishing workflows. Goal: discuss whether it's viable and what a pilot might look like.]
-
-**T2 [RP]** "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-- ✓ no feedback
-- ✓ words ≤ 120: 106 words
-- ✓ global checks G1–G4
-- [ ] Discusses feasibility and tradeoffs without getting overly technical.
-
-> That's a fair concern. Names and technical terms are actually where these tools struggle most—they learn from common patterns, so rare or invented words get "corrected" to something familiar. We've seen it change character names in documentation.
+> **How it went:** This was a strong, complete opening that gave the team everything they needed to follow along.
 > 
-> For a pilot, cost depends on what you mean by "try." A basic grammar check on one manuscript? Under five hundred dollars. But if you want the system trained on your style guide and genre conventions, we're talking two to three weeks of setup plus ongoing validation by your team.
+> **What worked:** Your context included past ("Over the past two weeks we've had a lot of emails"), present ("Today's goal is to agree on the schedule"), and future with a time ("send a timeline to leadership by next Friday"). You also set both interaction level ("Please ask questions anytime") and detail level ("this will be a detailed discussion").
 > 
-> What does accuracy look like for you? Zero errors, or good enough that your human proofreaders catch less?
-
-### H3 Held out: PM and engineering disagree on launch scope · PASS
-
-**T1 [RP]** "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] A custom scope disagreement, not the built-in "Disagree with a coworker" scene.
-
-> &lt;character name="Maya" gender="female"/&gt;
+> **What to improve:** No major gap. One tiny refinement: naming your own experience or contribution in the introduction would strengthen it slightly—e.g., "I've been with the team for two years" or "I'll also be the main point of contact for requirements."
 > 
-> I hear you on the date, but the onboarding tutorial is a lot of work for a feature users might skip anyway. Most people just click through tutorials. If we cut it, we hit our launch date and we can add it in a follow-up release.
+> **Also worth noting:** "A lot of emails" is natural; "quite a few emails going back and forth" sounds slightly more formal.
 > 
-> [You're a PM at a mid-sized SaaS company. Maya is the engineering lead. She wants to cut the onboarding tutorial to protect the launch date. The conversation is about scope vs. user experience. Difficulty: Medium.]
-
-**T2 [RP]** "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-- ✓ no feedback
-- ✓ words ≤ 120: 53 words
-- ✓ global checks G1–G4
-- [ ] Negotiates as the engineering lead (pushes back or proposes a middle ground).
-
-> That's fair — I can see why drop-off in the first week would worry you. A simpler version could work, but "simpler" still means design, content, and QA time we don't have. What did you have in mind? And if it still pushes us past the date, are you okay cutting something else?
+> **Try this instead:** "Hi everyone, I'm Lee, the lead PM for this app launch. I've been with the team for two years and I'll manage the schedule and be your main point of contact for requirements. Over the past two weeks we've had quite a few emails going back and forth about the main features. Today we'll agree on the schedule and main features so we can start development. The next step is to send a timeline to leadership by next Friday for sign-off. Please ask questions anytime—this will…
 
 </details>
 
@@ -310,97 +213,51 @@ Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review it
 
 ### Golden set: GREEN
 
-App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 00:00 UTC
+App: staging · Spec: z_Chat_Regression_Test_v1.8 · 2026-11-14 01:46 UTC
 
-**PASS 3 · FAIL 0 · FLAKY 0 · ERROR 0**
+**PASS 1 · FAIL 0 · FLAKY 0 · ERROR 0**
 
 | Case | Result | Failed checks (last attempt) |
 |---|---|---|
-| H1 Held out: finance and IT on audit-software bugs | PASS | – |
-| H2 Held out: editor exploring AI proofreading with engineering | PASS | – |
-| H3 Held out: PM and engineering disagree on launch scope | PASS | – |
+| C3 Scene card: Start a meeting, then a full ICE opening | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review items are for you to judge.
 
-### H1 Held out: finance and IT on audit-software bugs · PASS
+### C3 Scene card: Start a meeting, then a full ICE opening · PASS
 
-**T1 [RP]** "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
+**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
 - ✓ global checks G1–G4
-- [ ] Plays the IT lead at business level.
+- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
 
-> &lt;character name="Marcus" gender="male"/&gt;
+> &lt;character name="Sarah" gender="female"/&gt;
 > 
-> Marcus: "Thanks for flagging this. I've seen the tickets come in, but I need to understand the real impact before I can prioritize. Which reports are affected, and what's the deadline we're working toward?"
+> Hi everyone. I'm Sarah, the designer on this project. I'll be handling the UX and visual direction. Looking forward to getting started.
 > 
-> [You're a finance manager at your company, speaking with Marcus, the IT lead. He has three other critical projects this quarter: a security upgrade, a payroll system migration, and a vendor integration. He has two developers available. The goal: agree on which bugs to fix first and by when, before your quarter-end audit.]
+> [We're at Tesla in Austin. You're the lead project manager for a new mobile app that lets owners schedule service appointments. Over the past week, there have been emails going back and forth between the product, design, and engineering teams about requirements and timing. Today's goal is to align on the feature set and confirm the schedule so development can begin. The next step after this meeting is to share a timeline with leadership for approval.]
 > 
-> [Start with your opening.]
+> [Start with your introduction.]
 
-**T2 [RP]** "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-- ✓ no feedback
-- ✓ words ≤ 120: 91 words
+**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
+- ✓ feedback score ≥ 4: score 5
 - ✓ global checks G1–G4
-- [ ] Discusses priorities and deadlines, not engineering detail.
+- [ ] Doesn't ask the learner to redo a step they already covered.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> Marcus: "The 15th — that's tight. The totals bug is in the reconciliation module, right? I can put one developer on it starting Monday, but the other is tied up in the payroll migration until Thursday. If we hit any blockers, we might need the second developer to switch over. Are you okay with that risk, or do you want me to look at pulling someone from the vendor integration instead?"
+> Thanks, that's helpful. I appreciate the clear timeline — having a target for leadership by next Friday gives us something concrete to work toward.
 > 
-> [He needs you to confirm the tradeoff: payroll migration delay, or accept the risk of a single developer on your fix.]
-
-### H2 Held out: editor exploring AI proofreading with engineering · PASS
-
-**T1 [RP]** "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays the engineering lead in plain language.
-
-> &lt;character name="Alex" gender="male"/&gt;
+> **Course score: 5/5**: You covered all three ICE steps smoothly and included a timed next step.
 > 
-> "AI proofreading for books? That's interesting. We've used it for documentation and code comments, but I haven't thought about applying it to published content. What kind of accuracy are you looking for, and what's your current process like?"
+> **How it went:** This was a strong, professional opening that set the tone for a productive meeting.
 > 
-> [You work at Penguin Random House in New York. You're an editor handling a list of 15 nonfiction titles per season. Alex is the engineering lead for internal tools. You're exploring whether his team could build or integrate an AI proofreading tool. The goal of this conversation is to understand if it's feasible and what the tradeoffs would be.]
-
-**T2 [RP]** "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-- ✓ no feedback
-- ✓ words ≤ 120: 81 words
-- ✓ global checks G1–G4
-- [ ] Discusses feasibility and tradeoffs without getting overly technical.
-
-> "Names and technical terms are the hardest part. AI can catch grammar and style issues, but it hallucinates facts and 'corrects' proper nouns it doesn't recognize. For one book, we could run a pilot with a tool like Grammarly Enterprise or a custom GPT with a restricted dictionary—maybe two weeks of my team's time to set up and review. Cost depends on whether we buy or build. What volume of names and specialized terms are we talking about per title?"
-
-### H3 Held out: PM and engineering disagree on launch scope · PASS
-
-**T1 [RP]** "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead."
-- ✓ doesn't contain any of ["Start with your introduction","introduce yourself"]
-- ✓ character line: present
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] A custom scope disagreement, not the built-in "Disagree with a coworker" scene.
-
-> &lt;profile learner_role="PM" learner_industry="tech" learner_industry_source="inferred" learner_goal="disagree with engineering lead about launch scope confidently"/&gt;
+> **What worked:** You introduced yourself with your role and contribution ("I'll manage the schedule"), gave full context with past emails, today's goal, and a future deadline ("by next Friday"), and set both interaction level ("ask questions anytime") and detail level ("detailed discussion") for expectations.
 > 
-> &lt;character name="Maya" gender="female"/&gt;
+> **Also worth noting:** Your line "this will be a detailed discussion" is a nice, natural way to set detail level — more conversational than "technical topic" while still doing the same job.
 > 
-> I hear you on the date, but honestly, cutting the onboarding tutorial is the cleanest way to get us there. It's a full week of dev and QA time we'd get back, and our power users don't need hand-holding anyway.
+> **Try this instead:** No major gap. If you wanted to add one more sequencing word for flow, you could say: "First we'll walk through the features, then confirm the schedule, and finally agree on risks."
 > 
-> [You're a PM at a SaaS company in Berlin. Maya is the engineering lead. She's proposing to cut the onboarding tutorial to protect the launch date. The product is a B2B analytics tool. Your goal: disagree with her proposal and keep the discussion open.]
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 > 
-> [Hint: think about what you can honestly agree with in her argument, then share your concern with a specific reason.]
-
-**T2 [RP]** "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-Profile sent: Role: PM. Industry: tech (guessed from the company). Learning goal: disagree with engineering lead about launch scope confidently.
-- ✓ no feedback
-- ✓ words ≤ 120: 64 words
-- ✓ global checks G1–G4
-- [ ] Negotiates as the engineering lead (pushes back or proposes a middle ground).
-
-> That's fair — I can see the drop-off risk. A simpler tutorial could work if it actually saves time. What did you have in mind? Full interactive walkthrough, or more like tooltips on first login?
-> 
-> [You partially agreed and stated your concern with a reason. You also kept it open with a question. Good start — keep pushing for specifics or offer a concrete alternative.]
+> Want to try again without cues, doing all three steps in one go? Or pick a new scene?
 
 </details>
