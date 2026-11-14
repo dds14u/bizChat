@@ -31,7 +31,7 @@ if (!runs.length) {
 const apps = [...new Set(runs.map((r) => r.app))];
 const byApp = Object.fromEntries(apps.map((a) => [a, runs.filter((r) => r.app === a)]));
 const caseList = [];
-for (const r of runs) for (const c of r.data.results) if (!caseList.some((x) => x.id === c.id)) caseList.push({ id: c.id, title: c.title });
+for (const r of runs) for (const c of r.data.results) if (!caseList.some((x) => x.id === c.id)) caseList.push({ id: c.id, title: c.title + (c.severity && c.severity !== "blocking" ? ` (${c.severity})` : "") });
 
 // First try = passed without the automatic rerun. Final = PASS or FLAKY (what a single run counts as green).
 const stats = (app, id) => {
@@ -67,26 +67,26 @@ lines.push(`|---|${apps.map(() => "---").join("|")}|`);
 for (const c of caseList) lines.push(`| ${c.id} ${c.title.replace(/\|/g, "\\|")} | ${apps.map((a) => cell(stats(a, c.id))).join(" | ")} |`);
 const total = (a) => caseList.reduce((t, c) => { const s = stats(a, c.id); return { first: t.first + s.first, n: t.n + s.n }; }, { first: 0, n: 0 });
 lines.push(`| **Total (first try)** | ${apps.map((a) => { const t = total(a); return `**${t.first}/${t.n}**`; }).join(" | ")} |`);
-// Non-blocking checks: passes per app across runs, against each app's baseline from earlier runs
-const watchKeys = [...new Set(runs.flatMap((r) => (r.data.watch || []).map((w) => w.key)))];
-if (watchKeys.length) {
+// Non-blocking cases: first-try passes per app across runs, against each app's baseline from earlier runs
+const nbIds = [...new Set(runs.flatMap((r) => (r.data.nonBlocking || []).map((n) => n.id)))];
+if (nbIds.length) {
   const pct = (x) => `${Math.round(x * 100)}%`;
   lines.push("");
-  lines.push("## Non-blocking checks");
-  lines.push("Reported only; they never fail a case. Each cell = passed / runs (first attempts), then the baseline from earlier runs of that app.");
+  lines.push("## Non-blocking cases");
+  lines.push("Reported only; they never turn the run red. Each cell = passed on the first try / runs, then the baseline from earlier runs of that app.");
   lines.push("");
-  lines.push(`| Check | ${apps.join(" | ")} |`);
+  lines.push(`| Case | ${apps.join(" | ")} |`);
   lines.push(`|---|${apps.map(() => "---").join("|")}|`);
-  for (const key of watchKeys) {
+  for (const id of nbIds) {
     const cells = apps.map((a) => {
-      const ws = byApp[a].map((r) => (r.data.watch || []).find((w) => w.key === key)).filter(Boolean);
-      if (!ws.length) return "–";
-      const rate = ws.filter((w) => w.ok).length / ws.length;
-      const base = ws[0].baseline;
-      const worse = base && base.runs >= 3 && rate <= base.rate - 0.25;
-      return `${ws.filter((w) => w.ok).length}/${ws.length}${base ? ` · baseline ${pct(base.rate)}` : ""}${worse ? " · worse" : ""}`;
+      const ns = byApp[a].map((r) => (r.data.nonBlocking || []).find((n) => n.id === id)).filter(Boolean);
+      if (!ns.length) return "–";
+      const passed = ns.filter((n) => n.firstTry).length;
+      const base = ns[0].baseline;
+      const worse = base && base.runs >= 3 && base.rate >= 0.75 && passed / ns.length <= base.rate - 0.25;
+      return `${passed}/${ns.length}${base ? ` · baseline ${pct(base.rate)}` : ""}${worse ? " · worse" : ""}`;
     });
-    lines.push(`| ${key.replace(/</g, "&lt;").replace(/\|/g, "\\|")} | ${cells.join(" | ")} |`);
+    lines.push(`| ${id} | ${cells.join(" | ")} |`);
   }
 }
 lines.push("");

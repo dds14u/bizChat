@@ -1,7 +1,8 @@
-z_Chat_Regression_Test v1.9
-Changes since v1.8: the kinds of checks are renamed BLOCKING (was AUTO) and HUMAN-REVIEW (was REVIEW),
-and a third kind is added: NON-BLOCKING (checked automatically, reported, never fails a case). C5 and D2 move
-their known-unstable checks to NON-BLOCKING. The H (held out) group is renamed O (optional): H1–H3 are now O1–O3. Every other case and check is unchanged.
+z_Chat_Regression_Test v2.0
+Changes since v1.8: each case has one label, BLOCKING or NON-BLOCKING (HUMAN-REVIEW is defined for future cases with
+no automatic checks). C5 and D2 are NON-BLOCKING; every other case is BLOCKING. Inside a case, lines are CHECK
+(automatic) or REVIEW NOTE (for a person to read). The H (held out) group is renamed O (optional): H1–H3 are now
+O1–O3. The cases' messages and checks are otherwise unchanged from v1.8.
 
 ===== CASE GROUPS =====
 - C = Core: the basic paths every learner uses (Coach answers, scene card, menu, profile).
@@ -24,25 +25,31 @@ Profile (same as the live app)
 - After every turn, any hidden <profile …/> line is read and merged into the current profile the same way the live app
   saves it, so later turns get exactly what the live app would send. Cases never type a later-turn profile by hand.
 
-Three kinds of checks
-- BLOCKING: decided by the runner. Any failed BLOCKING check = the attempt FAILS. Use it for behavior the app
-  depends on (fixed lines, hidden lines, the right scene starting, feedback arriving) and that passes reliably.
-- NON-BLOCKING: decided by the runner the same way, but a failed NON-BLOCKING check never fails the attempt. Use it for
-  behavior that is wanted but not yet reliable, or whose failure is mild for the learner.
-- HUMAN-REVIEW: behavior only a person can judge. The runner prints the reply beside it. HUMAN-REVIEW items never
-  block a green result; they're listed under "For review" so you can skim them when you have time.
+Case labels (one per case, in its header)
+- BLOCKING: a failed case turns the run red. For behavior the app depends on (fixed lines, hidden lines, the right
+  scene starting, feedback arriving) that passes reliably.
+- NON-BLOCKING: runs and is reported with its baseline, but never turns the run red. For behavior that is wanted
+  but not yet reliable, or whose failure is mild for the learner.
+- HUMAN-REVIEW: a case with no automatic checks, only review notes. It never turns the run red.
+
+Inside a case
+- CHECK: decided by the runner. Any failed CHECK fails the case (whatever its label).
+- REVIEW NOTE: behavior only a person can judge. The runner prints the reply beside it. Review notes never fail a
+  case; they're listed so you can skim them when you have time.
+- The global checks (G1–G4) are CHECKs on every reply of every case.
 
 Results
 - Each case runs once. A FAIL is rerun once: fails twice = FAIL; passes on rerun = FLAKY (reported, not a failure).
-- Green run = every case PASS or FLAKY. The report shows PASS / FAIL / FLAKY counts, then every case (passed or
-  failed) with each turn's message, its checks (✓ / ✗), HUMAN-REVIEW items, and the full reply, hidden lines included.
-- NON-BLOCKING checks get their own table: for each one, how often it passed in this run and its baseline (its pass rate
-  over the last 10 runs of the same app). The report marks a NON-BLOCKING check "worse" when it falls clearly below its baseline
-  (25 points or more, once it has at least 3 earlier runs)
-  and "ready to promote" when it has passed in at least 9 of its last 10 runs. Nothing changes kind by itself:
-  moving a check between NON-BLOCKING and BLOCKING is an edit to this document.
-- A reliable BLOCKING check that starts failing is a regression: fix the prompt, don't move the check to NON-BLOCKING. Move a
-  check to NON-BLOCKING only when its failure is judged mild, or it fails on the live app as well.
+- Green run = every BLOCKING case is PASS or FLAKY. NON-BLOCKING and HUMAN-REVIEW cases never turn a run red.
+- The report shows PASS / FAIL / FLAKY counts and each case's label, then every case (passed or failed) with each
+  turn's message, its checks (✓ / ✗), review notes, and the full reply, hidden lines included.
+- NON-BLOCKING cases get their own table: this run's result and the case's baseline (how often it passed on the
+  first try in the last 10 earlier runs of the same app). The report marks a case "worse" when it fails on the
+  first try and its baseline is 75% or higher (once it has at least 3 earlier runs), and "ready to promote" when it
+  passed on the first try in at least 9 of its last 10 runs. Labels never change by themselves: changing a case's
+  label is an edit to this document.
+- A BLOCKING case that starts failing is a regression: fix the prompt, don't relabel the case. Make a case
+  NON-BLOCKING only when its failure is judged mild, or it fails on the live app as well.
 
 Choosing which cases run
 - Default run: every case except optional ones (C, D and S groups).
@@ -53,11 +60,11 @@ Choosing which cases run
   than one run, the report opens with a table of first-try passes per case and app (e.g. "S3: 2/3 (1 flaky)").
   Running the same prompt on both apps measures run-to-run variation; after a prompt change, it's the before/after.
 
-Text the automatic checks look at
+Text the checks look at
 - "Visible text" = the reply with hidden self-closing tags (<name attr="…"/>) removed. Text checks are not case-sensitive.
 - "Raw reply" = the reply as Dify returned it. Hidden-line checks use the raw reply.
 
-Automatic check types (used by BLOCKING and NON-BLOCKING checks)
+Check types
 - starts with "…" / contains "…" / contains any of […] / doesn't contain any of […]   (visible text)
 - link: lesson link | no link   (lesson link = a bilibili.com or b23.tv URL from the course)
 - profile: <field> contains any of […] / <field> = "…" / fields present: […] / no profile line
@@ -79,7 +86,7 @@ Shared phrase lists (S and O groups)
   (feedback graded on the meeting-opening method: Introductions, Context, Expectations). Specific phrases, not the
   single word "introduction", so feedback like "good introduction of the problem" doesn't fail.
 
-Global checks (every reply, every case; BLOCKING)
+Global checks (every reply, every case)
 - G1 Every video link is a real course lesson link (no invented links).
 - G2 No mention of Taiwan (visible text and hidden lines).
 - G3 When the learner's message has no Chinese, the visible reply has at most 5 Chinese characters.
@@ -91,77 +98,76 @@ and "This is covered in the course:" (opening of an answer the course covers).
 
 ===== FIXED INPUT TESTING =====
 
------ C1 Out of scope (Coach) -----
+----- C1 Out of scope (Coach) · BLOCKING -----
 T1 [QA] "What's for dinner?"
-  BLOCKING: contains "outside what I can help with"; link: no link; profile: no profile line; words ≤ 60.
-  HUMAN-REVIEW: declines without giving any food or cooking advice.
+  CHECK: contains "outside what I can help with"; link: no link; profile: no profile line; words ≤ 60.
+  REVIEW NOTE: declines without giving any food or cooking advice.
 
------ C2 Coach starter: first 90 days -----
+----- C2 Coach starter: first 90 days · BLOCKING -----
 T1 [QA] "What should I do in my first 90 days?"
-  BLOCKING: starts with "This is covered in the course:"; link: lesson link; list items ≥ 2.
-  HUMAN-REVIEW: the actions are concrete and come from the first-90-days lesson.
+  CHECK: starts with "This is covered in the course:"; link: lesson link; list items ≥ 2.
+  REVIEW NOTE: the actions are concrete and come from the first-90-days lesson.
 
------ C3 Scene card: Start a meeting, then a full ICE opening -----
+----- C3 Scene card: Start a meeting, then a full ICE opening · BLOCKING -----
 T1 [RP] 'Start the role-play scene "Start a meeting". Difficulty: Easy.'
-  HUMAN-REVIEW: The character's opening is short and supportive; the setup gives enough to practice ICE.
+  REVIEW NOTE: The character's opening is short and supportive; the setup gives enough to practice ICE.
 T2 [RP] "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-  BLOCKING: feedback score ≥ 4.
-  HUMAN-REVIEW: doesn't ask the learner to redo a step they already covered.
+  CHECK: feedback score ≥ 4.
+  REVIEW NOTE: doesn't ask the learner to redo a step they already covered.
 
------ C4 Menu path: greeting, then "1" -----
+----- C4 Menu path: greeting, then "1" · BLOCKING -----
 T1 [RP] "Hello"
-  BLOCKING: contains "Start a meeting"; contains any of ["describe", "your own"]; character line: absent; no feedback.
+  CHECK: contains "Start a meeting"; contains any of ["describe", "your own"]; character line: absent; no feedback.
 T2 [RP] "1"
-  BLOCKING: doesn't contain any of ["Reply with a number"]   (starts a scene instead of showing the menu again).
-  HUMAN-REVIEW: starts the built-in meeting-opening scene with a character.
+  CHECK: doesn't contain any of ["Reply with a number"]   (starts a scene instead of showing the menu again).
+  REVIEW NOTE: starts the built-in meeting-opening scene with a character.
 
------ C5 Custom scene with profile -----
+----- C5 Custom scene with profile · NON-BLOCKING -----
+Why non-blocking: the learner leads this meeting, so an occasional "Start with your introduction" prompt is mild.
+(In S1–S4 and S7–S8 the same prompt is wrong for the scene, and those cases are BLOCKING.) Saving the profile and the
+custom character line are also covered by C6 and the S cases.
 T1 [RP] "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-  BLOCKING: profile: name = "D"; role contains any of ["pm", "product manager"]; company contains any of ["apple"].
-  BLOCKING: character line: present; no feedback.
-  NON-BLOCKING: doesn't contain any of ["Start with your introduction"].
-         (The learner leads this meeting, so a prompt to introduce themselves is mild. In S1–S4 and S7–S8 the same
-         prompt would be wrong for the scene, so it stays BLOCKING there.)
-  HUMAN-REVIEW: plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
+  CHECK: profile: name = "D"; role contains any of ["pm", "product manager"]; company contains any of ["apple"].
+  CHECK: character line: present; doesn't contain any of ["Start with your introduction"]; no feedback.
+  REVIEW NOTE: plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
   Note: no learning goal is stated (the meeting topic isn't one), so goal isn't required.
 
------ C6 Profile save, then use (Coach) -----
+----- C6 Profile save, then use (Coach) · BLOCKING -----
 T1 [QA] "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team."
-  BLOCKING: profile: name = "D"; role contains any of ["pm", "product manager"]; company contains any of ["google"];
+  CHECK: profile: name = "D"; role contains any of ["pm", "product manager"]; company contains any of ["google"];
         fields present: [industry, goal]; goal contains any of ["meeting", "confident", "lead"].
 T2 [QA] "How do I start a meeting with my team?"
   (Profile carried from T1 by the runner.)
-  BLOCKING: starts with "This is covered in the course:"; link: lesson link; profile: no profile line;
+  CHECK: starts with "This is covered in the course:"; link: lesson link; profile: no profile line;
         doesn't contain any of ["what is your role", "what's your role", "which company", "where do you work"].
-  HUMAN-REVIEW: fits the advice to the learner's background where it helps; invents no conflicting background.
+  REVIEW NOTE: fits the advice to the learner's background where it helps; invents no conflicting background.
 
 
 ===== FIXED MULTI-TURN REGRESSION TESTING =====
 
------ D1 Mode switch: Role-play → Coach → back -----
+----- D1 Mode switch: Role-play → Coach → back · BLOCKING -----
 T1 [RP] 'Start the role-play scene "Disagree with a coworker". Difficulty: Medium.'
-  BLOCKING: doesn't contain any of ["Reply with a number"]; bracket line: present; no feedback.
-  HUMAN-REVIEW: The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
+  CHECK: doesn't contain any of ["Reply with a number"]; bracket line: present; no feedback.
+  REVIEW NOTE: The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
 T2 [QA] "How can I politely disagree with the idea?"
-  HUMAN-REVIEW: coaching advice based on the character's actual proposal, not a line spoken as the character.
+  REVIEW NOTE: coaching advice based on the character's actual proposal, not a line spoken as the character.
 T3 [RP] "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
-  BLOCKING: no feedback; doesn't contain any of ["Reply with a number", "Switched to"]; words ≤ 120.
-  HUMAN-REVIEW: Replies as the character and continues the same discussion (no restart, recap or mode note).
+  CHECK: no feedback; doesn't contain any of ["Reply with a number", "Switched to"]; words ≤ 120.
+  REVIEW NOTE: Replies as the character and continues the same discussion (no restart, recap or mode note).
 
------ D2 Background in passing, workplace change, and lessons applied only when they fit -----
+----- D2 Background in passing, workplace change, and lessons applied only when they fit · NON-BLOCKING -----
+Why non-blocking: updating the profile after a workplace change, and not over-using the disagreement method, fail on
+the live app too. They are open prompt issues, tracked here until fixed.
 Start profile: role = "PM", industry = "Egg farming"
 T1 [QA] "How do I start a meeting?"
-  BLOCKING: starts with "This is covered in the course:"; link: lesson link.
+  CHECK: starts with "This is covered in the course:"; link: lesson link.
 T2 [RP] "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker."
-  BLOCKING: character line: present; no feedback.
-  NON-BLOCKING: profile: company contains any of ["google"]; sandwich steps < 2.
-  HUMAN-REVIEW: a natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
+  CHECK: profile: company contains any of ["google"]; character line: present; sandwich steps < 2; no feedback.
+  REVIEW NOTE: a natural custom coworker discussion about washing eggs, not the built-in disagreement scene.
 T3 [QA] "I'm now a PM at an egg farm and discussing ML models. How should I approach this?"
   (Profile carried from T2 by the runner.)
-  NON-BLOCKING: profile: industry or company contains any of ["egg", "poultry", "farm", "agri"]; sandwich steps < 2.
-         (Profile updates after a workplace change and over-use of the disagreement method fail on the live app
-         too; they are open prompt issues, tracked here until fixed.)
-  HUMAN-REVIEW: advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
+  CHECK: profile: industry or company contains any of ["egg", "poultry", "farm", "agri"]; sandwich steps < 2.
+  REVIEW NOTE: advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker.
 
 
 ===== SCENE ADHERENCE TESTING =====
@@ -170,87 +176,87 @@ Two failures seen in the Dify logs (Oct 16–29): choosing the wrong experience 
 requested scene) and using the wrong grading criteria (an on-topic scene graded on the meeting-opening method).
 Covered elsewhere: "Start a meeting" on request → C3, C4; custom scene with profile → C5; mode switch → D1.
 
------ S1 Custom scene: client meeting -----
+----- S1 Custom scene: client meeting · BLOCKING -----
 Source: Dify logs Oct 19 (33d56a2b, 5094b254, 92ce3f20)
 T1 [RP] "I'd like to practice a client meeting. I'm an account manager at a logistics company, and the client is unhappy about late deliveries."
-  BLOCKING: doesn't contain any of [MENU, "Start with your introduction"]; no feedback.
-  HUMAN-REVIEW: starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up.
+  CHECK: doesn't contain any of [MENU, "Start with your introduction"]; no feedback.
+  REVIEW NOTE: starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up.
   Note: no character-line check, because one clarifying question is also a pass.
 
------ S2 Status update: a brief opening is fine, a kickoff isn't -----
+----- S2 Status update: a brief opening is fine, a kickoff isn't · BLOCKING -----
 Source: Dify logs Oct 19 (the learner picked "1" and got a kickoff)
 T1 [RP] "I want to practice giving a weekly status update to my project team. I'm a PM on a mobile app launch."
-  BLOCKING: doesn't contain any of [MENU].
-  HUMAN-REVIEW: sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full
+  CHECK: doesn't contain any of [MENU].
+  REVIEW NOTE: sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full
           Introductions, Context, Expectations exercise or Sarah's kickoff scene).
 T2 [RP] "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first."
-  BLOCKING: doesn't contain any of ["Start with your introduction"]; no feedback.
-  HUMAN-REVIEW: the character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
+  CHECK: doesn't contain any of ["Start with your introduction"]; no feedback.
+  REVIEW NOTE: the character responds to the blocker and the decision; doesn't ask the learner to start over with introductions.
 
------ S3 Production defects: business level, feedback fits the scene -----
+----- S3 Production defects: business level, feedback fits the scene · BLOCKING -----
 Source: Dify logs Oct 29 (ef404872)
 T1 [RP] "I'm a quality engineer at an EV battery supplier. I need to talk with the production manager about a jump in defective cells on Line 2 this week."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: plays a production manager in plain business language (impact, schedule, staffing, next steps).
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: plays a production manager in plain business language (impact, schedule, staffing, next steps).
 T2 [RP] "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?"
-  BLOCKING: no feedback; words ≤ 120.
-  HUMAN-REVIEW: stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
+  CHECK: no feedback; words ≤ 120.
+  REVIEW NOTE: stays at business level, not engineering detail (no chemistry, failure analysis or test specs).
 T3 [RP] "feedback"
-  BLOCKING: feedback score ≥ 1; doesn't contain any of [ICE FEEDBACK].
-  HUMAN-REVIEW: feedback is about how clearly the learner explained the cause, the containment plan and the request, not the
+  CHECK: feedback score ≥ 1; doesn't contain any of [ICE FEEDBACK].
+  REVIEW NOTE: feedback is about how clearly the learner explained the cause, the containment plan and the request, not the
           meeting-opening criteria.
 
------ S4 Mid-meeting: "We're already halfway through" -----
+----- S4 Mid-meeting: "We're already halfway through" · BLOCKING -----
 Source: new (scenario list #8)
 T1 [RP] "We're already halfway through our weekly project meeting. Sam from the vendor just said they might miss next month's deadline. Please play Sam."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: Sam picks up mid-meeting; no introductions or meeting opening.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: Sam picks up mid-meeting; no introductions or meeting opening.
 T2 [RP] "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?"
-  BLOCKING: doesn't contain any of [INTRO]; no feedback.
-  HUMAN-REVIEW: answers as Sam with a cause and a concrete ask; the meeting continues.
+  CHECK: doesn't contain any of [INTRO]; no feedback.
+  REVIEW NOTE: answers as Sam with a cause and a concrete ask; the meeting continues.
 
------ S5 Clear switch: meeting opener to a project delay -----
+----- S5 Clear switch: meeting opener to a project delay · BLOCKING -----
 Source: new (scenario list #9)
 Scope: tests only a clear switch, where the learner says outright that they want a different scene. Talking about a
 delay inside the same meeting isn't a switch; S4 covers that.
 T1 [RP] 'Start the role-play scene "Start a meeting". Difficulty: Easy.'
-  BLOCKING: bracket line: present; no feedback.
-  HUMAN-REVIEW: control: the built-in opener starts as usual.
+  CHECK: bracket line: present; no feedback.
+  REVIEW NOTE: control: the built-in opener starts as usual.
 T2 [RP] "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
-  BLOCKING: doesn't contain any of ["Start with your introduction"]; character line: present.
-  HUMAN-REVIEW: starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask
+  CHECK: doesn't contain any of ["Start with your introduction"]; character line: present.
+  REVIEW NOTE: starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask
           the learner to finish it first.
 T3 [RP] "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-  BLOCKING: doesn't contain any of ["Start with your introduction"]; no feedback.
-  HUMAN-REVIEW: the manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
+  CHECK: doesn't contain any of ["Start with your introduction"]; no feedback.
+  REVIEW NOTE: the manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
 
------ S6 Ambiguous request: "Ask my boss for a proportion" -----
+----- S6 Ambiguous request: "Ask my boss for a proportion" · BLOCKING -----
 Source: Dify logs Oct 16 (9499159b), exact wording
 T1 [RP] "Ask my boss for a proportion"
-  BLOCKING: doesn't contain any of [MENU, "Start a meeting"]; no feedback.
-  HUMAN-REVIEW: asks one clarifying question (proposal, raise, share of the budget?) or makes a reasonable guess and starts
+  CHECK: doesn't contain any of [MENU, "Start a meeting"]; no feedback.
+  REVIEW NOTE: asks one clarifying question (proposal, raise, share of the budget?) or makes a reasonable guess and starts
           that scene. No fixed scene menu.
 
------ S7 Manager 1:1: workload and priorities -----
+----- S7 Manager 1:1: workload and priorities · BLOCKING -----
 Source: new (scenario list #7)
 T1 [RP] "I have a 1:1 with my manager. I'm a data analyst, and I have three urgent projects at once. I want to ask for help prioritizing without sounding like I can't handle it. Please play my manager."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: acts as a manager in a 1:1, not someone running a meeting.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: acts as a manager in a 1:1, not someone running a meeting.
 T2 [RP] "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?"
-  BLOCKING: doesn't contain any of [INTRO]; no feedback.
-  HUMAN-REVIEW: engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
+  CHECK: doesn't contain any of [INTRO]; no feedback.
+  REVIEW NOTE: engages with the tradeoff (asks about deadlines or impact, or helps pick one to move).
 T3 [RP] "feedback"
-  BLOCKING: feedback score ≥ 1; doesn't contain any of [ICE FEEDBACK].
-  HUMAN-REVIEW: feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
+  CHECK: feedback score ≥ 1; doesn't contain any of [ICE FEEDBACK].
+  REVIEW NOTE: feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure.
 
------ S8 Discovery: customer success exploring client needs -----
+----- S8 Discovery: customer success exploring client needs · BLOCKING -----
 Source: new (scenario list #5)
 T1 [RP] "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: plays the client and leaves the questions to the learner.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: plays the client and leaves the questions to the learner.
 T2 [RP] "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?"
-  BLOCKING: no feedback; words ≤ 120.
-  HUMAN-REVIEW: answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on
+  CHECK: no feedback; words ≤ 120.
+  REVIEW NOTE: answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on
           the learner.
 
 
@@ -258,29 +264,29 @@ T2 [RP] "Thanks for your time today. What problem are you hoping our software wi
 Reworded checks for the S group. Run them only after a prompt change ("O" or EVAL_OPTIONAL=1). If they pass without
 being tuned for, the fix generalizes.
 
------ O1 Optional: finance and IT on audit-software bugs -----
+----- O1 Optional: finance and IT on audit-software bugs · BLOCKING -----
 Source: reworded check for S3 (scenario list #1)
 T1 [RP] "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: plays the IT lead at business level.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: plays the IT lead at business level.
 T2 [RP] "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?"
-  BLOCKING: no feedback; words ≤ 120.
-  HUMAN-REVIEW: discusses priorities and deadlines, not engineering detail.
+  CHECK: no feedback; words ≤ 120.
+  REVIEW NOTE: discusses priorities and deadlines, not engineering detail.
 
------ O2 Optional: editor exploring AI proofreading with engineering -----
+----- O2 Optional: editor exploring AI proofreading with engineering · BLOCKING -----
 Source: reworded check for S3 (scenario list #3)
 T1 [RP] "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: plays the engineering lead in plain language.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: plays the engineering lead in plain language.
 T2 [RP] "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?"
-  BLOCKING: no feedback; words ≤ 120.
-  HUMAN-REVIEW: discusses feasibility and tradeoffs without getting overly technical.
+  CHECK: no feedback; words ≤ 120.
+  REVIEW NOTE: discusses feasibility and tradeoffs without getting overly technical.
 
------ O3 Optional: PM and engineering disagree on launch scope -----
+----- O3 Optional: PM and engineering disagree on launch scope · BLOCKING -----
 Source: known good in Dify logs (scenario list #6)
 T1 [RP] "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead."
-  BLOCKING: doesn't contain any of [INTRO]; character line: present; no feedback.
-  HUMAN-REVIEW: a custom scope disagreement, not the built-in "Disagree with a coworker" scene.
+  CHECK: doesn't contain any of [INTRO]; character line: present; no feedback.
+  REVIEW NOTE: a custom scope disagreement, not the built-in "Disagree with a coworker" scene.
 T2 [RP] "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?"
-  BLOCKING: no feedback; words ≤ 120.
-  HUMAN-REVIEW: negotiates as the engineering lead (pushes back or proposes a middle ground).
+  CHECK: no feedback; words ≤ 120.
+  REVIEW NOTE: negotiates as the engineering lead (pushes back or proposes a middle ground).

@@ -139,7 +139,7 @@ async function attempt(c) {
     const summary = profileSummary(profile);
     const sent = asPageSends(t.message, t.mode, lastReply);
     const inputs = { ...(summary ? { learner_profile: summary } : {}), ...(sent.scene ? { scene: sent.scene } : {}) };
-    const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], watch: [], review: [...(t.review || [])] };
+    const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], review: [...(t.review || [])] };
     try {
       const r = await askWithRetry({ query: `${t.mode} ${sent.query}`, inputs, conversationId });
       conversationId = r.conversationId;
@@ -148,8 +148,6 @@ async function attempt(c) {
       if (sent.scene) turn.sceneSent = sent.scene;
       turn.ms = r.ms;
       for (const check of t.auto || []) turn.checks.push(runCheck(check, r.answer));
-      // Non-blocking: checked the same way, reported, never fail the attempt
-      for (const check of t.watch || []) turn.watch.push(runCheck(check, r.answer));
       const g = globalChecks(r.answer, t.message, lessonIds);
       turn.checks.push(...g.results);
       turn.review.push(...g.review);
@@ -170,10 +168,11 @@ async function attempt(c) {
 // ERROR = Dify or the model provider didn't return a reply (not a prompt result); it still blocks a green run
 async function runCase(c) {
   const first = await attempt(c);
-  if (!first.failed) return { id: c.id, title: c.title, status: "PASS", attempts: [first] };
+  const severity = c.severity || "blocking";
+  if (!first.failed) return { id: c.id, title: c.title, severity, status: "PASS", attempts: [first] };
   const second = await attempt(c);
   const status = !second.failed ? "FLAKY" : second.errored ? "ERROR" : "FAIL";
-  return { id: c.id, title: c.title, status, attempts: [first, second] };
+  return { id: c.id, title: c.title, severity, status, attempts: [first, second] };
 }
 
 // Run cases a few at a time (turns within a case stay in order)
@@ -189,36 +188,44 @@ await Promise.all(
   })
 );
 
-// ---------- Non-blocking checks: this run vs. earlier runs of the same app ----------
-// Each check is scored on the case's first attempt. Baseline = pass rate over the last 10 earlier runs.
+// ---------- Non-blocking cases: this run vs. earlier runs of the same app ----------
+// Baseline = how often the case passed on the first try in the last 10 earlier runs (results.json files).
 const app = env.EVAL_APP || "production";
-const watch = results.flatMap((r) =>
-  r.attempts[0].turns.flatMap((t) => (t.watch || []).map((w) => ({ key: `${r.id} T${t.n}: ${w.label}`, ok: w.ok })))
-);
 const history = [];
 if (env.EVAL_HISTORY) {
   for (const name of await readdir(env.EVAL_HISTORY).catch(() => [])) {
     if (!name.endsWith(".json")) continue;
     try {
       const h = JSON.parse(await readFile(resolve(env.EVAL_HISTORY, name), "utf8"));
-      if (h.app === app && Array.isArray(h.watch)) history.push(h);
+      if (h.app === app && Array.isArray(h.results)) history.push(h);
     } catch {
       // not a single-run results file
     }
   }
 }
 history.sort((a, b) => String(a.at).localeCompare(String(b.at)));
-for (const w of watch) {
-  const past = history.map((h) => h.watch.find((x) => x.key === w.key)).filter(Boolean).slice(-10);
-  w.baseline = past.length ? { rate: past.filter((x) => x.ok).length / past.length, runs: past.length } : null;
-  const last10 = [...past, w].slice(-10);
-  w.readyToPromote = last10.length === 10 && last10.filter((x) => x.ok).length >= 9;
-  w.worse = Boolean(w.baseline && w.baseline.runs >= 3 && (w.ok ? 1 : 0) <= w.baseline.rate - 0.25);
-}
+const nonBlocking = results
+  .filter((r) => r.severity === "non-blocking")
+  .map((r) => {
+    const firstTry = r.status === "PASS";
+    const past = history.map((h) => h.results.find((x) => x.id === r.id)).filter(Boolean).slice(-10).map((x) => x.status === "PASS");
+    const baseline = past.length ? { rate: past.filter(Boolean).length / past.length, runs: past.length } : null;
+    const last10 = [...past, firstTry].slice(-10);
+    return {
+      id: r.id,
+      status: r.status,
+      firstTry,
+      baseline,
+      worse: Boolean(!firstTry && baseline && baseline.runs >= 3 && baseline.rate >= 0.75),
+      readyToPromote: last10.length === 10 && last10.filter(Boolean).length >= 9,
+    };
+  });
 
 // ---------- Report ----------
 const count = (s) => results.filter((r) => r.status === s).length;
-const green = count("FAIL") === 0 && count("ERROR") === 0;
+// Only BLOCKING cases turn a run red
+const green = !results.some((r) => r.severity === "blocking" && (r.status === "FAIL" || r.status === "ERROR"));
+const LABEL = { blocking: "BLOCKING", "non-blocking": "NON-BLOCKING", "human-review": "HUMAN-REVIEW" };
 const quote = (text, max = 1500) => {
   const t = String(text || "").trim();
   const cut = t.length > max ? `${t.slice(0, max)}…` : t;
@@ -232,25 +239,25 @@ lines.push(`App: ${app} · Spec: ${golden.spec} · ${new Date().toISOString().re
 lines.push("");
 lines.push(`**PASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}**`);
 lines.push("");
-lines.push("| Case | Result | Failed checks (last attempt) |");
-lines.push("|---|---|---|");
+lines.push("| Case | Label | Result | Failed checks (last attempt) |");
+lines.push("|---|---|---|---|");
 for (const r of results) {
   const last = r.attempts.at(-1);
   const fails = last.turns.flatMap((t) => t.checks.filter((c) => !c.ok).map((c) => `T${t.n}: ${c.label}${c.detail ? ` (${c.detail})` : ""}`));
   const shown = r.status === "FLAKY" ? `passed on rerun; first try: ${r.attempts[0].turns.flatMap((t) => t.checks.filter((c) => !c.ok).map((c) => `T${t.n}: ${c.label}`)).join("; ")}` : fails.join("; ");
-  lines.push(`| ${r.id} ${r.title} | ${r.status} | ${shown.replace(/\|/g, "\\|") || "–"} |`);
+  lines.push(`| ${r.id} ${r.title} | ${LABEL[r.severity] || r.severity} | ${r.status} | ${shown.replace(/\|/g, "\\|") || "–"} |`);
 }
-if (watch.length) {
+if (nonBlocking.length) {
   const pct = (x) => `${Math.round(x * 100)}%`;
   lines.push("");
-  lines.push("## Non-blocking checks");
-  lines.push("Reported only; they never fail a case. Baseline = pass rate over the last 10 earlier runs of this app (first attempts).");
+  lines.push("## Non-blocking cases");
+  lines.push("Reported only; they never turn the run red. Baseline = how often the case passed on the first try in the last 10 earlier runs of this app.");
   lines.push("");
-  lines.push("| Check | This run | Baseline | Note |");
+  lines.push("| Case | This run | Baseline | Note |");
   lines.push("|---|---|---|---|");
-  for (const w of watch) {
-    const note = w.worse ? "worse" : w.readyToPromote ? "ready to promote" : "";
-    lines.push(`| ${esc(w.key).replace(/\|/g, "\\|")} | ${w.ok ? "✓" : "✗"} | ${w.baseline ? `${pct(w.baseline.rate)} (${w.baseline.runs} runs)` : "–"} | ${note} |`);
+  for (const n of nonBlocking) {
+    const note = n.worse ? "worse" : n.readyToPromote ? "ready to promote" : "";
+    lines.push(`| ${n.id} | ${n.status} | ${n.baseline ? `${pct(n.baseline.rate)} (${n.baseline.runs} runs)` : "–"} | ${note} |`);
   }
 }
 
@@ -259,10 +266,10 @@ if (watch.length) {
 const isGlobal = (c) => /^G\d /.test(c.label);
 lines.push("");
 lines.push("## Every reply (passed and failed)");
-lines.push("Each case shows every attempt. ✓ = check passed, ✗ = check failed. Human-review items are for you to judge; non-blocking checks are marked.");
+lines.push("Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review notes are for you to judge.");
 for (const r of results) {
   lines.push("");
-  lines.push(`### ${r.id} ${r.title} · ${r.status}`);
+  lines.push(`### ${r.id} ${r.title} · ${LABEL[r.severity] || r.severity} · ${r.status}`);
   for (const [ai, a] of r.attempts.entries()) {
     if (r.attempts.length > 1) {
       lines.push("");
@@ -276,7 +283,6 @@ for (const r of results) {
       const own = t.checks.filter((c) => !isGlobal(c));
       const globals = t.checks.filter(isGlobal);
       for (const c of own) lines.push(`- ${c.ok ? "✓" : "✗"} ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
-      for (const c of t.watch || []) lines.push(`- ${c.ok ? "✓" : "✗"} (non-blocking) ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
       const badGlobals = globals.filter((c) => !c.ok);
       if (globals.length) lines.push(badGlobals.length ? badGlobals.map((c) => `- ✗ ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`).join("\n") : "- ✓ global checks G1–G4");
       for (const item of t.review) lines.push(`- [ ] ${esc(item)}`);
@@ -291,7 +297,7 @@ await mkdir(outDir, { recursive: true });
 await writeFile(new URL("report.md", outDir), lines.join("\n") + "\n");
 await writeFile(
   new URL("results.json", outDir),
-  JSON.stringify({ spec: golden.spec, app, at: new Date().toISOString(), green, watch, results }, null, 2)
+  JSON.stringify({ spec: golden.spec, app, at: new Date().toISOString(), green, nonBlocking, results }, null, 2)
 );
 console.log(`\nPASS ${count("PASS")} · FAIL ${count("FAIL")} · FLAKY ${count("FLAKY")} · ERROR ${count("ERROR")}`);
 process.exit(green ? 0 : 1);

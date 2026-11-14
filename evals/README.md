@@ -3,7 +3,7 @@
 Fixed test conversations sent straight to the Dify app, the same way the live app sends them,
 with replies checked by plain code. No model reads the cases or grades the replies.
 
-- `z_Chat_Regression_Test_v1.9.txt`: the spec (cases, checks and how tests run).
+- `z_Chat_Regression_Test_v2.0.txt`: the spec (cases, checks and how tests run).
 - `golden.json`: the cases, translated from the spec.
 - `checks.mjs`: the AUTO checks and the global checks G1–G4.
 - `run.mjs`: the runner. Each case is a new chat; the saved profile is carried between turns with the
@@ -24,11 +24,13 @@ with replies checked by plain code. No model reads the cases or grades the repli
 - **O** optional: reworded S checks, skipped by default and never tuned against. Run them after a prompt change
   by naming them (`EVAL_CASES="O"`) or with `EVAL_OPTIONAL=1`. If they pass without tuning, the fix generalizes.
 
-## Kinds of checks
-- **BLOCKING** (`auto` in golden.json): any failure fails the case.
-- **NON-BLOCKING** (`watch`): checked the same way and reported in their own table with a baseline (pass rate over
-  the last 10 earlier runs of the same app), marked "worse" or "ready to promote". They never fail a case.
-- **HUMAN-REVIEW** (`review`): listed beside the reply for you to judge.
+## Case labels (one per case: `severity` in golden.json)
+- **BLOCKING** (`blocking`): a failed case turns the run red.
+- **NON-BLOCKING** (`non-blocking`): reported in its own table with a baseline (how often it passed on the first
+  try in the last 10 earlier runs of the same app), marked "worse" or "ready to promote". Never turns the run red.
+- **HUMAN-REVIEW** (`human-review`): a case with no automatic checks, only review notes.
+
+Inside a case, `auto` lists the automatic checks and `review` the notes for a person to read.
 
 ## Settings (GitHub → Settings → Secrets and variables → Actions)
 - Secret `DIFY_API_KEY`: production app key. Optional secret `DIFY_API_KEY_STAGING`.
