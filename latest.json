@@ -5,14 +5,14 @@
     "staging"
   ],
   "repeats": 2,
-  "at": "2026-11-14T01:46:21.997Z",
+  "at": "2026-11-14T01:47:50.514Z",
   "green": true,
   "runs": [
     {
       "name": "production-1",
       "spec": "z_Chat_Regression_Test_v1.8",
       "app": "production",
-      "at": "2026-11-14T01:45:08.421Z",
+      "at": "2026-11-14T01:46:50.168Z",
       "green": true,
       "results": [
         {
@@ -46,223 +46,8 @@
                   "review": [
                     "The character's opening is short and supportive; the setup gives enough to practice ICE."
                   ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. We're all set on our end.\n\n[You are the lead project manager at Apple, kicking off a new mobile app launch. The team has exchanged emails about requirements for the past two weeks. Today's goal is to align on the schedule and main features. The next step is to share a timeline with leadership by next Friday.]\n\n[Start with your introduction.]",
-                  "ms": 7579
-                },
-                {
-                  "n": 2,
-                  "mode": "[RP]",
-                  "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "feedback score ≥ 4",
-                      "detail": "score 4"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "Doesn't ask the learner to redo a step they already covered."
-                  ],
-                  "reply": "Thanks, Lee. That all sounds clear — looking forward to seeing the timeline.\n\n**Course score: 4/5** — You covered all three ICE steps: Introductions, Context, and Expectations.\n\n**How it went:** Great job! You moved smoothly from your introduction into the past, present, and future, and you set both interaction and detail expectations in one line.\n\n**What worked:**\n- \"Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday\" — This shows strong Context: past, present, and future with a clear deadline.\n\n**What to improve:**\n- Your introduction could include when you started or how long you've been with the team, to build more connection with the group.\n- \"Please ask questions anytime, and this will be a detailed discussion\" combines interaction and detail well, but splitting them slightly would make each expectation even clearer.\n\n**Try this instead:**\n\"Hi everyone, I'm Lee. I've been with the team for two years and I'm the lead PM for this app launch. I'll be managing the schedule and also the main point of contact for requirements. We've had quite a few emails going back and forth about the main features over the past two weeks. Today we'll agree on the schedule and confirm the feature set, so that everyone is aligned before development starts. The next step is to share a timeline with leadership by next Friday. Please feel free to interrupt if you have questions, because we'll be getting into the details.\"\n\nWant to try again, or pick a new scene?",
-                  "ms": 12443
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "production-2",
-      "spec": "z_Chat_Regression_Test_v1.8",
-      "app": "production",
-      "at": "2026-11-14T01:45:58.625Z",
-      "green": true,
-      "results": [
-        {
-          "id": "C3",
-          "title": "Scene card: Start a meeting, then a full ICE opening",
-          "status": "FLAKY",
-          "attempts": [
-            {
-              "failed": true,
-              "errored": false,
-              "turns": [
-                {
-                  "n": 1,
-                  "mode": "[RP]",
-                  "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "The character's opening is short and supportive; the setup gives enough to practice ICE."
-                  ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for setting this up. We're looking forward to getting started.\n\n[You're the lead PM for a new mobile app launch at Microsoft. The team has exchanged emails about requirements for two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to share a timeline with leadership by next Friday.]\n\n[Start with your introduction.]",
-                  "ms": 5508
-                },
-                {
-                  "n": 2,
-                  "mode": "[RP]",
-                  "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": false,
-                      "label": "feedback score ≥ 4",
-                      "detail": "no score"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "Doesn't ask the learner to redo a step they already covered."
-                  ],
-                  "reply": "Thanks, Lee. That all sounds clear, and it's helpful to know we can jump in with questions.\n\n[Start with your introduction.]\n\nWant to try again, or pick a new scene?",
-                  "ms": 3839
-                }
-              ]
-            },
-            {
-              "failed": false,
-              "errored": false,
-              "turns": [
-                {
-                  "n": 1,
-                  "mode": "[RP]",
-                  "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "The character's opening is short and supportive; the setup gives enough to practice ICE."
-                  ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for setting this up. I'm looking forward to getting aligned today.\n\n[You are the lead PM for a new mobile app launch at a consumer tech company. Over the past week, the team has exchanged several emails about conflicting priorities between the design and engineering teams. Today's goal is to agree on the core features for the first release and confirm who owns each piece. After the meeting, the plan is to send a decision summary to leadership by next Wednesday.]\n\n[Start with your introduction.]",
-                  "ms": 7861
-                },
-                {
-                  "n": 2,
-                  "mode": "[RP]",
-                  "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "feedback score ≥ 4",
-                      "detail": "score 4"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "Doesn't ask the learner to redo a step they already covered."
-                  ],
-                  "reply": "Thanks, Lee. That all sounds good — looking forward to the detailed walkthrough.\n\n**Course score: 4/5** — You covered all three ICE steps: Introductions, Context, and Expectations.\n\n**How it went:** Great job! You got through the opening clearly and gave the team a clear picture of where things stand.\n\n**What worked:**\n- \"Over the past two weeks we've had a lot of emails about the main features\" — This is strong Context: Past. You explained how you got to this meeting, which helps everyone understand why they're here.\n\n**What to improve:**\n- Your Context: Future has a deadline, but it's slightly vague what the summary will include. \"Send a timeline to leadership\" could be sharper — will it be the feature list, the schedule, or both? A clearer next step would help.\n- Your Expectations line mixes interaction and detail in one sentence, which is fine, but you could make the level of detail more explicit: \"this will be a detailed discussion\" works, though you might also signal whether you'll go into technical specifics or stay at a feature level.\n\n**Try this instead:**\n\"We hope to send a confirmed feature list and timeline to leadership by next Friday, so we can get formal sign-off and start development the following week.\"\n\nWant to try again, or pick a new scene?",
-                  "ms": 10609
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "staging-1",
-      "spec": "z_Chat_Regression_Test_v1.8",
-      "app": "staging",
-      "at": "2026-11-14T01:45:30.768Z",
-      "green": true,
-      "results": [
-        {
-          "id": "C3",
-          "title": "Scene card: Start a meeting, then a full ICE opening",
-          "status": "PASS",
-          "attempts": [
-            {
-              "failed": false,
-              "errored": false,
-              "turns": [
-                {
-                  "n": 1,
-                  "mode": "[RP]",
-                  "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "The character's opening is short and supportive; the setup gives enough to practice ICE."
-                  ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm Sarah, and I'll be supporting the marketing side on this project. I'm looking forward to hearing what we'll be working on.\n\n[You're the lead project manager for a new mobile app at Apple. The team is in Cupertino. Over the past two weeks, there have been emails going back and forth about requirements and timing. Today's goal is to align on the schedule and main features so development can begin. The next step will be to share a timeline with leadership for sign-off.]\n\n[Start with your introduction.]",
-                  "ms": 8805
+                  "reply": "Thanks for joining today. We're here to kick off the new mobile app project, and I'm looking forward to hearing how we'll move forward.\n\n[Setting: You're the lead project manager at Google. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to share a timeline with leadership by next Friday. I'm Sarah, attending with the broader team.]\n\n[Start with your introduction.]",
+                  "ms": 8732
                 },
                 {
                   "n": 2,
@@ -291,8 +76,8 @@
                   "review": [
                     "Doesn't ask the learner to redo a step they already covered."
                   ],
-                  "reply": "Thanks, that's helpful. I appreciate the clear timeline.\n\n**Course score: 5/5**: You covered all three ICE steps with clear details and a specific deadline.\n\n**How it went:** This was a strong, complete opening that gave the team everything they needed to follow along.\n\n**What worked:** Your context included past (\"Over the past two weeks we've had a lot of emails\"), present (\"Today's goal is to agree on the schedule\"), and future with a time (\"send a timeline to leadership by next Friday\"). You also set both interaction level (\"Please ask questions anytime\") and detail level (\"this will be a detailed discussion\").\n\n**What to improve:** No major gap. One tiny refinement: naming your own experience or contribution in the introduction would strengthen it slightly—e.g., \"I've been with the team for two years\" or \"I'll also be the main point of contact for requirements.\"\n\n**Also worth noting:** \"A lot of emails\" is natural; \"quite a few emails going back and forth\" sounds slightly more formal.\n\n**Try this instead:** \"Hi everyone, I'm Lee, the lead PM for this app launch. I've been with the team for two years and I'll manage the schedule and be your main point of contact for requirements. Over the past two weeks we've had quite a few emails going back and forth about the main features. Today we'll agree on the schedule and main features so we can start development. The next step is to send a timeline to leadership by next Friday for sign-off. Please ask questions anytime—this will be a detailed discussion.\"\n\nWant to try again, or pick a new scene?",
-                  "ms": 13504
+                  "reply": "Thanks, Lee. That sounds clear — we’re all set to dive in.\n\n**Course score: 5/5** — You covered all three ICE steps smoothly.\n\n**How it went:** Great job! You introduced yourself, gave full context, and set expectations in one go.\n\n**What worked:**\n- \"Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday.\" — This shows **Context: past, present, and future** with a clear deadline, which helps the team understand why we're here and what happens next.\n\n**What to improve:**\n- Nothing major. One tiny polish: \"Please ask questions anytime, and this will be a detailed discussion\" combines interaction and detail well, though \"please feel free to interrupt if you have questions\" is slightly more natural than \"ask questions anytime.\"\n\n**Try this instead:**\n- \"Please feel free to interrupt if you have any questions or comments. We're going to get into the details today.\"\n\nWant to try again without cues, doing all three steps in one go? Or pick a new scene?",
+                  "ms": 10181
                 }
               ]
             }
@@ -301,10 +86,10 @@
       ]
     },
     {
-      "name": "staging-2",
+      "name": "production-2",
       "spec": "z_Chat_Regression_Test_v1.8",
-      "app": "staging",
-      "at": "2026-11-14T01:46:21.959Z",
+      "app": "production",
+      "at": "2026-11-14T01:47:33.883Z",
       "green": true,
       "results": [
         {
@@ -338,8 +123,86 @@
                   "review": [
                     "The character's opening is short and supportive; the setup gives enough to practice ICE."
                   ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone. I'm Sarah, the designer on this project. I'll be handling the UX and visual direction. Looking forward to getting started.\n\n[We're at Tesla in Austin. You're the lead project manager for a new mobile app that lets owners schedule service appointments. Over the past week, there have been emails going back and forth between the product, design, and engineering teams about requirements and timing. Today's goal is to align on the feature set and confirm the schedule so development can begin. The next step after this meeting is to share a timeline with leadership for approval.]\n\n[Start with your introduction.]",
-                  "ms": 8217
+                  "reply": "Thanks for joining us today, everyone. We're excited to get this project moving.\n\n[You're a project manager at Apple, leading a kickoff meeting for a new app launch. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features. The next step is to share a timeline with leadership by next Friday.]\n\n[Start with your introduction.]",
+                  "ms": 13984
+                },
+                {
+                  "n": 2,
+                  "mode": "[RP]",
+                  "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
+                  "profileSent": "(empty)",
+                  "checks": [
+                    {
+                      "ok": true,
+                      "label": "feedback score ≥ 4",
+                      "detail": "score 4"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G2 no mention of Taiwan"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G3 English reply"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G4 hidden lines well formed"
+                    }
+                  ],
+                  "review": [
+                    "Doesn't ask the learner to redo a step they already covered.",
+                    "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+                  ],
+                  "reply": "Thanks, Lee. That all sounds good — looking forward to seeing the timeline.\n\n**Course score: 4/5** — You covered all three ICE steps with good detail.\n\n**How it went:** Great job! You gave a clear introduction, solid context, and set expectations well.\n\n**What worked:**\n- \"Please ask questions anytime, and this will be a detailed discussion\" — Expectations: you covered both level of interaction (questions welcome) and level of detail (detailed discussion), which helps the team know how to participate.\n\n**What to improve:**\n- Context: the future part — \"the next step is to send a timeline to leadership by next Friday\" is good, but adding what happens after sign-off would strengthen it. For example, when does development officially start?\n- Introduction: you shared your name, role, and contribution clearly. No gap here.\n\n**Also worth noting:** \"a lot of emails\" is fine, but \"quite a few emails going back and forth\" sounds slightly more natural for a meeting opening.\n\n**Try this instead:** \"We've had quite a few emails going back and forth about this kickoff. Today we'll confirm the schedule and main features so that everyone is aligned before we start the project. We hope to get a written sign-off from leadership by next Friday so that we can officially start development next Monday.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/\n\nWant to try again, or pick a new scene?",
+                  "ms": 12273
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "staging-1",
+      "spec": "z_Chat_Regression_Test_v1.8",
+      "app": "staging",
+      "at": "2026-11-14T01:47:07.594Z",
+      "green": true,
+      "results": [
+        {
+          "id": "C3",
+          "title": "Scene card: Start a meeting, then a full ICE opening",
+          "status": "PASS",
+          "attempts": [
+            {
+              "failed": false,
+              "errored": false,
+              "turns": [
+                {
+                  "n": 1,
+                  "mode": "[RP]",
+                  "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+                  "profileSent": "(empty)",
+                  "checks": [
+                    {
+                      "ok": true,
+                      "label": "G2 no mention of Taiwan"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G3 English reply"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G4 hidden lines well formed"
+                    }
+                  ],
+                  "review": [
+                    "The character's opening is short and supportive; the setup gives enough to practice ICE."
+                  ],
+                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm Sarah, from the marketing side. I'll be coordinating the campaign assets for this launch.\n\n[We're at Tesla. You're the lead project manager for a new mobile app update. Over the past two weeks, there have been emails back and forth between the engineering and design teams about features and timelines. Today's goal is to align everyone on the final scope and schedule before development begins. The next step will be getting written approval from the US leadership team.]\n\n[Start with your introduction.]",
+                  "ms": 6106
                 },
                 {
                   "n": 2,
@@ -369,8 +232,86 @@
                     "Doesn't ask the learner to redo a step they already covered.",
                     "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
                   ],
-                  "reply": "Thanks, that's helpful. I appreciate the clear timeline — having a target for leadership by next Friday gives us something concrete to work toward.\n\n**Course score: 5/5**: You covered all three ICE steps smoothly and included a timed next step.\n\n**How it went:** This was a strong, professional opening that set the tone for a productive meeting.\n\n**What worked:** You introduced yourself with your role and contribution (\"I'll manage the schedule\"), gave full context with past emails, today's goal, and a future deadline (\"by next Friday\"), and set both interaction level (\"ask questions anytime\") and detail level (\"detailed discussion\") for expectations.\n\n**Also worth noting:** Your line \"this will be a detailed discussion\" is a nice, natural way to set detail level — more conversational than \"technical topic\" while still doing the same job.\n\n**Try this instead:** No major gap. If you wanted to add one more sequencing word for flow, you could say: \"First we'll walk through the features, then confirm the schedule, and finally agree on risks.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/\n\nWant to try again without cues, doing all three steps in one go? Or pick a new scene?",
-                  "ms": 15076
+                  "reply": "Thanks, that's helpful. I appreciate the clear timeline.\n\n**Course score: 5/5**: You covered all three ICE steps with specific details and a timed next step.\n\n**How it went:** This was a strong, complete opening that gave the team everything they needed to follow along.\n\n**What worked:** Your Context covered all three parts smoothly—past (\"Over the past two weeks we've had a lot of emails\"), present (\"Today's goal is to agree on the schedule\"), and future (\"send a timeline to leadership by next Friday\"). Your Expectations were also clear: you invited questions and set the level of detail.\n\n**What to improve:** Nothing major. If you wanted to add one thing, you could briefly say how *you* specifically will contribute beyond \"manage the schedule\"—for example, \"I'll also be the main point of contact for requirements.\"\n\n**Also worth noting:** \"A lot of emails\" is fine; \"quite a few emails going back and forth\" sounds slightly more natural in a kickoff.\n\n**Try this instead:** \"Hi everyone, I'm Lee, the lead PM for this app update. I'll manage the schedule and be the main point of contact for requirements. Over the past two weeks we've had quite a few emails going back and forth about the main features. Today we'll agree on the final schedule and scope, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime—this will be a detailed discussion.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/\n\nWant to try again, or pick a new scene?",
+                  "ms": 11288
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "staging-2",
+      "spec": "z_Chat_Regression_Test_v1.8",
+      "app": "staging",
+      "at": "2026-11-14T01:47:50.486Z",
+      "green": true,
+      "results": [
+        {
+          "id": "C3",
+          "title": "Scene card: Start a meeting, then a full ICE opening",
+          "status": "PASS",
+          "attempts": [
+            {
+              "failed": false,
+              "errored": false,
+              "turns": [
+                {
+                  "n": 1,
+                  "mode": "[RP]",
+                  "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+                  "profileSent": "(empty)",
+                  "checks": [
+                    {
+                      "ok": true,
+                      "label": "G2 no mention of Taiwan"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G3 English reply"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G4 hidden lines well formed"
+                    }
+                  ],
+                  "review": [
+                    "The character's opening is short and supportive; the setup gives enough to practice ICE."
+                  ],
+                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi, I'm Sarah. I'm looking forward to getting this project moving.\n\n[You're a project manager at Apple, leading a kickoff meeting for a new internal app. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features before development begins. Sarah is a designer on the team, attending your meeting.]\n\n[Start with your introduction.]",
+                  "ms": 5501
+                },
+                {
+                  "n": 2,
+                  "mode": "[RP]",
+                  "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
+                  "profileSent": "(empty)",
+                  "checks": [
+                    {
+                      "ok": true,
+                      "label": "feedback score ≥ 4",
+                      "detail": "score 5"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G2 no mention of Taiwan"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G3 English reply"
+                    },
+                    {
+                      "ok": true,
+                      "label": "G4 hidden lines well formed"
+                    }
+                  ],
+                  "review": [
+                    "Doesn't ask the learner to redo a step they already covered.",
+                    "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+                  ],
+                  "reply": "Thanks, that's helpful. I appreciate the clear timeline.\n\n**Course score: 5/5**: You covered all three ICE steps with specific details and a clear sense of time.\n\n**How it went:** Strong, complete opening—you gave the team everything they need to follow along.\n\n**What worked:** Your context covered past (\"a lot of emails about the main features\"), present (\"agree on the schedule\"), and future (\"send a timeline to leadership by next Friday\"). You also set expectations for both interaction (\"ask questions anytime\") and level of detail (\"detailed discussion\").\n\n**What to improve:** No major gap. If you wanted to add one thing, you could say how *you* personally contribute beyond managing schedule—for example, \"I'll also be the main point of contact for requirements.\"\n\n**Also worth noting:** \"A lot of emails\" is fine; \"quite a few emails going back and forth\" sounds slightly more natural in a formal kickoff.\n\n**Try this instead:** \"Over the past two weeks, we've had quite a few emails going back and forth about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime—this will be a detailed discussion.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/\n\nWant to try again, or pick a new scene?",
+                  "ms": 11067
                 }
               ]
             }
