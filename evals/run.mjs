@@ -54,6 +54,11 @@ async function ask({ query, inputs, conversationId }) {
     });
   let res = await send(inputs);
   // Same fallback as the live app: if the Chatflow rejects the profile, chat without it
+  if (res.status === 400 && inputs.scene) {
+    const { scene: _dropped, ...rest } = inputs;
+    inputs = rest;
+    res = await send(inputs);
+  }
   if (res.status === 400 && Object.keys(inputs).length) res = await send({});
   if (!res.ok || !res.body) throw new Error(`Dify ${res.status}: ${(await res.text().catch(() => "")).slice(0, 300)}`);
 
@@ -106,19 +111,40 @@ async function askWithRetry(args) {
   throw last;
 }
 
+// Built-in scenes as the page sends them (mirrors src/scenes.ts): a scene card sends its kickoff
+// with a one-time "scene" input, and a number typed right after the tutor's menu counts as a card tap.
+const MENU_SCENES = {
+  1: { title: "Start a meeting", difficulty: "Easy" },
+  2: { title: "Disagree with a coworker", difficulty: "Medium" },
+  3: { title: "Reject a late request", difficulty: "Medium" },
+};
+function asPageSends(message, mode, lastReply) {
+  const n = mode === "[RP]" && /Reply with a number:/i.test(lastReply) ? message.trim().match(/^([1-3])[.)。]?$/)?.[1] : null;
+  if (n) {
+    const { title, difficulty } = MENU_SCENES[n];
+    return { query: `Start the role-play scene "${title}". Difficulty: ${difficulty}.`, scene: title };
+  }
+  const card = message.match(/^Start the role-play scene "([^"]+)"/);
+  return { query: message, scene: card ? card[1] : "" };
+}
+
 /** One attempt at a case: all turns in one conversation, profile carried like the live app. */
 async function attempt(c) {
   let profile = sanitizeProfile(c.startProfile || {});
   let conversationId = "";
   const turns = [];
+  let lastReply = "";
   for (const [i, t] of c.turns.entries()) {
     const summary = profileSummary(profile);
-    const inputs = summary ? { learner_profile: summary } : {};
+    const sent = asPageSends(t.message, t.mode, lastReply);
+    const inputs = { ...(summary ? { learner_profile: summary } : {}), ...(sent.scene ? { scene: sent.scene } : {}) };
     const turn = { n: i + 1, mode: t.mode, message: t.message, profileSent: summary || "(empty)", checks: [], review: [...(t.review || [])] };
     try {
-      const r = await askWithRetry({ query: `${t.mode} ${t.message}`, inputs, conversationId });
+      const r = await askWithRetry({ query: `${t.mode} ${sent.query}`, inputs, conversationId });
       conversationId = r.conversationId;
       turn.reply = r.answer;
+      lastReply = r.answer;
+      if (sent.scene) turn.sceneSent = sent.scene;
       turn.ms = r.ms;
       for (const check of t.auto || []) turn.checks.push(runCheck(check, r.answer));
       const g = globalChecks(r.answer, t.message, lessonIds);
@@ -203,6 +229,7 @@ for (const r of results) {
       lines.push("");
       lines.push(`**T${t.n} ${t.mode}** "${esc(t.message)}"`);
       if (t.profileSent && t.profileSent !== "(empty)") lines.push(`Profile sent: ${esc(t.profileSent)}`);
+      if (t.sceneSent) lines.push(`Scene sent: ${esc(t.sceneSent)}`);
       const own = t.checks.filter((c) => !isGlobal(c));
       const globals = t.checks.filter(isGlobal);
       for (const c of own) lines.push(`- ${c.ok ? "✓" : "✗"} ${esc(c.label)}${c.detail ? `: ${esc(c.detail)}` : ""}`);
