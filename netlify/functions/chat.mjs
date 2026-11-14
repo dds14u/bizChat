@@ -460,6 +460,12 @@ export default async (req, context) => {
     }
   }
 
+  // 3b. Built-in scene: sent by the page once, with the message that starts it (a scene card
+  // tap, or a menu number typed right after the tutor's menu). The tutor runs and ends the
+  // scene from there, so later messages carry no scene.
+  const scene = String(body?.scene ?? "").trim();
+  if (scene && /^[\w ,'-]{1,60}$/.test(scene)) inputs = { ...inputs, scene };
+
   // 4. Forward to Dify with a connection timeout
   const difyAbort = new AbortController();
   const connectTimer = setTimeout(() => difyAbort.abort(), DIFY_CONNECT_TIMEOUT_MS);
@@ -479,6 +485,13 @@ export default async (req, context) => {
   let upstream;
   try {
     upstream = await askDify(inputs);
+    // If the Chatflow has no "scene" field yet, keep the profile and drop only the scene.
+    if (upstream.status === 400 && inputs.scene) {
+      console.error("Dify rejected scene:", (await upstream.text().catch(() => "")).slice(0, 300));
+      const { scene: _dropped, ...rest } = inputs;
+      inputs = rest;
+      upstream = await askDify(inputs);
+    }
     // If the Chatflow rejects the profile (e.g. its Start node has no learner_profile
     // field yet, or the field is too short), chat without it rather than fail.
     if (upstream.status === 400 && Object.keys(inputs).length) {

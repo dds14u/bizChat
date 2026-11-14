@@ -117,6 +117,11 @@ export interface SendOptions {
   code: string;
   /** False when the learner turned memory off: the server neither reads nor saves a profile */
   memory?: boolean;
+  /**
+   * The built-in scene the learner just picked (card tap or menu number), e.g. "Start a meeting".
+   * Sent once, with the scene's first message only; after that the tutor runs and ends the scene.
+   */
+  scene?: string;
   signal: AbortSignal; // abort when the component unmounts
   onMeta?: (meta: { tier: string | null; trialRemaining: number | null }) => void;
   onDelta: (text: string) => void;
@@ -174,6 +179,7 @@ export async function sendChat(opts: SendOptions): Promise<void> {
           user: opts.user,
           code: opts.code,
           memory: opts.memory !== false,
+          ...(opts.scene ? { scene: opts.scene } : {}),
         }),
         signal: controller.signal,
       });

@@ -75,6 +75,35 @@ export const SCENES: Scene[] = [
   },
 ];
 
+// Scene 3 has no card yet, but the tutor's numbered text menu offers it.
+const REJECT_LATE_REQUEST: Scene = {
+  id: 'reject-late-request',
+  difficulty: 'Medium',
+  label: 'LATE REQUEST · David, your manager',
+  title: 'Reject a late request',
+  summary: 'Name the tradeoff before you say yes or no.',
+  avatar: '🧑‍💼',
+  avatarBg: '#E7EEF7',
+  face: '🧑‍💼', // David
+  gender: 'male',
+  kickoff: 'Start the role-play scene "Reject a late request". Difficulty: Medium.',
+};
+
+const byId = (id: string) => SCENES.find((s) => s.id === id)!;
+
+/**
+ * The tutor's numbered Role-play menu ("Reply with a number: 1. Start a meeting …").
+ * A number typed right after that menu counts as tapping the scene's card.
+ */
+export const MENU_SCENES: Record<string, Scene> = {
+  '1': byId('start-meeting'),
+  '2': byId('disagree'),
+  '3': REJECT_LATE_REQUEST,
+};
+export const isSceneMenu = (reply: string) => /Reply with a number:/i.test(reply);
+/** "1", "2.", "3)" → the digit; anything else → null */
+export const menuNumber = (text: string) => text.trim().match(/^([1-3])[.)。]?$/)?.[1] ?? null;
+
 // Faces for characters the tutor invents ("Set your scene", or a scene typed in the box).
 // The tutor names the character's gender in a hidden <character … gender="…"/> line; without it,
 // a random woman or man is picked. One face per scene.
