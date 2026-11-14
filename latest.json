@@ -4,23 +4,23 @@
     "staging"
   ],
   "repeats": 2,
-  "at": "2026-11-14T04:37:37.663Z",
-  "green": false,
+  "at": "2026-11-14T04:39:23.058Z",
+  "green": true,
   "runs": [
     {
       "name": "staging-1",
       "spec": "z_Chat_Regression_Test_v1.8",
       "app": "staging",
-      "at": "2026-11-14T04:37:20.701Z",
-      "green": false,
+      "at": "2026-11-14T04:39:15.940Z",
+      "green": true,
       "results": [
         {
           "id": "C5",
           "title": "Custom scene with profile",
-          "status": "FAIL",
+          "status": "PASS",
           "attempts": [
             {
-              "failed": true,
+              "failed": false,
               "errored": false,
               "turns": [
                 {
@@ -32,26 +32,25 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead retail meetings confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead retail meetings confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead retail meetings confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "character line: present"
                     },
                     {
-                      "ok": false,
-                      "label": "doesn't contain any of [\"Start with your introduction\"]",
-                      "detail": "found \"Start with your introduction\""
+                      "ok": true,
+                      "label": "doesn't contain any of [\"Start with your introduction\"]"
                     },
                     {
                       "ok": true,
@@ -73,67 +72,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm Sarah, the retail operations lead for Greater China. I know we're all busy with Q4 prep, so let's make this productive.\n\n[You're D, a PM at Apple, leading a kickoff with Sarah and the China retail team in Shanghai. The goal is to align on the holiday sales plan. Over the past two weeks, there have been emails going back and forth about inventory targets and promotional timing. Today's meeting should confirm the schedule and key markets. The next step is to get written sign-off from the US merchandising team.]\n\n[Start with your introduction.]",
-                  "ms": 10479
-                }
-              ]
-            },
-            {
-              "failed": true,
-              "errored": false,
-              "turns": [
-                {
-                  "n": 1,
-                  "mode": "[RP]",
-                  "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "character line: present"
-                    },
-                    {
-                      "ok": false,
-                      "label": "doesn't contain any of [\"Start with your introduction\"]",
-                      "detail": "found \"Start with your introduction\""
-                    },
-                    {
-                      "ok": true,
-                      "label": "no feedback"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
-                  ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Mei\" gender=\"female\"/>\n\nHi D, thanks for getting us together. I'm Mei, the regional retail operations lead for Greater China. We've got a lot to cover before the holiday season kicks in.\n\n[Apple, Shanghai. You are the PM leading this kickoff with the China retail team. Mei is your key operations counterpart. Goal: align on the holiday sales plan and lock in next steps.]\n\n[Start with your introduction.]",
-                  "ms": 13924
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead retail meetings confidently\"/>\n<character name=\"Mei\" gender=\"female\"/>\n\nThanks for setting this up. I'm ready to hear the plan.\n\n[You're leading a planning meeting at Apple. Mei is a retail operations manager based in Shanghai. The goal is to align on the holiday sales plan and confirm next steps.]",
+                  "ms": 16107
                 }
               ]
             }
@@ -145,16 +85,16 @@
       "name": "staging-2",
       "spec": "z_Chat_Regression_Test_v1.8",
       "app": "staging",
-      "at": "2026-11-14T04:37:37.633Z",
-      "green": false,
+      "at": "2026-11-14T04:39:23.030Z",
+      "green": true,
       "results": [
         {
           "id": "C5",
           "title": "Custom scene with profile",
-          "status": "FAIL",
+          "status": "PASS",
           "attempts": [
             {
-              "failed": true,
+              "failed": false,
               "errored": false,
               "turns": [
                 {
@@ -166,26 +106,25 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "character line: present"
                     },
                     {
-                      "ok": false,
-                      "label": "doesn't contain any of [\"Start with your introduction\"]",
-                      "detail": "found \"Start with your introduction\""
+                      "ok": true,
+                      "label": "doesn't contain any of [\"Start with your introduction\"]"
                     },
                     {
                       "ok": true,
@@ -207,67 +146,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Mei\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Mei, the regional retail operations lead for Greater China. We've got a lot riding on this holiday season, so I'm glad we're aligning early.\n\n[You're a PM at Apple, leading a kickoff with Mei and the China retail team in Shanghai. The goal: align on the holiday sales plan. Over the past two weeks, there have been emails between Cupertino and the regional team about inventory targets and promotional timing. Today's meeting will walk through the sales forecast, confirm the promotional calendar, and flag any supply risks. The next step is to get written sign-off from the US merchandising team by next Friday so local stores can start prep.]\n\n[Start with your introduction.]",
-                  "ms": 9909
-                }
-              ]
-            },
-            {
-              "failed": true,
-              "errored": false,
-              "turns": [
-                {
-                  "n": 1,
-                  "mode": "[RP]",
-                  "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
-                  "profileSent": "(empty)",
-                  "checks": [
-                    {
-                      "ok": true,
-                      "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
-                    },
-                    {
-                      "ok": true,
-                      "label": "character line: present"
-                    },
-                    {
-                      "ok": false,
-                      "label": "doesn't contain any of [\"Start with your introduction\"]",
-                      "detail": "found \"Start with your introduction\""
-                    },
-                    {
-                      "ok": true,
-                      "label": "no feedback"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G2 no mention of Taiwan"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G3 English reply"
-                    },
-                    {
-                      "ok": true,
-                      "label": "G4 hidden lines well formed"
-                    }
-                  ],
-                  "review": [
-                    "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
-                  ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Maya\" gender=\"female\"/>\n\nThanks for joining, D. I'm Maya, the regional retail operations lead. I've been looking at the preliminary numbers from last year's holiday season, and I think we need to make some real changes to how we approach inventory this year.\n\n[You're a PM at Apple, leading a kickoff with Maya from retail operations in Shanghai. The goal: align on the holiday sales plan and next steps.]\n\n[Start with your introduction.]",
-                  "ms": 6989
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n<character name=\"Elena\" gender=\"female\"/>\n\nThanks for getting us together. I'm looking forward to hearing the plan for the holiday push.\n\n[You're leading a planning meeting at Apple. I'm Elena, a senior retail operations manager based in Shanghai. The team needs to align on the holiday sales plan for Greater China, including staffing, inventory, and promotional timing. Goal: agree on priorities and next steps before we brief the regional VP next week.]\n\n[I can describe a different situation anytime.]",
+                  "ms": 7056
                 }
               ]
             }
