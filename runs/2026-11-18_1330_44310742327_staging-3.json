@@ -1,0 +1,1651 @@
+{
+  "spec": "z_Chat_Regression_Test_v2.0",
+  "app": "staging",
+  "at": "2026-11-18T13:30:37.306Z",
+  "green": true,
+  "nonBlocking": [
+    {
+      "id": "C5",
+      "status": "PASS",
+      "firstTry": true,
+      "baseline": {
+        "rate": 0,
+        "runs": 10
+      },
+      "worse": false,
+      "readyToPromote": false
+    },
+    {
+      "id": "D2",
+      "status": "PASS",
+      "firstTry": true,
+      "baseline": {
+        "rate": 0,
+        "runs": 2
+      },
+      "worse": false,
+      "readyToPromote": false
+    }
+  ],
+  "results": [
+    {
+      "id": "C1",
+      "title": "Out of scope (Coach)",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "What's for dinner?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "contains \"outside what I can help with\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: no link"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: no profile line",
+                  "detail": null
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 60",
+                  "detail": "22 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Declines without giving any food or cooking advice."
+              ],
+              "reply": "Sorry, that's outside what I can help with. I focus on Business English, so try asking about emails, meetings, or workplace situations.",
+              "ms": 4280
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Coach starter: first 90 days",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "What should I do in my first 90 days?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "starts with \"This is covered in the course:\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: lesson link"
+                },
+                {
+                  "ok": true,
+                  "label": "list items ≥ 2",
+                  "detail": "4 items"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The actions are concrete and come from the first-90-days lesson.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/"
+              ],
+              "reply": "This is covered in the course:\n\nUse your first 90 days to learn, ask questions, and understand your new environment before trying to change things.\n\n• **Map the organization:** understand your role in the team, your team's role in the department, the department's role in the company, and the company's place in its market.\n\n• **Decide your direction:** set a career goal, even if it's outside the company. Let that guide what you learn and which opportunities you pursue.\n\n• **Stay humble and proactive:** your past success doesn't guarantee success here. Listen more than you push. Ask questions boldly while you're new. Learn from coworkers and internal documents.\n\n• **Focus on learning first:** make a specific learning plan rather than worrying about performance ratings.\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/",
+              "ms": 12879
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "title": "Scene card: Start a meeting, then a full ICE opening",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The character's opening is short and supportive; the setup gives enough to practice ICE."
+              ],
+              "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm Sarah, the engineering lead on this project. I'll be handling the technical architecture and coordinating with the offshore team. Looking forward to hearing from you.\n\n[This is the kickoff for Project Hippo, a new mobile app for the company website. You're the lead project manager. The team has exchanged emails about requirements for the past two weeks. Today's goal is to align on schedule and features so development can begin. The next step after this meeting is to get written sign-off from the US team.]\n\n[Start with your introduction.]",
+              "sceneSent": "Start a meeting",
+              "ms": 15834
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "feedback score ≥ 4",
+                  "detail": "score 5"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Doesn't ask the learner to redo a step they already covered."
+              ],
+              "reply": "Thanks, Lee — that gives us a clear picture of where we are and where we're headed. Appreciate the detailed walkthrough.\n\n**Course score: 5/5**: You covered all three ICE steps clearly and gave the team a strong sense of direction.\n\n**How it went:** This was a confident, complete meeting opening that set the right tone for a working session.\n\n**What worked:** Your context was especially strong — \"Over the past two weeks we've had a lot of emails about the main features\" covers the past, \"Today's goal is to agree on the schedule\" the present, and \"send a timeline to leadership by next Friday\" the future with a clear deadline. You also set both interaction level (\"Please ask questions anytime\") and detail level (\"this will be a detailed discussion\") in your expectations.\n\n**What to improve:** No major gap. If you wanted to add one thing, you could say how *you* specifically contribute beyond managing schedule — for example, \"I'll also be the main point of contact for requirements.\"\n\n**Also worth noting:** \"A lot of emails\" is fine; \"quite a few emails going back and forth\" sounds slightly more natural in a formal kickoff.\n\n**Try this instead:** \"Hi everyone, I'm Lee, the lead PM for this project. I'll be managing the schedule and also acting as the main point of contact for requirements. Over the past two weeks we've had quite a few emails going back and forth about the main features. Today's goal is to agree on the schedule and confirm the key deliverables. The next step is to send a timeline to leadership by next Friday. Please ask questions anytime — this will be a detailed discussion.\"\n\nWant to try again without cues, doing all three steps in one go? Or pick a new scene?",
+              "ms": 14105
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "title": "Menu path: greeting, then \"1\"",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Hello",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "contains \"Start a meeting\""
+                },
+                {
+                  "ok": true,
+                  "label": "contains any of [\"describe\",\"your own\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: absent"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [],
+              "reply": "Let's practice a real workplace conversation. Reply with a number:\n1. Start a meeting (easy)\n2. Disagree with a coworker\n3. Reject a late request\nOr describe your own situation.\n\n[Tip: describe your real role and a situation you're facing at work. The conversation will be more realistic and more challenging.]",
+              "ms": 5876
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "1",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Starts the built-in meeting-opening scene with a character."
+              ],
+              "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\n\"Thanks for organizing this kickoff, I'm ready when you are.\"\n\n[You're the lead project manager at Tesla, launching a new mobile app for owners to schedule service appointments. Over the past two weeks, there have been emails going back and forth between the design and engineering teams about requirements. Today's goal is to align everyone on the schedule and main features before development begins. The next step after this meeting is to get written sign-off from the US leadership team by next Monday so the project can officially start. Sarah is a senior engineer on your team.]\n\n[Start with your introduction.]",
+              "sceneSent": "Start a meeting",
+              "ms": 9013
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "title": "Custom scene with profile",
+      "severity": "non-blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: name = \"D\"",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: role contains any of [\"pm\",\"product manager\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"apple\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
+              ],
+              "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this. I'm ready when you are.\n\n[You're D, a PM at Apple. This is a kickoff meeting with Sarah and the China retail team in Shanghai. Over the past two weeks, there have been emails about the Q4 holiday sales plan. Today's goal is to align on promotional timing, inventory targets, and key messaging for the holiday season. The next step is to share a consolidated plan with the regional leadership team. You are leading the meeting.]",
+              "ms": 15447
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "title": "Profile save, then use (Coach)",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: name = \"D\"",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: role contains any of [\"pm\",\"product manager\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"google\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: fields present [\"industry\",\"goal\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: goal contains any of [\"meeting\",\"confident\",\"lead\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+              ],
+              "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Google\" learner_industry=\"tech\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n[I&#039;ve saved your details to your profile (if enabled). See more: top-right menu → About.]\n\nThis is covered in the course:\n\nUse the **ICE method** to open every meeting with structure and authority:\n\n**1. Introduction**\n- State the topic, your name and role, and what you'll contribute\n- *Example:* \"Today we're reviewing the CRM rollout plan. I'm D, the PM on this, and I'll be running the schedule and tracking blockers.\"\n\n**2. Context (past, present, future)**\n- Past: how you got here\n- Present: today's goal and topics\n- Future: next step with a deadline\n- *Example:* \"We've had async feedback on the requirements doc over the past two weeks. Today we'll align on the final scope and flag any risks. The target is to send the signed-off plan to leadership by next Friday.\"\n\n**3. Expectations**\n- Set interaction level: \"Please hold questions until the end\" or \"Feel free to jump in anytime\"\n- Set detail level: \"We'll stay high-level on technical architecture\" or \"We'll go deep into the integration timeline\"\n\n**Quick tips for confidence with US teams:**\n- Start on time, even if someone is missing\n- Use \"I\" when you own the decision: \"I'm proposing we delay by one week\"\n- End with who does what by when\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/",
+              "ms": 23704
+            },
+            {
+              "n": 2,
+              "mode": "[QA]",
+              "message": "How do I start a meeting with my team?",
+              "profileSent": "First name: D. Role: PM. Company: Google. Industry: tech (guessed from the company). Learning goal: lead client presentations confidently.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "starts with \"This is covered in the course:\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: lesson link"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: no profile line",
+                  "detail": null
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"what is your role\",\"what's your role\",\"which company\",\"where do you work\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Fits the advice to the learner's background where it helps; invents no conflicting background.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the **ICE method** to open with clarity and confidence:\n\n**1. Introduction**\n- Meeting topic, your name and role, your contribution\n- *Example:* \"Today we're aligning on the CRM rollout. I'm D, the PM, and I'll track decisions and next steps.\"\n\n**2. Context**\n- Past: how you got here\n- Present: today's goal and topics\n- Future: next step with a deadline\n- *Example:* \"We've exchanged feedback on requirements for two weeks. Today we'll confirm scope and flag risks. We need leadership sign-off by next Friday so development can start.\"\n\n**3. Expectations**\n- Interaction: \"Please hold questions until the end\" or \"Jump in anytime\"\n- Detail level: \"We'll stay high-level\" or \"We'll go deep on the timeline\"\n\n**For your US team specifically:**\n- Start exactly on time\n- Use \"I\" when you own something: \"I'm proposing we delay by one week\"\n- End with who does what by when\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/",
+              "ms": 10447
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "title": "Mode switch: Role-play → Coach → back",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Disagree with a coworker\". Difficulty: Medium.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "bracket line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with."
+              ],
+              "reply": "<character name=\"Bob\" gender=\"male\"/>\n\n\"I think we should list traditional brewed coffee first on the new menu. It stays true to our brand identity, and a lot of our longtime customers still come in for that classic experience.\"\n\n[We're at Starbucks headquarters in Seattle. You're a product manager on the menu team, and I'm Bob, a marketing analyst. We're discussing the layout for the new digital menu boards rolling out next quarter. I want traditional coffee first; you have data that might suggest a different order.]\n\n[Hint: you could honestly agree that brand identity and loyal customers matter, then bring up what the sales data shows about seasonal trends.]",
+              "sceneSent": "Disagree with a coworker",
+              "ms": 17817
+            },
+            {
+              "n": 2,
+              "mode": "[QA]",
+              "message": "How can I politely disagree with the idea?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Coaching advice based on the character's actual proposal, not a line spoken as the character.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the **feedback sandwich** for disagreements:\n\n• **Partially agree honestly** — show you understand their view\n  - \"I understand that we want to stay true to our traditional coffee brand…\"\n\n• **State your opinion with a specific reason** — use facts or data\n  - \"…but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales.\"\n\n• **Keep it open** — invite alternatives with a question\n  - \"Are there other alternatives?\"\n\n• **Move forward together** — once the team decides, commit\n  - \"Let's go with the digital display option, then.\"\n\n**Why this works:** You show respect first, so the other person stays open. The question turns a clash into a problem-solving conversation.\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/",
+              "ms": 15613
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Switched to\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "63 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Replies as the character and continues the same discussion (no restart, recap or mode note)."
+              ],
+              "reply": "<character name=\"Bob\" gender=\"male\"/>\n\n\"I appreciate that you're thinking about risk, but a smaller trial feels like we're not committing. The quarterly menu refresh is already locked in, and the team needs a direction now. What does your data actually show about customer behavior?\"\n\n[We're still at Starbucks headquarters. I want a decision today, and I'm asking you to bring out the numbers that support your view.]",
+              "ms": 14399
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "title": "Background in passing, workplace change, and lessons applied only when they fit",
+      "severity": "non-blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "How do I start a meeting?",
+              "profileSent": "Role: PM. Industry: Egg farming.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "starts with \"This is covered in the course:\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: lesson link"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the **ICE** method to open a meeting in three steps:\n\n**1. Introductions**\n- One or two sentences about the meeting topic\n- Your name, role, and how you'll contribute\n\nExample:\n> \"Hi everyone. Today we're kicking off the new supply-chain system. I'm Alex, the lead PM, and I'll manage the schedule and be the main point of contact for requirements.\"\n\n**2. Context (past, present, future)**\n- **Past:** how you got here (emails, earlier meetings)\n- **Present:** today's topics and goal\n- **Future:** next steps with a deadline\n\nExample:\n> \"We've had emails going back and forth for two weeks. Today we'll walk through requirements, confirm the schedule, and call out risks. We need sign-off from the US team by next Monday so we can start development.\"\n\n**3. Expectations**\n- **Interaction:** \"Please hold questions for the end\" or \"Feel free to interrupt anytime\"\n- **Detail level:** \"We'll keep this high level\" or \"We'll go into technical details\"\n\nExample:\n> \"We have a lot to cover, so please hold questions until the end. We'll stay high level on technical architecture today.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/",
+              "ms": 17607
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "I'm a PM at Google and discussing whether or not we should wash eggs with a coworker.",
+              "profileSent": "Role: PM. Industry: Egg farming.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"google\"]",
+                  "detail": "saved {\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"Egg farming\",\"goal\":\"discuss workplace decisions in English\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "sandwich steps < 2"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "A natural custom coworker discussion about washing eggs, not the built-in disagreement scene."
+              ],
+              "reply": "<profile learner_role=\"PM\" learner_company=\"Google\" learner_industry=\"Egg farming\" learner_industry_source=\"stated\" learner_goal=\"discuss workplace decisions in English\"/>\n\n<character name=\"Jordan\" gender=\"male\"/>\n\n\"Hey, thanks for making time. So I've been looking at the numbers, and I think we should definitely move to washed eggs for all our retail cartons. The consumer perception data is pretty clear—people see washed eggs as cleaner and safer. What's your take?\"\n\n[You're a PM at Google working on a food-safety initiative with a farming partner. Jordan is a product specialist on your team. You're discussing whether to require egg washing for retail cartons. He supports it; you may agree or disagree.]",
+              "ms": 8634
+            },
+            {
+              "n": 3,
+              "mode": "[QA]",
+              "message": "I'm now a PM at an egg farm and discussing ML models. How should I approach this?",
+              "profileSent": "Role: PM. Company: Google. Industry: Egg farming. Learning goal: discuss workplace decisions in English.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: industry or company contains any of [\"egg\",\"poultry\",\"farm\",\"agri\"]",
+                  "detail": "saved {\"role\":\"PM\",\"industry\":\"Egg farming\",\"goal\":\"discuss workplace decisions in English\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "sandwich steps < 2"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Advice fits discussing ML models at an egg farm and doesn't assume a disagreement or a coworker."
+              ],
+              "reply": "<profile learner_role=\"PM\" learner_company=\"\" learner_industry=\"Egg farming\" learner_industry_source=\"stated\" learner_goal=\"discuss workplace decisions in English\"/>\n\nThis sounds like a custom workplace discussion, not a specific course lesson. Here's a direct way to approach it:\n\n**Frame the decision clearly**\n- State the problem and why ML is being considered\n- Name the stakeholders and constraints\n\nExample:\n> \"We're looking at ML to predict egg quality before packaging. The operations team needs 99% accuracy to avoid waste, and we need to integrate with our existing sensors.\"\n\n**Present tradeoffs**\n- Data availability vs. model complexity\n- Implementation time vs. accuracy gains\n- Cost of false positives vs. false negatives\n\n**Drive to a next step**\n- Propose a pilot, timeline, or owner\n\nExample:\n> \"Let's run a two-week pilot with last quarter's data. I'll own the vendor comparison, and we can review results next Friday.\"\n\nAs a PM, your job is to surface risks and keep the team moving. What part feels hardest—opening the discussion, handling pushback, or closing with a decision?",
+              "ms": 20854
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S1",
+      "title": "Custom scene: client meeting",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'd like to practice a client meeting. I'm an account manager at a logistics company, and the client is unhappy about late deliveries.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Disagree with a coworker\",\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Starts a client-meeting scene with a fitting client character, or asks at most one short question to set it up. No fixed scene menu."
+              ],
+              "reply": "<character name=\"Rachel\" gender=\"female\"/>\n\n\"Thanks for making time today. I need to be direct with you — we've had three late deliveries in the past month, and it's affecting our production schedule. My manager is asking why we're still working with your company.\"\n\n[You're an account manager at a logistics firm. Rachel is the operations director at a manufacturing client in Chicago. The meeting is a video call. She opened with a specific complaint and pressure from her boss. Your goal is to understand the issue, take responsibility where appropriate, and protect the relationship while working toward a fix.]",
+              "ms": 10128
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "Status update: a brief opening is fine, a kickoff isn't",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I want to practice giving a weekly status update to my project team. I'm a PM on a mobile app launch.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Disagree with a coworker\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Sets up a status meeting. A short greeting or one-line intro is fine; it isn't run as a kickoff (full Introductions, Context, Expectations exercise or Sarah's kickoff scene)."
+              ],
+              "reply": "<character name=\"Rachel\" gender=\"female\"/>\n\n\"Morning. I know we're all busy, so I wanted to check in before the standup — where are we on the beta testing timeline? I'm hearing different things from design and engineering.\"\n\n[You're the PM leading a weekly sync for a mobile app launch at a mid-size tech company. Rachel is your engineering lead. The team is three weeks from beta release. She's concerned about conflicting updates between departments and wants clarity before she commits her team's weekend hours.]",
+              "ms": 9126
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Hi all, quick update on the app launch. Design is done, and development is about 70% complete. The blocker is that the payment API is two weeks late, so I'd like to discuss whether we move the beta date or launch without payments first.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The character responds to the blocker and the decision; doesn't ask the learner to start over with introductions."
+              ],
+              "reply": "\"Thanks for flagging that — the payment API delay is exactly what I was worried about. Just to make sure I'm not missing something: when you say development is 70% complete, is that 70% of the original scope, or 70% of what's actually left now that payments are off the table?\"\n\n[Rachel leans forward, concerned about scope clarity before her team plans their weekend work.]",
+              "ms": 9165
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "Production defects: business level, feedback fits the scene",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm a quality engineer at an EV battery supplier. I need to talk with the production manager about a jump in defective cells on Line 2 this week.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays a production manager in plain business language (impact, schedule, staffing, next steps)."
+              ],
+              "reply": "<profile learner_role=\"quality engineer\" learner_company=\"EV battery supplier\" learner_industry=\"automotive / EV\" learner_industry_source=\"inferred\" learner_goal=\"discuss quality issues with production manager\"/>\n\n<character name=\"Miguel\" gender=\"male\"/>\n\n\"Hey, thanks for flagging this. I've been watching the numbers climb since Tuesday and I'm worried we're going to miss our shipment target for Hyundai if we don't get ahead of it. What's your read on what's causing the spike?\"\n\n[You're a quality engineer at your company. Miguel is the production manager for Line 2. The conversation is in his office on Thursday afternoon. Your goal is to get his buy-in to investigate and fix the root cause before the weekend.]",
+              "ms": 7627
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "The defect rate went from 1% to 4% after we changed suppliers for one part. I'd like to hold the affected batches and inspect 100% of the cells until we confirm the cause. Can your team support that this week?",
+              "profileSent": "Role: quality engineer. Company: EV battery supplier. Industry: automotive / EV (guessed from the company). Learning goal: discuss quality issues with production manager.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "102 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Stays at business level, not engineering detail (no chemistry, failure analysis or test specs)."
+              ],
+              "reply": "\"Four percent? That's way past our threshold. I can see why you're asking for 100% inspection, but I need to be straight with you—we're already running two shifts flat out to cover the Hyundai order. Pulling people for full inspection means we lose at least thirty percent of our throughput, maybe more while people get trained on the protocol.\"\n\n\"What if we narrow it down first? Do you know which specific part from the new supplier is suspect, or is it the whole batch? If it's one component, we might spot-check by supplier lot number instead of checking every cell.\"",
+              "ms": 7875
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "feedback",
+              "profileSent": "Role: quality engineer. Company: EV battery supplier. Industry: automotive / EV (guessed from the company). Learning goal: discuss quality issues with production manager.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "feedback score ≥ 1",
+                  "detail": "score 4"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"introductions, context\",\"introduce yourself\",\"start with your introduction\",\"self-introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Feedback is about how clearly the learner explained the cause, the containment plan and the request, not the ICE meeting-opening criteria."
+              ],
+              "reply": "**Course score: 4/5**: You stated the problem with data, proposed a specific action, and asked for support—strong quality-issue communication.\n\n**How it went:** You came in prepared and made a clear request; Miguel engaged seriously because your reasoning was solid.\n\n**What worked:** \"The defect rate went from 1% to 4% after we changed suppliers for one part\" — you named the problem, the data, and the likely cause in one line. \"Can your team support that this week?\" — you asked directly for what you needed with a clear timeline.\n\n**What to improve:** You could strengthen the request by briefly acknowledging the impact on his operation before asking for resources, and you didn't offer a fallback if 100% inspection proves impossible — this would show you're partnering on the solution, not just handing him a problem.\n\n**Also worth noting:** \"I'd like to hold the affected batches\" is clear; in some cultures \"I'd like to\" sounds softer than intended. \"I recommend we hold the affected batches\" carries more authority for a quality decision.\n\n**Try this instead:** \"The defect rate jumped from 1% to 4% after the supplier change. I recommend we hold the affected batches and do 100% inspection until we confirm the root cause. I know this hits your throughput hard — if thirty percent is too much, can we start with the last three lots and reassess Friday?\"\n\nIs there anything specific you'd like feedback on? Or we can continue this conversation, try again, or pick a new scene.",
+              "ms": 19494
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Mid-meeting: \"We're already halfway through\"",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "We're already halfway through our weekly project meeting. Sam from the vendor just said they might miss next month's deadline. Please play Sam.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Sam picks up mid-meeting; no introductions or meeting opening."
+              ],
+              "reply": "<character name=\"Sam\" gender=\"male\"/>\n\nI know this isn't what anyone wants to hear, but I'm looking at our delivery schedule and I'm honestly not sure we can hit the March deadline. Our QA team found some integration issues last week that are taking longer to fix than we estimated. I wanted to bring it up now rather than surprise you later.\n\n[You're the project lead at your company, in a video call with Sam, your main vendor contact. The project is a custom software build. Sam has just dropped this concern midway through your weekly status meeting. Respond however you would in this moment.]",
+              "ms": 10007
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Thanks for flagging that, Sam. What's causing the delay, and what would you need from us to stay on schedule?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Answers as Sam with a cause and a concrete ask; the meeting continues."
+              ],
+              "reply": "It's mainly the API handshake with your legacy system — we tested against the specs you sent in January, but the live environment is behaving differently. To stay on schedule, we'd need two things: access to a staging environment that mirrors your production setup more closely, and a decision from your team by this Friday on whether we can drop the custom reporting module for phase one and add it later.\n\n[Your turn. You asked for cause and needs; Sam answered with specifics and is pushing for a quick decision. He's also offering a scope tradeoff.]",
+              "ms": 6720
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Clear switch: meeting opener to a project delay",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "bracket line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Control: the built-in opener starts as usual."
+              ],
+              "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\n\"Hi, thanks for setting this up. I'm Sarah, on the product team. I'll be contributing the UX perspective today.\"\n\n[We're at Tesla, in Palo Alto. You're the lead project manager for a new mobile app update. Over the past two weeks, there have been emails back and forth about this kickoff. Today's goal is to align on the schedule and main features before development begins. The next step will be getting sign-off from the US team. Sarah and two other teammates are joining remotely.]\n\n[Start with your introduction.]",
+              "sceneSent": "Start a meeting",
+              "ms": 8487
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first."
+              ],
+              "reply": "<character name=\"David\" gender=\"male\"/>\n\n\"Hey, thanks for catching me. I saw your calendar block — what's up?\"\n\n[We're at Apple, in Cupertino. You're a senior project manager reporting to David, the engineering director. Your team is building a new payment feature for the Wallet app. You just learned from the lead developer that integration testing will take two weeks longer than planned because of unexpected API issues with a banking partner. You need to tell David today; the original deadline was next month, and other teams are waiting on your delivery.]\n\n[You can describe a different situation anytime.]",
+              "ms": 7276
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The manager reacts to the delay (asks about the plan or the impact); not graded on introductions."
+              ],
+              "reply": "\"Two weeks — that's a real hit. Which bugs are we talking about, and how much time does your recovery plan actually save us?\"\n\n[David leans back, concerned but listening. He has a quarterly review with the VP next week and was counting on this feature for the roadmap presentation.]",
+              "ms": 6216
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "Ambiguous request: \"Ask my boss for a proportion\"",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Ask my boss for a proportion",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Disagree with a coworker\",\"Start a meeting\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Asks one clarifying question (proposal, raise, share of the budget?) or makes a reasonable guess and starts that scene. No fixed scene menu."
+              ],
+              "reply": "<character name=\"David\" gender=\"male\"/>\n\nI need you to take on the GPS accuracy project for the next sprint. Right now we're at 2% error rate, which was the original target, but the client just called and they want it down to 1% before integration testing in three weeks. Can you handle that?\n\n[You're a senior engineer at a mapping tech company in Berlin. David is your manager. The team is already at full capacity for the sprint. You need to push back on scope without refusing outright.]\n\n---\n\nHint: think about the project triangle: cost (resources), quality (scope), and time (schedule). If David wants more, something else has to give.",
+              "ms": 21937
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "Manager 1:1: workload and priorities",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I have a 1:1 with my manager. I'm a data analyst, and I have three urgent projects at once. I want to ask for help prioritizing without sounding like I can't handle it. Please play my manager.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Acts as a manager in a 1:1, not someone running a meeting."
+              ],
+              "reply": "<character name=\"Lisa\" gender=\"female\"/>\n\nThanks for coming in. I wanted to check in on the pipeline automation project—leadership is asking for an update. How are things going on your end?\n\n[You're a data analyst at a retail company in Chicago. Lisa is your manager, three months new to the team. She has a full plate herself and is still learning the team's workload. The goal: get her help prioritizing three urgent projects without undermining your credibility.]",
+              "ms": 9028
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Thanks for meeting. I'm working on the Q4 forecast, the dashboard migration, and the pricing analysis, and all three are due this month. I can finish two well. Could we decide together which one can move to next month?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Engages with the tradeoff (asks about deadlines or impact, or helps pick one to move)."
+              ],
+              "reply": "I hear you—those are all high-visibility projects. The pricing analysis came straight from the VP, and the Q4 forecast has a hard deadline for the board meeting. The dashboard migration was supposed to be done last month.\n\nWhat would moving something out mean for the other teams waiting on it?",
+              "ms": 10191
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "feedback",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "feedback score ≥ 1",
+                  "detail": "score 4"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"introductions, context\",\"introduce yourself\",\"start with your introduction\",\"self-introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Feedback is about stating capacity clearly, offering options and asking confidently, not meeting structure."
+              ],
+              "reply": "**Course score: 4/5**: You stated the problem clearly, showed you could handle the workload, and invited collaboration without sounding overwhelmed.\n\n**How it went:** Strong opening—Lisa saw you as capable and solution-oriented, not complaining.\n\n**What worked:** \"I can finish two well\" honestly showed your capacity, and \"Could we decide together\" treated her as a partner and kept ownership shared.\n\n**What to improve:** You could add a brief reason why two is the limit—team resources, data dependencies, or your current hours—so Lisa doesn't have to guess. Also, naming which project you think should move, with a reason, would show more strategic thinking.\n\n**Also worth noting:** \"All three are due this month\" is factual; even stronger would be \"all three need significant work this month\" to signal the real conflict.\n\n**Try this instead:** \"I can deliver two of these with full quality. The dashboard migration has the most flexible stakeholders, and the new platform won't be live until January anyway. Could we move that to next month so the Q4 forecast and pricing analysis stay on track?\"\n\nWant to continue this conversation, try again, or pick a new scene?",
+              "ms": 14770
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S8",
+      "title": "Discovery: customer success exploring client needs",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays the client and leaves the questions to the learner."
+              ],
+              "reply": "<profile learner_role=\"customer success manager\" learner_company=\"software company\" learner_industry=\"software\" learner_industry_source=\"inferred\" learner_goal=\"lead client discovery meetings confidently\"/>\n\n<character name=\"Maya\" gender=\"female\"/>\n\nThanks for setting this up. We're a mid-size logistics company, about 120 people, and we just signed on last month. Honestly, we're still figuring out what this platform can really do for us. Our operations team is the one who'll use it day-to-day, but I'm the VP who approved the budget, so I want to make sure we get value fast.\n\n[You're meeting Maya Patel, VP of Operations at a regional logistics firm in Chicago. She has budget authority but isn't the daily user. Your goal: understand her priorities, concerns, and what success looks like so you can configure the product and prove early value.]\n\nWhat would you like to ask first?",
+              "ms": 14413
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?",
+              "profileSent": "Role: customer success manager. Company: software company. Industry: software (guessed from the company). Learning goal: lead client discovery meetings confidently.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "84 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner."
+              ],
+              "reply": "Right now our dispatch team is basically running on spreadsheets and WhatsApp groups. It's messy. A driver misses a pickup, and it takes twenty minutes of phone calls to figure out what happened. Last quarter we had three major delays that cost us a key client review. So the problem is visibility — I need to know where things are breaking before a customer calls me angry.\n\n[Hint: you could follow up on what \"visibility\" means to her, or ask who else feels this pain.]",
+              "ms": 12529
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "O1",
+      "title": "Optional: finance and IT on audit-software bugs",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm in finance, and our audit software keeps exporting the wrong totals. I need to talk with the IT lead about which bugs to fix first before the quarter-end audit. Please play the IT lead.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays the IT lead at business level."
+              ],
+              "reply": "<character name=\"Marcus\" gender=\"male\"/>\n\n\"Thanks for flagging this. I know quarter-end is tight. Before we dive in, can you walk me through which exports are off and how you're catching the errors?\"\n\n[You're a senior finance analyst at a mid-sized firm. Marcus is the IT lead. You're in a conference room; the audit deadline is two weeks away. The goal is to agree on which bugs to fix first and who does what next.]",
+              "ms": 7155
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "The wrong totals are the biggest risk because the auditors arrive on the 15th. Could your team fix that first and leave the report formatting issues until after?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "91 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Discusses priorities and deadlines, not engineering detail."
+              ],
+              "reply": "\"I hear you on the 15th deadline, and wrong totals are definitely a red flag for auditors. Here's my concern: the formatting issues are actually tied to the same export module, so fixing totals without touching formatting might mean doing the work twice. What if we scope it so the team fixes totals first, then does a lightweight pass on formatting right after—would that still work for your timeline?\"\n\n[Marcus is pushing back slightly but offering a compromise. He's testing whether you've thought about dependencies and whether you can negotiate.]",
+              "ms": 7766
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "O2",
+      "title": "Optional: editor exploring AI proofreading with engineering",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm an editor at a publishing company. I want to talk with an engineering lead about whether AI proofreading could work for our books. Please play the engineer.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays the engineering lead in plain language."
+              ],
+              "reply": "<character name=\"Maya\" gender=\"female\"/>\n\nThanks for reaching out. I've been looking into AI proofreading tools for a couple of months now, and I have some thoughts, but I want to understand your workflow first. What does your current proofreading process look like, and where are you hitting problems?\n\n[You're an editor at a publishing company. Maya is the engineering lead. The conversation is a 1:1 in her office at a mid-size publisher in New York. Goal: explore whether AI proofreading fits your books, with Maya sharing technical constraints and you sharing editorial needs.]\n\n---\n\n[You can describe a different situation anytime.]",
+              "ms": 12555
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Our main concern is accuracy with names and technical terms. How reliable would it be, and what would it cost to try it on one book first?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "104 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Discusses feasibility and tradeoffs without getting overly technical."
+              ],
+              "reply": "That's a smart place to start. Names and technical terms are exactly where these tools struggle most right now—they're trained on common language patterns, so rare or specialized words get flagged incorrectly or missed entirely. For one book, we could run a pilot with a tool like Grammarly Enterprise or a custom LLM setup. Rough estimate: $2,000–$5,000 for setup and review, depending on how much manual checking we add. What volume of names and technical terms are we talking about per book? And would your team have time to review every AI suggestion, or do you need near-automated output?",
+              "ms": 11608
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "O3",
+      "title": "Optional: PM and engineering disagree on launch scope",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm a PM, and I disagree with the engineering lead about launch scope. They want to cut the onboarding tutorial to hit the date. Please play the engineering lead.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "A custom scope disagreement, not the built-in \"Disagree with a coworker\" scene."
+              ],
+              "reply": "<profile learner_role=\"PM\" learner_industry=\"tech\" learner_industry_source=\"inferred\" learner_goal=\"disagree about launch scope confidently\"/>\n<character name=\"Alex\" gender=\"male\"/>\n\nI hear you on the date, but the onboarding tutorial is a lot of engineering hours we don't have. Two weeks of work, minimum, and we're already at risk on backend performance. Cutting it gets us back on track.\n\n[You're a PM at a SaaS company. Alex is the engineering lead. Your product is launching in six weeks. He just proposed cutting the onboarding tutorial to protect the timeline. Your goal: disagree and keep the discussion open.]",
+              "ms": 24238
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "I understand the date matters, and cutting features is reasonable. But without onboarding, new users may drop off in the first week. Could we ship a simpler version of the tutorial instead?",
+              "profileSent": "Role: PM. Industry: tech (guessed from the company). Learning goal: disagree about launch scope confidently.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "77 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Negotiates as the engineering lead (pushes back or proposes a middle ground)."
+              ],
+              "reply": "That's a fair point—drop-off in week one would hurt us. A simpler version could work if it actually saves time. What did you have in mind? Would it still need the interactive walkthrough, or are you thinking static tooltips we can build in a few days?\n\n[Hint: good partial agreement and a clear reason. Now he's asking for specifics. Keep the discussion open by responding to his question, or ask about trade-offs he'd accept.]",
+              "ms": 7349
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
