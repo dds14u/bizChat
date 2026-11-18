@@ -4,14 +4,14 @@
     "staging"
   ],
   "repeats": 2,
-  "at": "2026-11-18T10:54:43.990Z",
+  "at": "2026-11-18T10:57:31.663Z",
   "green": true,
   "runs": [
     {
       "name": "staging-1",
       "spec": "z_Chat_Regression_Test_v2.0",
       "app": "staging",
-      "at": "2026-11-18T10:53:46.520Z",
+      "at": "2026-11-18T10:56:30.060Z",
       "green": true,
       "nonBlocking": [
         {
@@ -20,7 +20,7 @@
           "firstTry": false,
           "baseline": {
             "rate": 0,
-            "runs": 5
+            "runs": 7
           },
           "worse": false,
           "readyToPromote": false
@@ -46,17 +46,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -87,8 +87,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Sarah, the retail operations lead for the region. I know the holiday quarter is always intense, so I appreciate getting ahead of it.\n\n[Apple, Shanghai. You're the PM leading this kickoff. Sarah is on the retail operations team. Goal: align on the holiday sales plan, including inventory targets and key promotions.]\n\n[Start with your introduction.]",
-                  "ms": 11765
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this. I'm ready when you are.\n\n[You are a PM at Apple headquarters. Sarah is a retail operations lead on your team. You're kicking off a meeting to align on the China holiday sales plan. Over the past two weeks, there have been emails back and forth with the China retail team about promotional timing and inventory levels. Today's goal is to agree on the holiday promotion schedule and confirm inventory targets. The next step is to share a written plan with regional leadership by next Friday.]\n\n[Start with your introduction.]",
+                  "ms": 8302
                 }
               ]
             },
@@ -105,17 +105,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"consumer electronics\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -146,8 +146,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"tech\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Sarah, the regional retail lead for China. I know we're all busy heading into Q4, so I appreciate you pulling this together.\n\n[You and Sarah are at Apple. The meeting is a kickoff for the holiday sales plan in China. Sarah manages retail operations across the region and needs alignment on timing, staffing, and product mix before she briefs her store managers. Your goal is to open the meeting with a clear introduction, context, and expectations using the ICE method.]\n\n[Start with your introduction.]",
-                  "ms": 12367
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"consumer electronics\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this. I'm ready when you are.\n\n[You're a PM at Apple, leading a kickoff with Sarah and the retail team in Shanghai. Over the past two weeks, there have been emails back and forth about the Q4 holiday sales plan. Today's goal is to align on promotional timing, inventory targets, and key product focus for Greater China. The next step is to get written sign-off from the US retail leadership by next Friday so local teams can lock in store displays and staffing.]\n\n[Start with your introduction.]",
+                  "ms": 7926
                 }
               ]
             }
@@ -193,9 +193,9 @@
                   "review": [
                     "Control: the built-in opener starts as usual."
                   ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi everyone, thanks for joining. I'm looking forward to hearing what you have to say today.\n\n[You're the lead PM kicking off a new mobile app project at Apple in Cupertino. Sarah is an engineer on your team. Over the past week, there have been emails back and forth about requirements and timeline. Today's goal is to align the team on scope and schedule so development can begin. The next step is to get sign-off from the design lead by next Wednesday. Sarah is ready to listen.]\n\n[Start with your introduction.]",
+                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this kickoff. I'm ready when you are.\n\n[You're the lead PM for a new mobile app project at Apple. The team is gathered for the first kickoff meeting. Over the past two weeks, there have been emails going back and forth about requirements and timing. Today's goal is to align on the schedule and main features so development can begin. The next step will be to share a timeline with leadership.]\n\n[Start with your introduction.]",
                   "sceneSent": "Start a meeting",
-                  "ms": 7007
+                  "ms": 6660
                 },
                 {
                   "n": 2,
@@ -227,8 +227,8 @@
                   "review": [
                     "Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first."
                   ],
-                  "reply": "Got it. Here's your manager.\n\n<character name=\"David\" gender=\"male\"/>\n\nHey, I wanted to check in on the mobile app before the status review tomorrow. Leadership is expecting us to hit the original date. Where do we stand?\n\n[You're a project manager at Apple in Cupertino. David is your direct manager. The app was supposed to ship in three weeks, but testing found integration issues that will delay release by about two weeks. You need to deliver the news and propose how to handle it. David has a quarterly review coming up and was counting on this launch.]",
-                  "ms": 6607
+                  "reply": "<character name=\"David\" gender=\"male\"/>\n\nGot it. Here's the situation.\n\n[You work at Apple as a PM on a new mobile app. David is your direct manager. The project was supposed to ship in three weeks, but integration testing is taking longer than expected. You need to tell him the timeline is slipping by two weeks. David values early warning and a clear plan forward.]\n\nI just got the latest test report. Everything on track for the original ship date?",
+                  "ms": 6951
                 },
                 {
                   "n": 3,
@@ -260,8 +260,8 @@
                   "review": [
                     "The manager reacts to the delay (asks about the plan or the impact); not graded on introductions."
                   ],
-                  "reply": "David: Two weeks is a significant slip. The quarterly review is in four weeks, and I was planning to show this launch as closed. Walk me through what you found and what your recovery plan looks like.",
-                  "ms": 6234
+                  "reply": "Two weeks is a significant slip. Walk me through what you're seeing in testing and what your recovery plan looks like.",
+                  "ms": 6873
                 }
               ]
             }
@@ -311,14 +311,14 @@
                   "review": [
                     "Plays the client and leaves the questions to the learner."
                   ],
-                  "reply": "<profile learner_role=\"customer success manager\" learner_industry=\"software\" learner_industry_source=\"stated\" learner_goal=\"lead client discovery meetings confidently\"/>\n\n<character name=\"Elena\" gender=\"female\"/>\n\nThanks for setting this up. We're a mid-sized logistics company, about 400 people. We've been using spreadsheets and a legacy system to track shipments, and it's getting hard to manage as we grow. Your team reached out last quarter, and now we're evaluating whether your platform can actually handle our workflow.\n\n[You work for a SaaS company; Elena is the Operations Director at a logistics firm in Chicago. She has budget authority but needs her team's buy-in. Goal: help Elena decide if your product fits, while she tests whether you understand her business.]\n\nWhat would you like to ask first?",
-                  "ms": 11167
+                  "reply": "<character name=\"Priya\" gender=\"female\"/>\n\nThanks for making the time. We're about two weeks from go-live and honestly, I'm not sure we've been clear enough about what we actually need. Your team sent over the standard onboarding checklist, but our setup is more complicated than that.\n\n[You're a Customer Success Manager at the learner's software company. Priya is the Operations Director at a mid-sized logistics firm in Chicago. This is your first meeting with her. She has specific concerns about how the product will handle multi-warehouse inventory tracking, and she's skeptical that the default setup will work. Your goal: ask good discovery questions, understand her real constraints, and agree on a clear next step.]",
+                  "ms": 11339
                 },
                 {
                   "n": 2,
                   "mode": "[RP]",
                   "message": "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?",
-                  "profileSent": "Role: customer success manager. Industry: software. Learning goal: lead client discovery meetings confidently.",
+                  "profileSent": "(empty)",
                   "checks": [
                     {
                       "ok": true,
@@ -327,7 +327,7 @@
                     {
                       "ok": true,
                       "label": "words ≤ 120",
-                      "detail": "97 words"
+                      "detail": "102 words"
                     },
                     {
                       "ok": true,
@@ -345,8 +345,8 @@
                   "review": [
                     "Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner."
                   ],
-                  "reply": "Right now our operations team spends about six hours every Monday just reconciling shipment data across three different spreadsheets and our old TMS. Last month we had two cases where a container sat at port for four extra days because someone didn't see an update in one of the sheets. That's roughly twelve thousand dollars in detention fees each time, plus the client relationships.\n\nI'm looking for one place where my team can see real-time status, set automated alerts, and run reports without exporting everything to Excel. What does your platform actually cover in that workflow?",
-                  "ms": 8845
+                  "reply": "Right now we're running inventory across four warehouses using spreadsheets and a legacy system that doesn't talk to anything else. My team spends about six hours every Monday just reconciling numbers that don't match. Last month we had a $40,000 order ship from the wrong location because someone looked at outdated stock levels.\n\nI'm hoping your platform gives us one place where every warehouse sees the same data in real time. But I need to understand how that actually works when our Chicago and Dallas locations use different barcode formats.\n\n[She's answered your first question directly. What would you ask next?]",
+                  "ms": 9636
                 }
               ]
             }
@@ -358,7 +358,7 @@
       "name": "staging-2",
       "spec": "z_Chat_Regression_Test_v2.0",
       "app": "staging",
-      "at": "2026-11-18T10:54:43.954Z",
+      "at": "2026-11-18T10:57:31.632Z",
       "green": true,
       "nonBlocking": [
         {
@@ -367,7 +367,7 @@
           "firstTry": false,
           "baseline": {
             "rate": 0,
-            "runs": 5
+            "runs": 7
           },
           "worse": false,
           "readyToPromote": false
@@ -393,17 +393,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -434,8 +434,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Sarah, the regional retail lead for East China. I know the holiday quarter is always critical for us, so I'm glad we're getting aligned early this year.\n\n[You are a PM at Apple. Sarah is the East China retail lead. The meeting is a kickoff for the holiday sales plan. Over the past two weeks, there have been emails between Cupertino and the China retail team about inventory targets and promotional timing. Today's goal is to agree on the sales forecast, promotional calendar, and staffing plan for the holiday season. The next step is to finalize the plan and share it with the global retail VP by next Friday.]\n\n[Start with your introduction.]",
-                  "ms": 9722
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"tech\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this, D. I'm ready when you are.\n\n[You are the PM leading a kickoff meeting with Sarah, the retail operations lead for Greater China, and her team in Shanghai. The goal is to align on the holiday sales plan. Over the past two weeks, there have been emails about inventory targets and promotional timing. Today you need to confirm the schedule, key markets, and staffing. The next step is to share a consolidated plan with the US retail team.]\n\n[Start with your introduction.]",
+                  "ms": 7425
                 }
               ]
             },
@@ -452,17 +452,17 @@
                     {
                       "ok": true,
                       "label": "profile: name = \"D\"",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: role contains any of [\"pm\",\"product manager\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
                       "label": "profile: company contains any of [\"apple\"]",
-                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                      "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"Technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
                     },
                     {
                       "ok": true,
@@ -493,8 +493,8 @@
                   "review": [
                     "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
                   ],
-                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nHi D, thanks for setting this up. I'm Sarah, the regional retail lead for Shanghai and Beijing. I've been looking at last year's numbers, and I think we need to make some big moves for the holiday season. What's on your mind for today's discussion?\n\n[You are a PM at Apple. Sarah is the regional retail lead for China. The meeting is about the holiday sales plan for retail stores in Shanghai and Beijing. Your goal is to align on strategy and next steps.]\n\n[Start with your introduction.]",
-                  "ms": 7612
+                  "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"Technology\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this, D. I'm ready when you are.\n\n[Apple, Beijing. You are the PM leading a kickoff with Sarah and the retail team. Over the past two weeks, there have been emails about the holiday sales plan. Today's goal is to align on promotions, staffing, and inventory for the China retail stores. The next step is to finalize the plan and get sign-off from the US team by next Friday so stores can prepare.]\n\n[Start with your introduction.]",
+                  "ms": 11079
                 }
               ]
             }
@@ -540,9 +540,9 @@
                   "review": [
                     "Control: the built-in opener starts as usual."
                   ],
-                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nHi, I'm Sarah. I'm looking forward to hearing what you have to say today.\n\n[We're at Tesla's Shanghai office. You're the project lead for a new mobile app update that lets owners schedule service appointments. Over the past week, the team exchanged several emails about feature requirements and design mockups. Today's goal is to align on the final scope and timeline before development begins. The next step is to get sign-off from the US product team. You're leading this kickoff meeting with Sarah and three other teammates on the call.]\n\n[Start with your introduction.]",
+                  "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this. I'm ready when you are.\n\n[We're at Tesla's Austin office. You're leading a kickoff meeting for a new mobile app project. Over the past two weeks, the team exchanged emails about requirements and timelines. Today's goal is to align on the schedule and key features so development can begin. The next step will be to get written approval from the US leadership team.]\n\n[Start with your introduction.]",
                   "sceneSent": "Start a meeting",
-                  "ms": 10546
+                  "ms": 8217
                 },
                 {
                   "n": 2,
@@ -574,8 +574,8 @@
                   "review": [
                     "Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first."
                   ],
-                  "reply": "<character name=\"David\" gender=\"male\"/>\n\nHey, do you have a minute? I wanted to check in on the Alpha project timeline. The leadership team is asking for a status update for the board meeting next week, and I need to know if we're still on track for the original delivery date.\n\n[We're at a mid-sized software company in Singapore. You're a senior engineer reporting to David, the engineering director. The Alpha project is a backend migration that other teams are waiting for. You need to tell David that the project will be delayed by two weeks due to unexpected integration issues. This is the first time you're raising the delay with him.]",
-                  "ms": 7575
+                  "reply": "<character name=\"David\" gender=\"male\"/>\n\nHey, do you have a minute? I wanted to check in on the mobile app timeline before I update leadership.\n\n[We're at Tesla's Austin office. You're a project manager on the new mobile app. I'm David, your manager. I just asked about the timeline because the quarterly review is coming up, and I need to know if we're still on track for the launch.]\n\n[You can describe a different situation anytime.]",
+                  "ms": 6077
                 },
                 {
                   "n": 3,
@@ -607,8 +607,8 @@
                   "review": [
                     "The manager reacts to the delay (asks about the plan or the impact); not graded on introductions."
                   ],
-                  "reply": "Thanks for flagging this early. Two weeks is a significant slip, and the mobile team is already scheduling their launch around our handoff. Walk me through what you're seeing in testing and what your recovery plan looks like.\n\n[David listens, arms crossed, concerned but not angry. He needs details to take to the leadership team.]",
-                  "ms": 5443
+                  "reply": "<character name=\"David\" gender=\"male\"/>\n\nTwo weeks? That's a significant slip. How many bugs are we talking about, and which areas are most affected? And what's your recovery plan—are we talking overtime, cutting scope, or pulling in more people?\n\n[We're at Tesla's Austin office. You're a project manager reporting to me, David. The mobile app launch is key for the quarterly review, and leadership has already announced the date externally.]",
+                  "ms": 5894
                 }
               ]
             }
@@ -658,14 +658,14 @@
                   "review": [
                     "Plays the client and leaves the questions to the learner."
                   ],
-                  "reply": "<character name=\"Maya\" gender=\"female\"/>\n\nHi there. Thanks for making the time to meet. I'm Maya, VP of Operations at Northbridge Logistics. We signed up for your platform about two weeks ago, but honestly, we're not sure where to start. Our team is still using spreadsheets for most of our shipment tracking, and the switch feels overwhelming.\n\n[You're a customer success manager at a software company, meeting Maya at Northbridge Logistics in Chicago. She needs help moving from spreadsheets to your platform, and she's unsure about priorities. Your goal: understand her situation and guide her toward a clear setup plan. Ask your questions.]",
-                  "ms": 9970
+                  "reply": "<profile learner_role=\"customer success manager\" learner_industry=\"software\" learner_industry_source=\"inferred\" learner_goal=\"lead client discovery meetings confidently\"/>\n\n<character name=\"Maya\" gender=\"female\"/>\n\nThanks for setting this up. We're about to roll out your platform company-wide, and honestly, we're not sure if the current configuration is going to work for all our teams. Some departments have very different workflows.\n\n[You're a customer success manager at a software company. Maya is the operations director at a mid-sized logistics firm in Chicago. Her company just bought your platform. She needs to feel heard about her team's concerns before she commits to a full rollout. Ask your questions.]",
+                  "ms": 13353
                 },
                 {
                   "n": 2,
                   "mode": "[RP]",
                   "message": "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?",
-                  "profileSent": "(empty)",
+                  "profileSent": "Role: customer success manager. Industry: software (guessed from the company). Learning goal: lead client discovery meetings confidently.",
                   "checks": [
                     {
                       "ok": true,
@@ -674,7 +674,7 @@
                     {
                       "ok": true,
                       "label": "words ≤ 120",
-                      "detail": "78 words"
+                      "detail": "102 words"
                     },
                     {
                       "ok": true,
@@ -692,8 +692,8 @@
                   "review": [
                     "Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner."
                   ],
-                  "reply": "Right now, our biggest pain point is visibility. I have twelve people across three warehouses entering shipment data into shared spreadsheets, and by Tuesday every week, no one trusts the numbers anymore. Version conflicts, manual errors, delays in updating—we're basically flying blind on inventory in transit. I need one place where my team can see real-time status without calling each other or scrolling through email threads.\n\nWhat does your platform need from us to replace that?",
-                  "ms": 6509
+                  "reply": "Right now, our dispatch and warehouse teams are working off two separate systems that don't talk to each other. Dispatch plans routes in one tool, then warehouse staff manually re-enter everything into their inventory system to prepare shipments. It's slow, and we get mismatched data almost every day—wrong quantities, wrong delivery windows. Last month we had a shipment go to the wrong state because someone copied a zip code incorrectly.\n\nWe're hoping your platform can connect those two workflows so we stop doing double work and cut down on these errors.\n\n[Your turn. What do you want to ask next?]",
+                  "ms": 9480
                 }
               ]
             }
