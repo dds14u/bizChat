@@ -1,0 +1,345 @@
+{
+  "spec": "z_Chat_Regression_Test_v2.0",
+  "app": "staging",
+  "at": "2026-11-18T11:01:29.898Z",
+  "green": true,
+  "nonBlocking": [
+    {
+      "id": "C5",
+      "status": "FLAKY",
+      "firstTry": false,
+      "baseline": {
+        "rate": 0,
+        "runs": 9
+      },
+      "worse": false,
+      "readyToPromote": false
+    }
+  ],
+  "results": [
+    {
+      "id": "C5",
+      "title": "Custom scene with profile",
+      "severity": "non-blocking",
+      "status": "FLAKY",
+      "attempts": [
+        {
+          "failed": true,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: name = \"D\"",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: role contains any of [\"pm\",\"product manager\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"apple\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": false,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]",
+                  "detail": "found \"Start with your introduction\""
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
+              ],
+              "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"tech\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for setting this up, D. I'm Sarah, the retail operations lead for Greater China. I've got the regional store managers on the line with me. We're all curious what headquarters has in mind for the holiday push this year.\n\n[You're the lead PM running a kickoff with Apple's China retail team. Sarah and the managers are ready for your opening. The goal: align on the holiday sales plan.]\n\n[Start with your introduction.]",
+              "ms": 8649
+            }
+          ]
+        },
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: name = \"D\"",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: role contains any of [\"pm\",\"product manager\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"apple\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Apple\",\"industry\":\"technology\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"stated\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine."
+              ],
+              "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Apple\" learner_industry=\"technology\" learner_industry_source=\"stated\" learner_goal=\"lead client presentations confidently\"/>\n\n<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for setting this up, D. I'm ready when you are.\n\n[You're a PM at Apple, meeting with Sarah, the retail lead for Greater China. The team has exchanged emails about the holiday sales plan for the past two weeks. Today's goal is to align on promotional timing, inventory targets, and staffing for the November–January period. Your next step after this meeting is to share a consolidated plan with the US retail team by next Monday.]",
+              "ms": 8876
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "Clear switch: meeting opener to a project delay",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Start a meeting\". Difficulty: Easy.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "bracket line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Control: the built-in opener starts as usual."
+              ],
+              "reply": "<character name=\"Sarah\" gender=\"female\"/>\n\nThanks for organizing this kickoff. I'm ready when you are.\n\n[You're the lead project manager for a new mobile app at Apple. The team has exchanged several emails about requirements over the past two weeks. Today's goal is to align on the schedule and main features before development begins. The next step is to get written sign-off from the US team. Sarah is a teammate joining remotely from Cupertino.]\n\n[Start with your introduction.]",
+              "sceneSent": "Start a meeting",
+              "ms": 7082
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first."
+              ],
+              "reply": "<character name=\"David\" gender=\"male\"/>\n\nHey, do you have a minute? I wanted to check in on the timeline for the mobile app. The leadership team is asking for an update before the board meeting next week.\n\n[You're a project manager at Apple reporting to David, your engineering director in Cupertino. The app was scheduled for internal testing by March 15, but integration issues with the payment system will push that back by about two weeks. David has been supportive of the team but is under pressure to hit the original date. He doesn't know about the delay yet.]\n\nWhat can you tell me?",
+              "ms": 7577
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The manager reacts to the delay (asks about the plan or the impact); not graded on introductions."
+              ],
+              "reply": "Two weeks? That's going to be tight for the board meeting. Walk me through what you're seeing and what your recovery plan looks like.\n\n[David leans forward, concerned but listening. He needs details to take upstairs.]",
+              "ms": 5568
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S8",
+      "title": "Discovery: customer success exploring client needs",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "I'm a customer success manager at a software company. I'm meeting a new client to understand their needs before we set up the product. Please play the client, and I'll ask the questions.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Start with your introduction\",\"introduce yourself\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "character line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Plays the client and leaves the questions to the learner."
+              ],
+              "reply": "<profile learner_role=\"customer success manager\" learner_industry=\"software\" learner_industry_source=\"stated\" learner_goal=\"understand client needs before product setup\"/>\n\n<character name=\"Priya\" gender=\"female\"/>\n\nHi there, thanks for coming by. We're excited to get started, but I'll be honest — we've had some mixed experiences with software rollouts before, so I'm hoping this one goes more smoothly.\n\n[You're meeting Priya, Operations Director at a mid-sized logistics company in Chicago. She's your new client's main point of contact. Your goal: understand her team's needs, concerns, and priorities before configuring the product.]\n\nWhat would you like to know first?",
+              "ms": 7711
+            },
+            {
+              "n": 2,
+              "mode": "[RP]",
+              "message": "Thanks for your time today. What problem are you hoping our software will solve, and how are you handling it now?",
+              "profileSent": "Role: customer success manager. Industry: software. Learning goal: understand client needs before product setup.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "83 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Answers as the client with realistic detail and room to follow up; doesn't coach or turn the questions back on the learner."
+              ],
+              "reply": "Right now we're juggling three different tools to track shipments, and none of them talk to each other. My team spends about six hours a week just copying data between systems and fixing errors from manual entry. Last month we lost a client because a delivery went to the wrong warehouse — nobody caught it in time.\n\nWe need one place where everyone can see the same information in real time, especially our drivers and the warehouse floor. What else should I tell you?",
+              "ms": 24361
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
