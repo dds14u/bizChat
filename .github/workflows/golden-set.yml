@@ -19,7 +19,7 @@ on:
         options: ["1", "2", "3"]
         default: "1"
       cases:
-        description: Case IDs or group letters to run, e.g. "C1 D2" or "S" (blank = all except held out)
+        description: Case IDs or group letters to run, e.g. "C1 D2" or "S" (blank = all except optional O cases)
         required: false
         default: ""
   push:
@@ -44,8 +44,19 @@ jobs:
         with:
           node-version: 22
 
+      - name: Load earlier runs (baselines for non-blocking checks)
+        run: |
+          mkdir -p evals/out/history
+          if git fetch -q --depth=1 origin eval-results 2>/dev/null; then
+            for f in $(git ls-tree --name-only FETCH_HEAD runs/ | grep '\.json$'); do
+              git show "FETCH_HEAD:$f" > "evals/out/history/$(basename "$f")"
+            done
+          fi
+          echo "$(ls evals/out/history | wc -l) earlier run files"
+
       - name: Run golden set
         env:
+          EVAL_HISTORY: evals/out/history
           KEY_PRODUCTION: ${{ secrets.DIFY_API_KEY }}
           KEY_STAGING: ${{ secrets.DIFY_API_KEY_STAGING }}
           DIFY_API_URL: ${{ vars.DIFY_API_URL }}
@@ -98,6 +109,14 @@ jobs:
           cp /tmp/golden-out/report.md latest.md
           cp /tmp/golden-out/results.json latest.json
           cp /tmp/golden-out/report.md "runs/${stamp}.md"
+          # One results file per app run: the history the next runs' baselines are computed from
+          if [ -d /tmp/golden-out/runs ]; then
+            for d in /tmp/golden-out/runs/*/; do
+              [ -f "$d/results.json" ] && cp "$d/results.json" "runs/${stamp}_$(basename "$d").json"
+            done
+          else
+            cp /tmp/golden-out/results.json "runs/${stamp}.json"
+          fi
           git add latest.md latest.json runs
           git commit -qm "Golden set run ${GITHUB_RUN_ID} [skip netlify]"
           git push -q origin eval-results
