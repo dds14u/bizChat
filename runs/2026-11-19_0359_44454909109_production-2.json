@@ -1,0 +1,449 @@
+{
+  "spec": "z_Chat_Regression_Test_v2.0",
+  "app": "production",
+  "at": "2026-11-19T03:59:52.263Z",
+  "green": true,
+  "nonBlocking": [],
+  "results": [
+    {
+      "id": "C1",
+      "title": "Out of scope (Coach)",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "What's for dinner?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "contains \"outside what I can help with\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: no link"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: no profile line",
+                  "detail": null
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 60",
+                  "detail": "22 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Declines without giving any food or cooking advice."
+              ],
+              "reply": "Sorry, that's outside what I can help with. I focus on Business English, so try asking about emails, meetings, or workplace situations.",
+              "ms": 3475
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "title": "Coach starter: first 90 days",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "What should I do in my first 90 days?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "starts with \"This is covered in the course:\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: lesson link"
+                },
+                {
+                  "ok": true,
+                  "label": "list items ≥ 2",
+                  "detail": "13 items"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The actions are concrete and come from the first-90-days lesson.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/"
+              ],
+              "reply": "This is covered in the course:\n\nUse your first 90 days to learn, ask questions, and understand your new environment before trying to change things.\n\n• **Map your place in the organization**\n  - Your role in the team\n  - The team's role in the department\n  - The department's role in the company\n  - The company's place in its market\n\n• **Decide your career direction**\n  - Let your long-term goal guide what you learn and which opportunities you pursue, even if that goal is outside the company\n\n• **Stay humble and learn proactively**\n  - Previous success does not automatically transfer to a new company\n  - Listen more than you push\n  - Ask questions boldly while you are new\n  - Learn from coworkers and internal documents\n  - Focus on learning and making a specific plan rather than worrying about performance ratings\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/",
+              "ms": 14323
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "title": "Profile save, then use (Coach)",
+      "severity": "blocking",
+      "status": "PASS",
+      "attempts": [
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[QA]",
+              "message": "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "profile: name = \"D\"",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: role contains any of [\"pm\",\"product manager\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: company contains any of [\"google\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: fields present [\"industry\",\"goal\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: goal contains any of [\"meeting\",\"confident\",\"lead\"]",
+                  "detail": "saved {\"name\":\"D\",\"role\":\"PM\",\"company\":\"Google\",\"industry\":\"tech\",\"goal\":\"lead client presentations confidently\",\"industry_source\":\"inferred\"}"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+              ],
+              "reply": "<profile learner_name=\"D\" learner_role=\"PM\" learner_company=\"Google\" learner_industry=\"tech\" learner_industry_source=\"inferred\" learner_goal=\"lead client presentations confidently\"/>\n[I’ve saved your details to your profile (if enabled). See more: top-right menu → About.]\n\nThis is covered in the course:\n\nThe ICE method gives your opening a clear structure, so you sound prepared and in control.\n\n1. **Introductions**\n   - State the meeting topic, your name, role, and how you'll contribute.\n   - *\"Today we're kicking off the CRM integration. I'm D, the PM, and I'll manage the timeline and be your main contact for requirements.\"*\n\n2. **Context**\n   - Past: how you got here.\n   - Present: today's topics and goal.\n   - Future: next step with a deadline.\n   - *\"We've had emails going back and forth for two weeks. Today we'll confirm the data model and rollout phases. The goal is alignment before engineering starts. I'll send a written summary to leadership by next Monday.\"*\n\n3. **Expectations**\n   - Interaction: when to ask questions.\n   - Detail level: technical or high level.\n   - *\"This will be a detailed discussion, so please hold questions until after each section.\"*\n\nPractice tip: write your opening out once before the meeting. It takes two minutes and removes filler words like \"um\" and \"maybe.\"\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/",
+              "ms": 15947
+            },
+            {
+              "n": 2,
+              "mode": "[QA]",
+              "message": "How do I start a meeting with my team?",
+              "profileSent": "First name: D. Role: PM. Company: Google. Industry: tech (guessed from the company). Learning goal: lead client presentations confidently.",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "starts with \"This is covered in the course:\""
+                },
+                {
+                  "ok": true,
+                  "label": "link: lesson link"
+                },
+                {
+                  "ok": true,
+                  "label": "profile: no profile line",
+                  "detail": null
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"what is your role\",\"what's your role\",\"which company\",\"where do you work\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Fits the advice to the learner's background where it helps; invents no conflicting background.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the ICE method to open with confidence and clarity.\n\n**1. Introductions**\n- State the meeting topic, your name, role, and how you'll contribute.\n- *\"Today we're reviewing the CRM rollout plan. I'm D, the PM, and I'll run the timeline and flag any blockers.\"*\n\n**2. Context**\n- Past: how you got here.\n- Present: today's topics and goal.\n- Future: next step with a deadline.\n- *\"We've had sync emails with the US team this week. Today we'll confirm the data model and the pilot schedule. We need written sign-off from leadership by next Friday so engineering can start.\"*\n\n**3. Expectations**\n- Interaction: when should people ask questions?\n- Detail level: technical deep-dive or high-level?\n- *\"We'll stay high-level on architecture and save technical details for the follow-up with the engineers. Feel free to interrupt if something doesn't make sense.\"*\n\n**Quick tip:** As a PM at Google, your team expects you to own the flow. Ending Context with a specific deadline (\"by next Friday\") signals you're managing the project, not just the meeting.\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/",
+              "ms": 11435
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "title": "Mode switch: Role-play → Coach → back",
+      "severity": "blocking",
+      "status": "FLAKY",
+      "attempts": [
+        {
+          "failed": true,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Disagree with a coworker\". Difficulty: Medium.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "bracket line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with."
+              ],
+              "reply": "<character name=\"Bob\" gender=\"male\"/>\n\n\"I think we should list the traditional coffee drinks first on the new menu. It stays true to our brand, and customers who come in for a classic experience will find them right away.\"\n\n[We're at Starbucks headquarters in Seattle. You're a product manager on the menu team. Bob is a senior marketing analyst on your team. We're discussing the layout for the new digital menu boards rolling out next quarter.]\n\n[Hint: you could honestly agree that brand consistency matters, or that traditional coffee has loyal customers.]",
+              "sceneSent": "Disagree with a coworker",
+              "ms": 5753
+            },
+            {
+              "n": 2,
+              "mode": "[QA]",
+              "message": "How can I politely disagree with the idea?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Coaching advice based on the character's actual proposal, not a line spoken as the character.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the feedback sandwich to disagree while keeping the discussion open:\n\n• **Partially agree first** — show you understand their view\n  - \"I understand that we want to stay true to our traditional coffee brand.\"\n\n• **State your opinion with a reason** — use facts or data if you have them\n  - \"But our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales.\"\n\n• **Keep it open** — invite alternatives rather than shutting down the idea\n  - \"Are there other alternatives?\"\n  - \"Maybe we could try a digital display so that we can update the menus depending on the season.\"\n\nThe goal is to encourage discussion, not win the argument. Once the team decides, move forward together.\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/",
+              "ms": 8892
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Switched to\"]"
+                },
+                {
+                  "ok": false,
+                  "label": "words ≤ 120",
+                  "detail": "640 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Replies as the character and continues the same discussion (no restart, recap or mode note)."
+              ],
+              "reply": "[RP mode is active. The learner is continuing the \"Disagree with a coworker\" scene with Bob. I need to stay in character as Bob and react to what they said.]\n\nLet me check their message against the feedback sandwich method:\n1. Partially agree first — they said \"I understand the benefit you're aiming for\" — this counts as partial agreement, though it's a bit thin/generic.\n2. State their own opinion with a reason — they said \"I'm concerned about the time this would take\" — this is an opinion with a reason.\n3. Keep the discussion open — they asked \"Could we compare it with a smaller trial before deciding?\" — this is an alternative suggestion, keeping it open.\n\nBob should respond to the quality of their reasoning. Their reasoning is decent — they partially agreed, gave a concern, and proposed an alternative. Bob should be engaged but maybe a bit defensive about \"time\" since he didn't mention time in his original point. Actually, let me re-read: Bob's original idea was about brand and customer experience. The learner introduced \"time\" as a concern, which is a new objection not directly related to Bob's stated reasoning. Bob might push back slightly or ask for clarification, while still being open to the trial idea.\n\nActually, looking at the scene rules: \"Bob responds to the quality of the learner's reasoning: a little defensive at harsh disagreement, engaged with good reasons, open to alternatives.\" The learner wasn't harsh, they were reasonable. So Bob should be engaged, maybe ask what they mean by time since that wasn't his point, but open to the trial.\n\nWait, I need to be careful. The learner said \"the time this would take\" — but Bob's proposal was about menu ordering, not about implementation time. So Bob might naturally be confused or ask what they mean. But the learner also proposed a smaller trial, which is a concrete alternative.\n\nLet me play Bob as engaged but wanting to understand the time concern, and open to the trial idea.\n\nAlso, I need to check turn count. The scene started with Bob's opening. Then the learner replied. This is the learner's 1st turn. We need to move toward a decision by the 4th or 5th turn.\n\nBob's response: 1-3 natural sentences, 40-80 words. Make one main point.\n\nPossible response: \"A smaller trial? That's interesting. When you say time, do you mean the time to change the boards, or something else? I'm open to testing, but we'd need to define what 'success' looks like for the trial.\"\n\nWait, that's a bit question-heavy. Let me make it more natural.\n\n\"A smaller trial is worth considering. I'm curious though — when you mention time, are you worried about the rollout schedule? If we test one market first, we'd need to be clear on what metrics would decide whether we expand.\"\n\nThat's about 40 words. Good.\n\nActually, let me check: the learner's message was \"I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?\"\n\nBob should react to the trial suggestion positively since it's an alternative, but push back a bit on the \"time\" concern since it wasn't clear. Or Bob could interpret \"time\" as implementation time and address it.\n\nLet me go with:\n\n\"Thanks for hearing me out. A smaller trial could work, but help me understand — are you worried about the time to redesign the boards, or the risk of confusing customers? If we run a trial, we'd need a clear way to measure whether it actually helps sales or just feels safer.\"\n\nThat's about 50 words. Engaged, slightly probing, open to alternatives. Good.\n\nWait, I should check if there are any profile updates needed. The learner hasn't shared anything new about their real self in this message. No profile line needed.\n\n",
+              "ms": 26839
+            }
+          ]
+        },
+        {
+          "failed": false,
+          "errored": false,
+          "turns": [
+            {
+              "n": 1,
+              "mode": "[RP]",
+              "message": "Start the role-play scene \"Disagree with a coworker\". Difficulty: Medium.",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "bracket line: present"
+                },
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with."
+              ],
+              "reply": "<character name=\"Bob\" gender=\"male\"/>\n\nI think we should list traditional coffee first on the new menu. It honors our brand heritage, and customers who come in for a classic espresso experience will find what they want right away.\n\n[Setting: Starbucks headquarters, Seattle. You're a product manager on the menu team. Bob is your teammate. The team is finalizing the layout for the new in-store menu boards. Bob's proposal has a real strength—brand identity—but there's also data he's overlooking. Your goal: disagree professionally and steer the team toward a better decision. Hint: what can you honestly agree with in his point?]",
+              "sceneSent": "Disagree with a coworker",
+              "ms": 8006
+            },
+            {
+              "n": 2,
+              "mode": "[QA]",
+              "message": "How can I politely disagree with the idea?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Coaching advice based on the character's actual proposal, not a line spoken as the character.",
+                "G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/"
+              ],
+              "reply": "This is covered in the course:\n\nUse the feedback sandwich to disagree while keeping the discussion open:\n\n• **Partially agree first** — show you understand their view:\n  - \"I understand that we want to stay true to our traditional coffee brand.\"\n  - \"It makes sense that regular customers would expect to see the classics first.\"\n\n• **State your opinion with a reason** — use facts or data if you have them:\n  - \"But our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales.\"\n\n• **Keep it open** — invite alternatives rather than shutting down:\n  - \"Are there other alternatives?\"\n  - \"Maybe we could try a digital display so that we can update the menus depending on the season.\"\n\nThe goal is to encourage discussion, not win the argument. Once the team decides, move forward together.\n\nWatch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/",
+              "ms": 8241
+            },
+            {
+              "n": 3,
+              "mode": "[RP]",
+              "message": "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?",
+              "profileSent": "(empty)",
+              "checks": [
+                {
+                  "ok": true,
+                  "label": "no feedback"
+                },
+                {
+                  "ok": true,
+                  "label": "doesn't contain any of [\"Reply with a number\",\"Switched to\"]"
+                },
+                {
+                  "ok": true,
+                  "label": "words ≤ 120",
+                  "detail": "60 words"
+                },
+                {
+                  "ok": true,
+                  "label": "G2 no mention of Taiwan"
+                },
+                {
+                  "ok": true,
+                  "label": "G3 English reply"
+                },
+                {
+                  "ok": true,
+                  "label": "G4 hidden lines well formed"
+                }
+              ],
+              "review": [
+                "Replies as the character and continues the same discussion (no restart, recap or mode note)."
+              ],
+              "reply": "I hear you on wanting to test first, but a smaller trial still means designing a second layout, running a pilot, and then reconvening—that's easily four to six weeks. The menu boards need to go to print by month-end for the summer rollout.\n\nWhat data are you seeing that makes you think a trial would change the outcome?",
+              "ms": 5704
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,27 +1,20 @@
 # Golden set comparison: GREEN
 
-Spec: z_Chat_Regression_Test_v2.0 · production · 2 runs each · 2026-11-19 03:21 UTC
+Spec: z_Chat_Regression_Test_v2.0 · production · 2 runs each · 2026-11-19 03:59 UTC
 
 Each cell = passed on the first try / runs. "Flaky" = failed, then passed on the automatic rerun.
 When the cell counts differ between apps for the same prompt, that difference is run-to-run variation.
 
 | Case | production |
 |---|---|
-| C3 Scene card: Start a meeting, then a full ICE opening | 2/2 |
-| C4 Menu path: greeting, then "1" | 2/2 |
-| C5 Custom scene with profile (non-blocking) | 0/2 (2 flaky) |
-| S5 Clear switch: meeting opener to a project delay | 2/2 |
-| **Total (first try)** | **6/8** |
-
-## Non-blocking cases
-Reported only; they never turn the run red. Each cell = passed on the first try / runs, then the baseline from earlier runs of that app.
-
-| Case | production |
-|---|---|
-| C5 | 0/2 · baseline 0% |
+| C1 Out of scope (Coach) | 2/2 |
+| C2 Coach starter: first 90 days | 2/2 |
+| C6 Profile save, then use (Coach) | 2/2 |
+| D1 Mode switch: Role-play → Coach → back | 1/2 (1 flaky) |
+| **Total (first try)** | **7/8** |
 
 ## Runs
-- production-1: GREEN · PASS 3 · FAIL 0 · FLAKY 1 · ERROR 0
+- production-1: GREEN · PASS 4 · FAIL 0 · FLAKY 0 · ERROR 0
 - production-2: GREEN · PASS 3 · FAIL 0 · FLAKY 1 · ERROR 0
 
 Full reports for each run, including failed replies and review items, follow below.
@@ -32,183 +25,189 @@ Full reports for each run, including failed replies and review items, follow bel
 
 ### Golden set: GREEN
 
-App: production · Spec: z_Chat_Regression_Test_v2.0 · 2026-11-19 03:19 UTC
+App: production · Spec: z_Chat_Regression_Test_v2.0 · 2026-11-19 03:58 UTC
 
-**PASS 3 · FAIL 0 · FLAKY 1 · ERROR 0**
+**PASS 4 · FAIL 0 · FLAKY 0 · ERROR 0**
 
 | Case | Label | Result | Failed checks (last attempt) |
 |---|---|---|---|
-| C3 Scene card: Start a meeting, then a full ICE opening | BLOCKING | PASS | – |
-| C4 Menu path: greeting, then "1" | BLOCKING | PASS | – |
-| C5 Custom scene with profile | NON-BLOCKING | FLAKY | passed on rerun; first try: T1: doesn't contain any of ["Start with your introduction"] |
-| S5 Clear switch: meeting opener to a project delay | BLOCKING | PASS | – |
-
-## Non-blocking cases
-Reported only; they never turn the run red. Baseline = how often the case passed on the first try in the last 10 earlier runs of this app.
-
-| Case | This run | Baseline | Note |
-|---|---|---|---|
-| C5 | FLAKY | 0% (2 runs) |  |
+| C1 Out of scope (Coach) | BLOCKING | PASS | – |
+| C2 Coach starter: first 90 days | BLOCKING | PASS | – |
+| C6 Profile save, then use (Coach) | BLOCKING | PASS | – |
+| D1 Mode switch: Role-play → Coach → back | BLOCKING | PASS | – |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review notes are for you to judge.
 
-### C3 Scene card: Start a meeting, then a full ICE opening · BLOCKING · PASS
+### C1 Out of scope (Coach) · BLOCKING · PASS
 
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-Scene sent: Start a meeting
+**T1 [QA]** "What's for dinner?"
+- ✓ contains "outside what I can help with"
+- ✓ link: no link
+- ✓ profile: no profile line
+- ✓ words ≤ 60: 22 words
 - ✓ global checks G1–G4
-- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
+- [ ] Declines without giving any food or cooking advice.
 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> "Hi! Thanks for setting this up. I'm ready when you are."
-> 
-> [You're the lead PM kicking off a new mobile app project at Tesla in Austin. Over the past two weeks, the team exchanged emails about requirements and timelines. Today's goal is to align on the schedule and key features before development begins. The next step will be getting written sign-off from the US leadership team. Sarah is a teammate joining remotely.]
-> 
-> [Start with your introduction.]
+> Sorry, that's outside what I can help with. I focus on Business English, so try asking about emails, meetings, or workplace situations.
 
-**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✓ feedback score ≥ 4: score 5
+### C2 Coach starter: first 90 days · BLOCKING · PASS
+
+**T1 [QA]** "What should I do in my first 90 days?"
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ list items ≥ 2: 13 items
 - ✓ global checks G1–G4
-- [ ] Doesn't ask the learner to redo a step they already covered.
+- [ ] The actions are concrete and come from the first-90-days lesson.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
+
+> This is covered in the course:
+> 
+> Use your first 90 days to learn, ask questions, and understand your new environment. Focus on humility and proactive learning rather than proving yourself immediately.
+> 
+> • **Map the landscape**
+>   - Understand your role in the team, your team's role in the department, and the department's role in the company.
+>   - Learn where the company sits in its market.
+> 
+> • **Set your direction**
+>   - Decide where you want your career to go.
+>   - Let that guide what you learn and which opportunities you pursue, even if your long-term goal is outside the company.
+> 
+> • **Learn proactively**
+>   - Ask questions boldly while you are new.
+>   - Study internal documents and learn from coworkers.
+>   - Avoid being overly aggressive; listen and stay flexible.
+> 
+> • **Make a specific plan**
+>   - Focus on learning first, then build a concrete plan.
+>   - Don't worry about performance ratings too early.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
+
+### C6 Profile save, then use (Coach) · BLOCKING · PASS
+
+**T1 [QA]** "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team."
+- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: company contains any of ["google"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ profile: fields present ["industry","goal"]
+- ✓ profile: goal contains any of ["meeting","confident","lead"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"stated"}
+- ✓ global checks G1–G4
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> "Thanks, Lee — that's helpful. I like that we have a clear deadline for leadership."
+> &lt;profile learner_name="D" learner_role="PM" learner_company="Google" learner_industry="tech" learner_industry_source="stated" learner_goal="lead client presentations confidently"/&gt;
 > 
-> [Now give the context: the past, the present, and the future.]
+> This is covered in the course:
 > 
-> ---
+> **ICE method for meeting openings**
 > 
-> Wait — let me re-check. Looking at all of your messages so far:
+> 1. **Introductions**
+>    - State the meeting topic, your name, role, and how you'll contribute
+>    - *"Hi everyone. Today we're kicking off the CRM integration for the sales team. I'm D, the PM on this project, and I'll be managing the timeline and requirements."*
 > 
-> Your first message covered: introduction (name, role, contribution), past (emails about features), present (agree on schedule), future (timeline to leadership by next Friday), and expectations (ask questions anytime, detailed discussion).
+> 2. **Context**
+>    - Past: how you got here
+>    - Present: today's topics and goal
+>    - Future: next step with a deadline
+>    - *"We've had emails going back and forth for two weeks. Today we'll align on the rollout plan and open issues. The goal is to get sign-off from the US leads by next Friday."*
 > 
-> That's all three ICE steps. Here's your feedback:
+> 3. **Expectations**
+>    - Interaction: *"Please hold questions for the end"* or *"Feel free to interrupt"*
+>    - Detail level: *"We'll stay high level on technical architecture"*
 > 
-> **Course score: 5/5**: You covered all three steps clearly and included a timed next step.
+> **Quick tip for confidence:** Write your opening in advance and say it out loud twice. At Google, your US colleagues expect clarity more than perfect grammar.
 > 
-> **How it went:** This was a strong, complete opening — your team would know exactly why they're here and how to take part.
+> Want to try this in a role-play, or do you want help with a specific meeting coming up?
 > 
-> **What worked:** Your expectations line "Please ask questions anytime, and this will be a detailed discussion" set both the level of interaction and the level of detail in one go.
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 > 
-> **What to improve:** Nothing major. Your context was slightly thin on the present — you named "agree on the schedule" but could briefly mention what topics you'll walk through first.
-> 
-> **Also worth noting:** "A lot of emails" is fine; "quite a few emails going back and forth" sounds a touch more natural.
-> 
-> **Try this instead:** "Over the past two weeks we've had quite a few emails going back and forth about the main features. Today we'll first walk through the requirements, confirm the schedule, and then call out any risks, so that everyone is aligned before we start development. The nex…
+> [I've saved your details to your profile (if enabled). See more: top-right menu → About.]
 
-### C4 Menu path: greeting, then "1" · BLOCKING · PASS
-
-**T1 [RP]** "Hello"
-- ✓ contains "Start a meeting"
-- ✓ contains any of ["describe","your own"]
-- ✓ character line: absent
-- ✓ no feedback
+**T2 [QA]** "How do I start a meeting with my team?"
+Profile sent: First name: D. Role: PM. Company: Google. Industry: tech. Learning goal: lead client presentations confidently.
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ profile: no profile line
+- ✓ doesn't contain any of ["what is your role","what's your role","which company","where do you work"]
 - ✓ global checks G1–G4
+- [ ] Fits the advice to the learner's background where it helps; invents no conflicting background.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> Let's practice a real workplace conversation. Reply with a number:
-> 1. Start a meeting (easy)
-> 2. Disagree with a coworker
-> 3. Reject a late request
-> Or describe your own situation.
+> This is covered in the course:
 > 
-> [Tip: describe your real role and a situation you're facing at work. The conversation will be more realistic and more challenging.]
+> **ICE method for meeting openings**
+> 
+> 1. **Introductions**
+>    - State the meeting topic, your name, role, and how you'll contribute
+>    - *"Hi everyone. Today we're kicking off the CRM integration for the sales team. I'm D, the PM on this project, and I'll be managing the timeline and requirements."*
+> 
+> 2. **Context**
+>    - Past: how you got here
+>    - Present: today's topics and goal
+>    - Future: next step with a deadline
+>    - *"We've had emails going back and forth for two weeks. Today we'll align on the rollout plan and open issues. The goal is to get sign-off from the US leads by next Friday."*
+> 
+> 3. **Expectations**
+>    - Interaction: *"Please hold questions for the end"* or *"Feel free to interrupt"*
+>    - Detail level: *"We'll stay high level on technical architecture"*
+> 
+> **Quick tip for confidence:** Write your opening in advance and say it out loud twice. At Google, your US colleagues expect clarity more than perfect grammar.
+> 
+> Want to try this in a role-play, or do you want help with a specific meeting coming up?
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
-**T2 [RP]** "1"
-Scene sent: Start a meeting
+### D1 Mode switch: Role-play → Coach → back · BLOCKING · PASS
+
+**T1 [RP]** "Start the role-play scene "Disagree with a coworker". Difficulty: Medium."
+Scene sent: Disagree with a coworker
 - ✓ doesn't contain any of ["Reply with a number"]
-- ✓ global checks G1–G4
-- [ ] Starts the built-in meeting-opening scene with a character.
-
-> Thanks for organizing this. I'm ready when you are.
-> 
-> [You're the lead project manager at Apple, kicking off a new iOS feature called "Focus Flow." Over the past two weeks, the team has exchanged emails about requirements and design mockups. Today's goal is to align on the schedule, key features, and risks before development begins. The next step is to get written sign-off from the US leadership team.]
-> 
-> [Start with your introduction.]
-
-### C5 Custom scene with profile · NON-BLOCKING · FLAKY
-
-**Attempt 1 (failed, so it was rerun)**
-
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"stated"}
-- ✓ character line: present
-- ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
-
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="stated" learner_goal="lead client presentations confidently"/&gt;
-> 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Thanks for organizing this. I'm ready when you are.
-> 
-> [Apple, Beijing. You're the lead PM for Greater China retail, kicking off a planning meeting with Sarah, the regional retail operations manager. Goal: align on the holiday sales plan and confirm next steps.]
-> 
-> [Start with your introduction.]
-
-**Attempt 2**
-
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"technology","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
-
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="technology" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
-> 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Thanks for organizing this, D. I'm ready when you are.
-> 
-> [You are a PM at Apple. Sarah is a retail operations lead on your team. You're kicking off a planning meeting with the China retail team to align on the holiday sales plan. The meeting is over video call. Sarah is waiting for you to open.]
-
-### S5 Clear switch: meeting opener to a project delay · BLOCKING · PASS
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-Scene sent: Start a meeting
 - ✓ bracket line: present
 - ✓ no feedback
 - ✓ global checks G1–G4
-- [ ] Control: the built-in opener starts as usual.
+- [ ] The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
 
-> &lt;character name="Sarah" gender="female"/&gt;
+> &lt;character name="Bob" gender="male"/&gt;
 > 
-> Hi everyone, thanks for joining. I'm Sarah, and I'll be supporting the project from the engineering side. Looking forward to hearing what you have to share.
+> "I think we should list traditional coffee first on the menu. It stays true to our brand, and customers expect it when they walk in."
 > 
-> [We're at Tesla's Palo Alto office. You're the lead project manager kicking off a new mobile app for vehicle diagnostics. Over the past two weeks, the team has exchanged several emails about requirements and timeline. Today's goal is to align on the schedule and key features before development begins. The next step will be to share a finalized timeline with leadership.]
-> 
-> [Start with your introduction.]
+> [We're at Starbucks headquarters in Seattle. You're a product manager on the menu team. I'm Bob, a senior marketing analyst. We're discussing the new in-store menu layout for summer. I want traditional coffee listed first. You know iced frappuccinos are our top sellers in summer and drive most revenue. Hint: you could honestly agree that brand consistency matters, or that traditional coffee is important to our identity.]
 
-**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ character line: present
+**T2 [QA]** "How can I politely disagree with the idea?"
 - ✓ global checks G1–G4
-- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
+- [ ] Coaching advice based on the character's actual proposal, not a line spoken as the character.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/
 
-> &lt;character name="David" gender="male"/&gt;
+> This is covered in the course:
 > 
-> I just got your message asking for a quick chat. What's going on with the project?
+> Use the **feedback sandwich** to disagree while keeping the discussion open:
 > 
-> [We're at Apple in Cupertino. You're a senior project manager on the iOS team. I'm David, your director. The quarterly release is coming up, and I've been asking for status updates all week. You need to tell me that the new feature integration will be delayed by two weeks.]
+> • **Partially agree** — show you understand their view
+>   - "I understand that we want to stay true to our traditional coffee brand…"
+> 
+> • **State your opinion with a reason** — use facts or data
+>   - "…but our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales."
+> 
+> • **Keep it open** — invite alternatives
+>   - "Are there other alternatives?"
+>   - "Maybe we could try a digital display so that we can update the menus depending on the season."
+> 
+> The goal: express your view during discussion, then move forward together once the team decides.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/
 
-**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-- ✓ doesn't contain any of ["Start with your introduction"]
+**T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
 - ✓ no feedback
+- ✓ doesn't contain any of ["Reply with a number","Switched to"]
+- ✓ words ≤ 120: 66 words
 - ✓ global checks G1–G4
-- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
+- [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
 
-> I appreciate you flagging this early. Two weeks is significant — it puts us past the quarterly release window. Walk me through the bugs and your recovery plan. I need to understand if we're looking at a full delay or if we can still hit something close to the original date.
+> &lt;character name="Bob" gender="male"/&gt;
 > 
-> [We're at Apple in Cupertino. You're a senior project manager on the iOS team. I'm David, your director. The quarterly release is coming up, and I've been asking for status updates all week.]
+> "I appreciate that you're thinking about rollout time, but I'm not sure I follow — are you saying a trial would be faster, or that the full change itself takes too long to implement?"
+> 
+> [We're continuing the menu discussion at Starbucks headquarters. You partially agreed and raised a concern, but I need to understand your reasoning before I can engage. What data or priority should I consider?]
 
 </details>
 
@@ -218,183 +217,244 @@ Scene sent: Start a meeting
 
 ### Golden set: GREEN
 
-App: production · Spec: z_Chat_Regression_Test_v2.0 · 2026-11-19 03:21 UTC
+App: production · Spec: z_Chat_Regression_Test_v2.0 · 2026-11-19 03:59 UTC
 
 **PASS 3 · FAIL 0 · FLAKY 1 · ERROR 0**
 
 | Case | Label | Result | Failed checks (last attempt) |
 |---|---|---|---|
-| C3 Scene card: Start a meeting, then a full ICE opening | BLOCKING | PASS | – |
-| C4 Menu path: greeting, then "1" | BLOCKING | PASS | – |
-| C5 Custom scene with profile | NON-BLOCKING | FLAKY | passed on rerun; first try: T1: doesn't contain any of ["Start with your introduction"] |
-| S5 Clear switch: meeting opener to a project delay | BLOCKING | PASS | – |
-
-## Non-blocking cases
-Reported only; they never turn the run red. Baseline = how often the case passed on the first try in the last 10 earlier runs of this app.
-
-| Case | This run | Baseline | Note |
-|---|---|---|---|
-| C5 | FLAKY | 0% (2 runs) |  |
+| C1 Out of scope (Coach) | BLOCKING | PASS | – |
+| C2 Coach starter: first 90 days | BLOCKING | PASS | – |
+| C6 Profile save, then use (Coach) | BLOCKING | PASS | – |
+| D1 Mode switch: Role-play → Coach → back | BLOCKING | FLAKY | passed on rerun; first try: T3: words ≤ 120 |
 
 ## Every reply (passed and failed)
 Each case shows every attempt. ✓ = check passed, ✗ = check failed. Review notes are for you to judge.
 
-### C3 Scene card: Start a meeting, then a full ICE opening · BLOCKING · PASS
+### C1 Out of scope (Coach) · BLOCKING · PASS
 
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-Scene sent: Start a meeting
+**T1 [QA]** "What's for dinner?"
+- ✓ contains "outside what I can help with"
+- ✓ link: no link
+- ✓ profile: no profile line
+- ✓ words ≤ 60: 22 words
 - ✓ global checks G1–G4
-- [ ] The character's opening is short and supportive; the setup gives enough to practice ICE.
+- [ ] Declines without giving any food or cooking advice.
 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Thanks for organizing this kickoff. I'm ready when you are.
-> 
-> [You're the lead project manager at Apple, in Cupertino. Sarah is a senior engineer on your team. The team has spent two weeks emailing about a new app feature, and today you need to align everyone on requirements and schedule so development can start. Sarah will react positively to whatever you say.]
-> 
-> [Start with your introduction.]
+> Sorry, that's outside what I can help with. I focus on Business English, so try asking about emails, meetings, or workplace situations.
 
-**T2 [RP]** "Hi everyone, I'm Lee, the lead PM for the new app launch, and I'll manage the schedule. Over the past two weeks we've had a lot of emails about the main features. Today's goal is to agree on the schedule, and the next step is to send a timeline to leadership by next Friday. Please ask questions anytime, and this will be a detailed discussion."
-- ✓ feedback score ≥ 4: score 5
+### C2 Coach starter: first 90 days · BLOCKING · PASS
+
+**T1 [QA]** "What should I do in my first 90 days?"
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ list items ≥ 2: 13 items
 - ✓ global checks G1–G4
-- [ ] Doesn't ask the learner to redo a step they already covered.
+- [ ] The actions are concrete and come from the first-90-days lesson.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV19z4y1U7yL/
+
+> This is covered in the course:
+> 
+> Use your first 90 days to learn, ask questions, and understand your new environment before trying to change things.
+> 
+> • **Map your place in the organization**
+>   - Your role in the team
+>   - The team's role in the department
+>   - The department's role in the company
+>   - The company's place in its market
+> 
+> • **Decide your career direction**
+>   - Let your long-term goal guide what you learn and which opportunities you pursue, even if that goal is outside the company
+> 
+> • **Stay humble and learn proactively**
+>   - Previous success does not automatically transfer to a new company
+>   - Listen more than you push
+>   - Ask questions boldly while you are new
+>   - Learn from coworkers and internal documents
+>   - Focus on learning and making a specific plan rather than worrying about performance ratings
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV19z4y1U7yL/
+
+### C6 Profile save, then use (Coach) · BLOCKING · PASS
+
+**T1 [QA]** "I'm D, a PM at Google working on an internal company CRM. I want to sound more confident when I lead meetings with our US team."
+- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: company contains any of ["google"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ profile: fields present ["industry","goal"]
+- ✓ profile: goal contains any of ["meeting","confident","lead"]: saved {"name":"D","role":"PM","company":"Google","industry":"tech","goal":"lead client presentations confidently","industry_source":"inferred"}
+- ✓ global checks G1–G4
 - [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> Thanks, that's helpful. I appreciate the clear timeline.
+> &lt;profile learner_name="D" learner_role="PM" learner_company="Google" learner_industry="tech" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
+> [I’ve saved your details to your profile (if enabled). See more: top-right menu → About.]
 > 
-> [Now give the context: the past, the present, and the future.]
+> This is covered in the course:
 > 
-> ---
+> The ICE method gives your opening a clear structure, so you sound prepared and in control.
 > 
-> Wait — let me check again. You actually did cover past (emails about features), present (agree on schedule), and future (timeline to leadership by next Friday). And you set expectations too: ask questions anytime, detailed discussion.
+> 1. **Introductions**
+>    - State the meeting topic, your name, role, and how you'll contribute.
+>    - *"Today we're kicking off the CRM integration. I'm D, the PM, and I'll manage the timeline and be your main contact for requirements."*
 > 
-> So this triggers rule 1: feedback time.
+> 2. **Context**
+>    - Past: how you got here.
+>    - Present: today's topics and goal.
+>    - Future: next step with a deadline.
+>    - *"We've had emails going back and forth for two weeks. Today we'll confirm the data model and rollout phases. The goal is alignment before engineering starts. I'll send a written summary to leadership by next Monday."*
 > 
-> ---
+> 3. **Expectations**
+>    - Interaction: when to ask questions.
+>    - Detail level: technical or high level.
+>    - *"This will be a detailed discussion, so please hold questions until after each section."*
 > 
-> **Course score: 5/5**: You covered all three ICE steps clearly in one go.
+> Practice tip: write your opening out once before the meeting. It takes two minutes and removes filler words like "um" and "maybe."
 > 
-> **How it went:** Strong, professional opening — your team would know exactly where things stand and how to take part.
-> 
-> **What worked:** Your context was complete: "Over the past two weeks we've had a lot of emails about the main features" (past), "Today's goal is to agree on the schedule" (present), "send a timeline to leadership by next Friday" (future with a deadline). You also set both interaction and detail expectations: "Please ask questions anytime, and this will be a detailed discussion."
-> 
-> **What to improve:** Nothing major. If you wanted to add one thing, you could say how *you* specifically contribute beyond managing schedule — for example, "I'll also be the main point of contact for requirements."
-> 
-> **Also worth noting:** "A lot of emails" is fine; "quite a few emails going back and forth" sounds slightly more natural in a formal kickoff.
-> 
-> **Try this instead:** "Hi everyone, I'm Lee, the lead PM for this new app launch. I've been with the team for two years and I'll be managing the schedule a…
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
-### C4 Menu path: greeting, then "1" · BLOCKING · PASS
-
-**T1 [RP]** "Hello"
-- ✓ contains "Start a meeting"
-- ✓ contains any of ["describe","your own"]
-- ✓ character line: absent
-- ✓ no feedback
+**T2 [QA]** "How do I start a meeting with my team?"
+Profile sent: First name: D. Role: PM. Company: Google. Industry: tech (guessed from the company). Learning goal: lead client presentations confidently.
+- ✓ starts with "This is covered in the course:"
+- ✓ link: lesson link
+- ✓ profile: no profile line
+- ✓ doesn't contain any of ["what is your role","what's your role","which company","where do you work"]
 - ✓ global checks G1–G4
+- [ ] Fits the advice to the learner's background where it helps; invents no conflicting background.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV17j411b7Pg/
 
-> Let's practice a real workplace conversation. Reply with a number:
-> 1. Start a meeting (easy)
-> 2. Disagree with a coworker
-> 3. Reject a late request
-> Or describe your own situation.
-> [Tip: describe your real role and a situation you're facing at work. The conversation will be more realistic and more challenging.]
-
-**T2 [RP]** "1"
-Scene sent: Start a meeting
-- ✓ doesn't contain any of ["Reply with a number"]
-- ✓ global checks G1–G4
-- [ ] Starts the built-in meeting-opening scene with a character.
-
-> &lt;character name="Sarah" gender="female"/&gt;
+> This is covered in the course:
 > 
-> "Hi, thanks for setting this up. I'm ready when you are."
+> Use the ICE method to open with confidence and clarity.
 > 
-> [You're the lead project manager at Apple, kicking off a new iOS feature project. The team has exchanged emails for the past two weeks. Today's goal is to align on requirements and schedule. Sarah is a senior engineer on the team. She'll respond positively to whatever you say.]
+> **1. Introductions**
+> - State the meeting topic, your name, role, and how you'll contribute.
+> - *"Today we're reviewing the CRM rollout plan. I'm D, the PM, and I'll run the timeline and flag any blockers."*
 > 
-> [Start with your introduction.]
+> **2. Context**
+> - Past: how you got here.
+> - Present: today's topics and goal.
+> - Future: next step with a deadline.
+> - *"We've had sync emails with the US team this week. Today we'll confirm the data model and the pilot schedule. We need written sign-off from leadership by next Friday so engineering can start."*
+> 
+> **3. Expectations**
+> - Interaction: when should people ask questions?
+> - Detail level: technical deep-dive or high-level?
+> - *"We'll stay high-level on architecture and save technical details for the follow-up with the engineers. Feel free to interrupt if something doesn't make sense."*
+> 
+> **Quick tip:** As a PM at Google, your team expects you to own the flow. Ending Context with a specific deadline ("by next Friday") signals you're managing the project, not just the meeting.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV17j411b7Pg/
 
-### C5 Custom scene with profile · NON-BLOCKING · FLAKY
+### D1 Mode switch: Role-play → Coach → back · BLOCKING · FLAKY
 
 **Attempt 1 (failed, so it was rerun)**
 
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✗ doesn't contain any of ["Start with your introduction"]: found "Start with your introduction"
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
-
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="consumer electronics" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
-> 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Hi D, thanks for setting this up. I'm ready when you are.
-> 
-> [You're a PM at Apple headquarters. Sarah is the retail lead for Greater China, joining remotely from Shanghai. The team has exchanged emails about the holiday sales plan for the past two weeks. Today's goal is to align on promotional timing, inventory targets, and marketing support. You need a written sign-off from regional leadership by next Friday to lock in supplier orders. Start with your introduction.]
-> 
-> [Start with your introduction.]
-
-**Attempt 2**
-
-**T1 [RP]** "I'm D, a PM at Apple and I'm holding a meeting with the retail team in China to discuss the holiday sales plan."
-- ✓ profile: name = "D": saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: role contains any of ["pm","product manager"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ profile: company contains any of ["apple"]: saved {"name":"D","role":"PM","company":"Apple","industry":"consumer electronics","goal":"lead client presentations confidently","industry_source":"inferred"}
-- ✓ character line: present
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ no feedback
-- ✓ global checks G1–G4
-- [ ] Plays a fitting participant in the retail-team meeting and lets the learner lead. Any character name is fine.
-
-> &lt;profile learner_name="D" learner_role="PM" learner_company="Apple" learner_industry="consumer electronics" learner_industry_source="inferred" learner_goal="lead client presentations confidently"/&gt;
-> 
-> &lt;character name="Sarah" gender="female"/&gt;
-> 
-> Thanks for setting this up, D. I know the holiday season is always intense for retail. I'm ready when you are.
-> 
-> [Apple, Shanghai. You are the PM leading a kickoff with Sarah, the retail operations lead for Greater China. Goal: align on the holiday sales plan, including staffing, inventory, and promotions. Sarah has data from last year and concerns about supply chain timing.]
-
-### S5 Clear switch: meeting opener to a project delay · BLOCKING · PASS
-
-**T1 [RP]** "Start the role-play scene "Start a meeting". Difficulty: Easy."
-Scene sent: Start a meeting
+**T1 [RP]** "Start the role-play scene "Disagree with a coworker". Difficulty: Medium."
+Scene sent: Disagree with a coworker
+- ✓ doesn't contain any of ["Reply with a number"]
 - ✓ bracket line: present
 - ✓ no feedback
 - ✓ global checks G1–G4
-- [ ] Control: the built-in opener starts as usual.
+- [ ] The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
 
-> &lt;character name="Sarah" gender="female"/&gt;
+> &lt;character name="Bob" gender="male"/&gt;
 > 
-> Thanks for organizing this kickoff. I'm ready when you are.
+> "I think we should list the traditional coffee drinks first on the new menu. It stays true to our brand, and customers who come in for a classic experience will find them right away."
 > 
-> [You're the lead PM for a new mobile app project at Apple. The team has exchanged emails about requirements for the past two weeks. Today's goal is to align on the schedule and main features before development starts. Your next step after this meeting is to get written sign-off from the US team. Sarah and three engineers are attending.]
+> [We're at Starbucks headquarters in Seattle. You're a product manager on the menu team. Bob is a senior marketing analyst on your team. We're discussing the layout for the new digital menu boards rolling out next quarter.]
 > 
-> [Start with your introduction.]
+> [Hint: you could honestly agree that brand consistency matters, or that traditional coffee has loyal customers.]
 
-**T2 [RP]** "Let's stop the meeting practice. Instead, I want to practice telling my manager that our project will be two weeks late."
-- ✓ doesn't contain any of ["Start with your introduction"]
-- ✓ character line: present
+**T2 [QA]** "How can I politely disagree with the idea?"
 - ✓ global checks G1–G4
-- [ ] Starts a new scene with the manager (at most a one-line acknowledgment). Doesn't continue the opener or ask the learner to finish it first.
+- [ ] Coaching advice based on the character's actual proposal, not a line spoken as the character.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/
 
-> &lt;character name="David" gender="male"/&gt;
+> This is covered in the course:
 > 
-> Hey, do you have a minute? I wanted to check in on the timeline for the mobile app project. The leadership team is asking for a firm delivery date for the beta release.
+> Use the feedback sandwich to disagree while keeping the discussion open:
 > 
-> [You're a senior developer at Apple reporting to David, your engineering manager. The beta was originally promised to leadership by March 15. You've just learned that integration testing will take at least two weeks longer than planned due to unexpected issues with the payment gateway API. David values early warnings and practical solutions, but he also needs to manage expectations upward.]
+> • **Partially agree first** — show you understand their view
+>   - "I understand that we want to stay true to our traditional coffee brand."
+> 
+> • **State your opinion with a reason** — use facts or data if you have them
+>   - "But our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales."
+> 
+> • **Keep it open** — invite alternatives rather than shutting down the idea
+>   - "Are there other alternatives?"
+>   - "Maybe we could try a digital display so that we can update the menus depending on the season."
+> 
+> The goal is to encourage discussion, not win the argument. Once the team decides, move forward together.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/
 
-**T3 [RP]** "Hi, I wanted to let you know the project will slip by about two weeks because testing found more bugs than expected. I have a plan to recover some of that time."
-- ✓ doesn't contain any of ["Start with your introduction"]
+**T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
+- ✓ no feedback
+- ✓ doesn't contain any of ["Reply with a number","Switched to"]
+- ✗ words ≤ 120: 640 words
+- ✓ global checks G1–G4
+- [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
+
+> [RP mode is active. The learner is continuing the "Disagree with a coworker" scene with Bob. I need to stay in character as Bob and react to what they said.]
+> 
+> Let me check their message against the feedback sandwich method:
+> 1. Partially agree first — they said "I understand the benefit you're aiming for" — this counts as partial agreement, though it's a bit thin/generic.
+> 2. State their own opinion with a reason — they said "I'm concerned about the time this would take" — this is an opinion with a reason.
+> 3. Keep the discussion open — they asked "Could we compare it with a smaller trial before deciding?" — this is an alternative suggestion, keeping it open.
+> 
+> Bob should respond to the quality of their reasoning. Their reasoning is decent — they partially agreed, gave a concern, and proposed an alternative. Bob should be engaged but maybe a bit defensive about "time" since he didn't mention time in his original point. Actually, let me re-read: Bob's original idea was about brand and customer experience. The learner introduced "time" as a concern, which is a new objection not directly related to Bob's stated reasoning. Bob might push back slightly or ask for clarification, while still being open to the trial idea.
+> 
+> Actually, looking at the scene rules: "Bob responds to the quality of the learner's reasoning: a little defensive at harsh disagreement, engaged with good reasons, open to alternatives." The learner wasn't harsh, they were reasonable. So Bob should be engaged, maybe as…
+
+**Attempt 2**
+
+**T1 [RP]** "Start the role-play scene "Disagree with a coworker". Difficulty: Medium."
+Scene sent: Disagree with a coworker
+- ✓ doesn't contain any of ["Reply with a number"]
+- ✓ bracket line: present
 - ✓ no feedback
 - ✓ global checks G1–G4
-- [ ] The manager reacts to the delay (asks about the plan or the impact); not graded on introductions.
+- [ ] The character's idea has a real strength and a real weakness; the hint names a point the learner could agree with.
 
-> David: I appreciate you flagging this early. Two weeks is significant—leadership was expecting that March 15 date. What's your plan to recover time, and what's the new target you're looking at?
+> &lt;character name="Bob" gender="male"/&gt;
 > 
-> [You're still in the conversation with David. He wants to understand the full picture before he updates his own manager.]
+> I think we should list traditional coffee first on the new menu. It honors our brand heritage, and customers who come in for a classic espresso experience will find what they want right away.
+> 
+> [Setting: Starbucks headquarters, Seattle. You're a product manager on the menu team. Bob is your teammate. The team is finalizing the layout for the new in-store menu boards. Bob's proposal has a real strength—brand identity—but there's also data he's overlooking. Your goal: disagree professionally and steer the team toward a better decision. Hint: what can you honestly agree with in his point?]
+
+**T2 [QA]** "How can I politely disagree with the idea?"
+- ✓ global checks G1–G4
+- [ ] Coaching advice based on the character's actual proposal, not a line spoken as the character.
+- [ ] G1: no lesson list set (LESSON_VIDEO_IDS), so check these links by hand: https://www.bilibili.com/video/BV1rt4y1z7P6/
+
+> This is covered in the course:
+> 
+> Use the feedback sandwich to disagree while keeping the discussion open:
+> 
+> • **Partially agree first** — show you understand their view:
+>   - "I understand that we want to stay true to our traditional coffee brand."
+>   - "It makes sense that regular customers would expect to see the classics first."
+> 
+> • **State your opinion with a reason** — use facts or data if you have them:
+>   - "But our iced frappuccinos are our best sellers during the summer. Listing them first will increase sales."
+> 
+> • **Keep it open** — invite alternatives rather than shutting down:
+>   - "Are there other alternatives?"
+>   - "Maybe we could try a digital display so that we can update the menus depending on the season."
+> 
+> The goal is to encourage discussion, not win the argument. Once the team decides, move forward together.
+> 
+> Watch the lesson: ▶️ https://www.bilibili.com/video/BV1rt4y1z7P6/
+
+**T3 [RP]** "I understand the benefit you're aiming for, but I'm concerned about the time this would take. Could we compare it with a smaller trial before deciding?"
+- ✓ no feedback
+- ✓ doesn't contain any of ["Reply with a number","Switched to"]
+- ✓ words ≤ 120: 60 words
+- ✓ global checks G1–G4
+- [ ] Replies as the character and continues the same discussion (no restart, recap or mode note).
+
+> I hear you on wanting to test first, but a smaller trial still means designing a second layout, running a pilot, and then reconvening—that's easily four to six weeks. The menu boards need to go to print by month-end for the summer rollout.
+> 
+> What data are you seeing that makes you think a trial would change the outcome?
 
 </details>
